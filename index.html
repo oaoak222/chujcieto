@@ -39,13 +39,22 @@
         flex-direction: column;
         overflow: hidden;
     }
+
+    .header-bar {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        margin-bottom: 8px;
+        height: 48px;
+    }
     
     h1.main-title {
         font-family: 'Rajdhani', sans-serif;
         color: var(--primary);
         text-align: center;
         font-size: 2.3rem;
-        margin: 0 0 8px 0;
+        margin: 0;
         text-transform: uppercase;
         font-weight: 700;
         letter-spacing: 4px;
@@ -54,6 +63,7 @@
         align-items: center;
         justify-content: center;
         gap: 12px;
+        transition: opacity 0.25s, transform 0.25s;
     }
 
     h1.main-title::before, h1.main-title::after {
@@ -65,6 +75,95 @@
     h1.main-title::after {
         background: linear-gradient(90deg, var(--primary), transparent);
     }
+
+    .btn-search-toggle {
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        background: var(--surface);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border: 1px solid var(--surface-border);
+        color: var(--primary);
+        border-radius: 8px;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 16px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
+        transition: all 0.2s ease-in-out;
+        z-index: 10;
+    }
+
+    .btn-search-toggle:hover {
+        border-color: rgba(255, 42, 157, 0.6);
+        background: var(--surface-hover);
+        color: #fff;
+        box-shadow: 0 0 14px var(--primary-glow);
+        transform: translateY(-50%) scale(1.04);
+    }
+
+    .search-expandable-bar {
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 40px;
+        height: 40px;
+        background: rgba(14, 10, 13, 0.95);
+        backdrop-filter: blur(10px);
+        border: 1.5px solid var(--primary);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        padding: 0 10px;
+        opacity: 0;
+        pointer-events: none;
+        overflow: hidden;
+        box-shadow: 0 0 20px var(--primary-glow);
+        transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s;
+        z-index: 20;
+    }
+
+    .search-expandable-bar.active {
+        width: calc(100% - 322px);
+        opacity: 1;
+        pointer-events: all;
+    }
+
+    .search-input-field {
+        flex-grow: 1;
+        background: transparent;
+        border: none;
+        outline: none;
+        color: #fff;
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 16px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        padding: 0 8px;
+    }
+
+    .search-input-field::placeholder {
+        color: #795b6c;
+        font-weight: 500;
+    }
+
+    .btn-close-search {
+        background: transparent;
+        border: none;
+        color: #ff4d4d;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 700;
+        padding: 4px 8px;
+        transition: transform 0.15s;
+    }
+    .btn-close-search:hover { transform: scale(1.2); }
 
     .container {
         display: grid;
@@ -96,8 +195,32 @@
         border-radius: 8px;
         padding: 11px 13px;
         box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
-        transition: border-color 0.2s, box-shadow 0.2s;
         position: relative;
+        max-height: 800px;
+        opacity: 1;
+        transform: scale(1);
+        overflow: hidden;
+        transition: max-height 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+                    opacity 0.25s ease,
+                    padding 0.35s ease,
+                    margin 0.35s ease,
+                    transform 0.3s ease,
+                    border-color 0.2s,
+                    box-shadow 0.2s;
+    }
+
+    /* Płynne chowanie całego boksu */
+    .box.hidden-box {
+        max-height: 0 !important;
+        opacity: 0 !important;
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+        margin-top: 0 !important;
+        margin-bottom: -10px !important;
+        border-top-width: 0 !important;
+        border-bottom-width: 0 !important;
+        pointer-events: none;
+        transform: scale(0.96);
     }
 
     .box:hover {
@@ -132,7 +255,26 @@
         margin-bottom: 5px;
         padding: 4px 6px;
         border-radius: 5px;
-        transition: background 0.15s;
+        max-height: 40px;
+        opacity: 1;
+        transform: translateX(0);
+        overflow: hidden;
+        transition: max-height 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
+                    opacity 0.2s ease,
+                    margin 0.3s ease,
+                    padding 0.3s ease,
+                    transform 0.25s ease,
+                    background 0.15s;
+    }
+
+    .item-row.hidden-item {
+        max-height: 0 !important;
+        margin-bottom: 0 !important;
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+        opacity: 0 !important;
+        transform: translateX(-8px);
+        pointer-events: none;
     }
 
     .item-row:hover {
@@ -414,11 +556,7 @@
     }
     .btn-calc-discount:hover { background: var(--primary); color: #fff; box-shadow: 0 0 10px var(--primary-glow); }
 
-    /* PRZYCISKI STYLIZOWANE */
-    .btn-tab-group {
-        display: flex;
-        gap: 6px;
-    }
+    .btn-tab-group { display: flex; gap: 6px; }
 
     .btn-tab {
         background: transparent;
@@ -440,20 +578,13 @@
         box-shadow: 0 0 8px rgba(255, 42, 157, 0.4);
     }
 
-    /* PŁYTA Z WYKRESEM POD JOINTY */
-    .chart-box {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
+    .chart-box { 
+        display: flex; 
+        flex-direction: column; 
+        gap: 8px; 
     }
+    .chart-header-row { display: flex; justify-content: space-between; align-items: center; }
 
-    .chart-header-row {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    /* PANEL HISTORII */
     .history-panel {
         background: var(--surface);
         backdrop-filter: blur(8px);
@@ -538,7 +669,6 @@
     .btn-clear-all { width: 100%; background: rgba(69, 10, 10, 0.4); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.35); border-radius: 4px; padding: 5px; font-family: 'Rajdhani', sans-serif; font-size: 11.5px; cursor: pointer; font-weight: 700; margin-top: 6px; transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.5px; }
     .btn-clear-all:hover { background: #dc2626; color: #fff; }
 
-    /* TOAST NOTIFICATION */
     .toast-container { position: fixed; top: 20px; right: 25px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
     .toast { background: rgba(15, 10, 13, 0.95); border: 1.5px solid var(--primary); border-radius: 6px; padding: 10px 16px; min-width: 250px; box-shadow: 0 8px 25px rgba(0,0,0,0.6), 0 0 15px var(--primary-glow); transform: translateX(120%); transition: transform 0.35s cubic-bezier(0.18, 0.89, 0.32, 1.28), opacity 0.3s; opacity: 0; position: relative; overflow: hidden; }
     .toast.show { transform: translateX(0); opacity: 1; }
@@ -547,7 +677,6 @@
     .toast-progress { position: absolute; bottom: 0; left: 0; height: 2.5px; background: var(--primary); width: 100%; animation: toastTimer 2.8s linear forwards; }
     @keyframes toastTimer { from { width: 100%; } to { width: 0%; } }
 
-    /* Modale */
     .custom-modal-overlay { position: absolute; inset: 0; background: rgba(8, 4, 6, 0.92); backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; z-index: 50; padding: 16px; box-sizing: border-box; }
     .custom-modal { background: #160d11; border: 1.5px solid var(--primary); border-radius: 8px; width: 100%; padding: 16px 12px; box-shadow: 0 0 20px rgba(255, 42, 157, 0.25); text-align: center; }
     .custom-modal-title { color: #f87171; font-family: 'Rajdhani', sans-serif; font-size: 15px; font-weight: 700; margin-bottom: 5px; text-transform: uppercase; }
@@ -575,10 +704,19 @@
 
 <div class="toast-container" id="toastContainer"></div>
 
-<h1 class="main-title">PUF PUF PASS</h1>
+<div class="header-bar">
+    <button class="btn-search-toggle" onclick="toggleSearch()" title="Szukaj produktu">🔍</button>
+    
+    <div class="search-expandable-bar" id="searchBar">
+        <span style="color: var(--primary); font-size: 16px; margin-right: 4px;">🔍</span>
+        <input type="text" id="productSearchInput" class="search-input-field" placeholder="Wpisz nazwę szukanego produktu..." oninput="filterProducts(this.value)">
+        <button class="btn-close-search" onclick="toggleSearch()" title="Zamknij wyszukiwarkę">✕</button>
+    </div>
+
+    <h1 class="main-title" id="mainHeaderTitle">PUF PUF PASS</h1>
+</div>
 
 <div class="container">
-    <!-- Kolumna 1: Nasiona, Produkty, Nawozy -->
     <div class="column">
         <div class="box" id="cat-nasiona">
             <h3 class="box-title">🌱 Nasiona Weedu</h3>
@@ -591,7 +729,6 @@
         </div>
     </div>
 
-    <!-- Kolumna 2: Jedzenie, Jointy, oraz WYKRES POD JOINTAMI -->
     <div class="column">
         <div class="box" id="cat-jedzenie">
             <h3 class="box-title">🍪 Jedzenie & Picie</h3>
@@ -600,8 +737,7 @@
             <h3 class="box-title">🚬 Jointy</h3>
         </div>
         
-        <!-- Wykres zarobków przeniesiony pod JOINTY -->
-        <div class="box chart-box">
+        <div class="box chart-box" id="chartBoxContainer">
             <div class="chart-header-row">
                 <h3 class="box-title" style="margin: 0;">📈 Wykres Zarobków</h3>
                 <div class="btn-tab-group">
@@ -616,7 +752,6 @@
         </div>
     </div>
 
-    <!-- Kolumna 3: Formularz, Suma, Statystyki -->
     <div class="column">
         <div class="box">
             <span class="label">🏢 Firma / klient</span>
@@ -700,7 +835,6 @@
         </div>
     </div>
 
-    <!-- Kolumna 4: Panel Historii -->
     <div class="history-panel">
         <div class="history-header">
             <span class="history-header-title">📜 HISTORIA</span>
@@ -815,6 +949,67 @@ let liveTimerInterval = null;
 let currentHistoryFilter = 'all';
 let currentChartMode = '24h';
 let earningsChart = null;
+
+function toggleSearch() {
+    const bar = document.getElementById('searchBar');
+    const input = document.getElementById('productSearchInput');
+    bar.classList.toggle('active');
+
+    if (bar.classList.contains('active')) {
+        setTimeout(() => input.focus(), 150);
+    } else {
+        input.value = '';
+        filterProducts('');
+    }
+}
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        const bar = document.getElementById('searchBar');
+        if (bar && bar.classList.contains('active')) {
+            toggleSearch();
+        }
+    }
+});
+
+function filterProducts(query) {
+    const cleanQuery = query.trim().toLowerCase();
+    const chartBox = document.getElementById('chartBoxContainer');
+
+    // Chowanie/pokazywanie wykresu zarobków podczas szukania z płynnym efektem
+    if (chartBox) {
+        if (cleanQuery !== '') {
+            chartBox.classList.add('hidden-box');
+        } else {
+            chartBox.classList.remove('hidden-box');
+        }
+    }
+    
+    for (const key in items) {
+        let visibleCount = 0;
+        items[key].forEach(item => {
+            const row = document.getElementById(`row-${item.id}`);
+            if (!row) return;
+
+            if (cleanQuery === '' || item.name.toLowerCase().includes(cleanQuery)) {
+                row.classList.remove('hidden-item');
+                visibleCount++;
+            } else {
+                row.classList.add('hidden-item');
+            }
+        });
+
+        // Płynne ukrywanie/pokazywanie całego boksu za pomocą klasy CSS
+        const box = document.getElementById(`cat-${key}`);
+        if (box) {
+            if (visibleCount === 0 && cleanQuery !== '') {
+                box.classList.add('hidden-box');
+            } else {
+                box.classList.remove('hidden-box');
+            }
+        }
+    }
+}
 
 function showToast(title, message) {
     const container = document.getElementById('toastContainer');
@@ -938,6 +1133,7 @@ function renderCategory(catKey, containerId) {
     items[catKey].forEach(item => {
         const div = document.createElement('div');
         div.className = 'item-row';
+        div.id = `row-${item.id}`;
         div.innerHTML = `<span class="item-name">${item.name}</span><span class="item-price" title="Kliknij, aby dodać +1" onclick="addItemQuick('${item.id}')">$${item.price.toLocaleString()}</span><input type="number" min="0" value="0" class="item-input" id="${item.id}" onchange="calculate()" onkeyup="calculate()">`;
         container.appendChild(div);
     });
