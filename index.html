@@ -149,21 +149,8 @@
         padding: 0 8px;
     }
 
-    .search-input-field::placeholder {
-        color: #795b6c;
-        font-weight: 500;
-    }
-
-    .btn-close-search {
-        background: transparent;
-        border: none;
-        color: #ff4d4d;
-        cursor: pointer;
-        font-size: 16px;
-        font-weight: 700;
-        padding: 4px 8px;
-        transition: transform 0.15s;
-    }
+    .search-input-field::placeholder { color: #795b6c; font-weight: 500; }
+    .btn-close-search { background: transparent; border: none; color: #ff4d4d; cursor: pointer; font-size: 16px; font-weight: 700; padding: 4px 8px; transition: transform 0.15s; }
     .btn-close-search:hover { transform: scale(1.2); }
 
     .container {
@@ -175,14 +162,7 @@
         margin-bottom: 4px;
     }
 
-    .column {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        overflow-y: auto;
-        padding-right: 5px;
-    }
-
+    .column { display: flex; flex-direction: column; gap: 10px; overflow-y: auto; padding-right: 5px; }
     .column::-webkit-scrollbar { width: 5px; }
     .column::-webkit-scrollbar-track { background: transparent; }
     .column::-webkit-scrollbar-thumb { background: var(--primary-dark); border-radius: 6px; }
@@ -201,176 +181,32 @@
         opacity: 1;
         transform: scale(1);
         overflow: hidden;
-        transition: max-height 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
-                    opacity 0.25s ease,
-                    padding 0.35s ease,
-                    margin 0.35s ease,
-                    transform 0.3s ease,
-                    border-color 0.2s,
-                    box-shadow 0.2s;
+        transition: max-height 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.25s ease, padding 0.35s ease, margin 0.35s ease, transform 0.3s ease, border-color 0.2s, box-shadow 0.2s;
     }
 
-    .box.hidden-box {
-        max-height: 0 !important;
-        opacity: 0 !important;
-        padding-top: 0 !important;
-        padding-bottom: 0 !important;
-        margin-top: 0 !important;
-        margin-bottom: -10px !important;
-        border-top-width: 0 !important;
-        border-bottom-width: 0 !important;
-        pointer-events: none;
-        transform: scale(0.96);
-    }
-
+    .box.hidden-box { max-height: 0 !important; opacity: 0 !important; padding-top: 0 !important; padding-bottom: 0 !important; margin-top: 0 !important; margin-bottom: -10px !important; border-top-width: 0 !important; border-bottom-width: 0 !important; pointer-events: none; transform: scale(0.96); }
     .box:hover { border-color: rgba(255, 42, 157, 0.35); }
 
-    .box-title {
-        font-family: 'Rajdhani', sans-serif;
-        color: var(--primary);
-        font-size: 14.5px;
-        margin: 0 0 8px 0;
-        font-weight: 700;
-        letter-spacing: 1.2px;
-        text-transform: uppercase;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-    }
+    .box-title { font-family: 'Rajdhani', sans-serif; color: var(--primary); font-size: 14.5px; margin: 0 0 8px 0; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; display: flex; align-items: center; gap: 6px; }
+    .box-title::after { content: ''; flex-grow: 1; height: 1px; background: linear-gradient(90deg, rgba(255, 42, 157, 0.3), transparent); margin-left: 6px; }
 
-    .box-title::after {
-        content: '';
-        flex-grow: 1;
-        height: 1px;
-        background: linear-gradient(90deg, rgba(255, 42, 157, 0.3), transparent);
-        margin-left: 6px;
-    }
-
-    .item-row {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 5px;
-        padding: 4px 6px;
-        border-radius: 5px;
-        max-height: 40px;
-        opacity: 1;
-        transform: translateX(0);
-        overflow: hidden;
-        transition: max-height 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
-                    opacity 0.2s ease,
-                    margin 0.3s ease,
-                    padding 0.3s ease,
-                    transform 0.25s ease,
-                    background 0.15s;
-    }
-
-    .item-row.hidden-item {
-        max-height: 0 !important;
-        margin-bottom: 0 !important;
-        padding-top: 0 !important;
-        padding-bottom: 0 !important;
-        opacity: 0 !important;
-        transform: translateX(-8px);
-        pointer-events: none;
-    }
-
+    .item-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; padding: 4px 6px; border-radius: 5px; max-height: 40px; opacity: 1; transform: translateX(0); overflow: hidden; transition: max-height 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.2s ease, margin 0.3s ease, padding 0.3s ease, transform 0.25s ease, background 0.15s; }
+    .item-row.hidden-item { max-height: 0 !important; margin-bottom: 0 !important; padding-top: 0 !important; padding-bottom: 0 !important; opacity: 0 !important; transform: translateX(-8px); pointer-events: none; }
     .item-row:hover { background: var(--surface-hover); }
 
-    .item-name {
-        font-size: 13px;
-        font-weight: 500;
-        color: #e5e7eb;
-        flex-grow: 1;
-    }
+    .item-name { font-size: 13px; font-weight: 500; color: #e5e7eb; flex-grow: 1; }
+    .item-price { color: var(--primary); font-family: 'Rajdhani', sans-serif; font-size: 14px; font-weight: 700; margin-right: 10px; background: rgba(255, 42, 157, 0.08); padding: 2px 6px; border-radius: 4px; border: 1px solid rgba(255, 42, 157, 0.15); cursor: pointer; user-select: none; transition: 0.15s; }
+    .item-price:hover { background: rgba(255, 42, 157, 0.2); transform: scale(1.05); }
 
-    .item-price {
-        color: var(--primary);
-        font-family: 'Rajdhani', sans-serif;
-        font-size: 14px;
-        font-weight: 700;
-        margin-right: 10px;
-        background: rgba(255, 42, 157, 0.08);
-        padding: 2px 6px;
-        border-radius: 4px;
-        border: 1px solid rgba(255, 42, 157, 0.15);
-        cursor: pointer;
-        user-select: none;
-        transition: 0.15s;
-    }
+    .item-input { width: 44px; height: 23px; background: #170f13; border: 1px solid rgba(255, 42, 157, 0.25); border-radius: 4px; text-align: center; font-weight: 700; font-size: 13px; color: #fff; outline: none; transition: all 0.2s; }
+    .item-input:focus { border-color: var(--primary); box-shadow: 0 0 8px var(--primary-glow); background: #22141a; }
 
-    .item-price:hover {
-        background: rgba(255, 42, 157, 0.2);
-        transform: scale(1.05);
-    }
-
-    .item-input {
-        width: 44px;
-        height: 23px;
-        background: #170f13;
-        border: 1px solid rgba(255, 42, 157, 0.25);
-        border-radius: 4px;
-        text-align: center;
-        font-weight: 700;
-        font-size: 13px;
-        color: #fff;
-        outline: none;
-        transition: all 0.2s;
-    }
-
-    .item-input:focus {
-        border-color: var(--primary);
-        box-shadow: 0 0 8px var(--primary-glow);
-        background: #22141a;
-    }
-
-    .label {
-        color: var(--primary);
-        font-family: 'Rajdhani', sans-serif;
-        font-size: 13px;
-        font-weight: 700;
-        letter-spacing: 0.8px;
-        text-transform: uppercase;
-        margin-bottom: 5px;
-        display: block;
-    }
-
-    select {
-        width: 100%;
-        padding: 6px 9px;
-        background: #140d10;
-        color: #e5e7eb;
-        border: 1px solid var(--surface-border);
-        border-radius: 5px;
-        font-family: inherit;
-        font-weight: 600;
-        font-size: 12.5px;
-        outline: none;
-        margin-bottom: 8px;
-        transition: border 0.2s;
-    }
-
+    .label { color: var(--primary); font-family: 'Rajdhani', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; margin-bottom: 5px; display: block; }
+    select { width: 100%; padding: 6px 9px; background: #140d10; color: #e5e7eb; border: 1px solid var(--surface-border); border-radius: 5px; font-family: inherit; font-weight: 600; font-size: 12.5px; outline: none; margin-bottom: 8px; transition: border 0.2s; }
     select:focus { border-color: var(--primary); }
 
     .role-buttons, .shift-buttons, .action-buttons { display: flex; gap: 6px; }
-
-    .btn {
-        flex: 1;
-        padding: 7px 5px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-family: 'Rajdhani', sans-serif;
-        font-size: 13px;
-        font-weight: 700;
-        letter-spacing: 0.5px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 5px;
-        transition: transform 0.1s, filter 0.15s, background 0.2s;
-    }
-
+    .btn { flex: 1; padding: 7px 5px; border: none; border-radius: 5px; cursor: pointer; font-family: 'Rajdhani', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.5px; display: flex; align-items: center; justify-content: center; gap: 5px; transition: transform 0.1s, filter 0.15s, background 0.2s; }
     .btn:active { transform: scale(0.96); }
     .btn-pracownik { background: var(--primary); color: #1a020d; box-shadow: 0 0 10px var(--primary-glow); }
     .btn-zarzad { background: #1e0e15; color: #f3a7d0; border: 1px solid var(--surface-border); }
@@ -383,11 +219,7 @@
     .shift-status-dot { width: 8px; height: 8px; border-radius: 50%; background: #64748b; transition: all 0.3s; }
     .shift-status-dot.active { background: var(--primary); box-shadow: 0 0 10px var(--primary); animation: pulseRadar 1.6s infinite; }
 
-    @keyframes pulseRadar {
-        0% { transform: scale(1); opacity: 1; }
-        50% { transform: scale(1.4); opacity: 0.6; box-shadow: 0 0 14px var(--primary); }
-        100% { transform: scale(1); opacity: 1; }
-    }
+    @keyframes pulseRadar { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.4); opacity: 0.6; box-shadow: 0 0 14px var(--primary); } 100% { transform: scale(1); opacity: 1; } }
 
     .shift-live-timer { color: var(--primary); font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 13px; letter-spacing: 0.5px; margin-left: auto; }
 
@@ -398,8 +230,8 @@
     .btn-clear-cart:hover { background: #dc2626; color: #fff; }
     .items-count-badge { font-size: 11px; color: #d9a9c0; font-weight: 500; }
     .suma-val { font-family: 'Rajdhani', sans-serif; color: var(--primary); font-size: 25px; font-weight: 700; letter-spacing: 1px; text-shadow: 0 0 8px var(--primary-glow); }
-
     .discount-info { text-align: center; color: var(--text-muted); font-size: 11px; margin-top: 4px; font-weight: 500; }
+
     .stats-row { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px; color: #e2b8cc; }
     .stats-val { color: var(--primary); font-weight: 600; font-family: 'Rajdhani', sans-serif; font-size: 13.5px; }
     .stats-desc { font-size: 9.5px; color: #d9a9c0; margin-top: 6px; line-height: 1.3; border-top: 1px dashed rgba(255,255,255,0.06); padding-top: 5px; }
@@ -433,20 +265,7 @@
     .chart-box { display: flex; flex-direction: column; gap: 8px; transition: opacity 0.25s, transform 0.25s; }
     .chart-header-row { display: flex; justify-content: space-between; align-items: center; }
 
-    .history-panel {
-        background: var(--surface);
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
-        border: 1px solid var(--surface-border);
-        border-radius: 8px;
-        display: flex;
-        flex-direction: column;
-        height: calc(100% - 4px);
-        box-sizing: border-box;
-        overflow: hidden;
-        position: relative;
-        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
-    }
+    .history-panel { background: var(--surface); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: 1px solid var(--surface-border); border-radius: 8px; display: flex; flex-direction: column; height: calc(100% - 4px); box-sizing: border-box; overflow: hidden; position: relative; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45); }
     .history-header { background: rgba(15, 10, 13, 0.85); padding: 10px 10px; border-bottom: 1px solid var(--surface-border); display: flex; justify-content: space-between; align-items: center; }
     .history-header-title { color: var(--primary); font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 14.5px; letter-spacing: 1px; text-transform: uppercase; }
     .history-content { flex-grow: 1; overflow-y: auto; padding: 9px; }
@@ -461,8 +280,13 @@
 
     .record-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 3px; }
     .record-date { color: #d9a9c0; font-size: 10px; font-weight: 500; }
-    .btn-delete-shift { background: transparent; border: none; color: #ef4444; cursor: pointer; font-size: 11.5px; padding: 1px 4px; line-height: 1; border-radius: 3px; transition: background 0.15s; }
+    
+    .btn-shift-action { background: transparent; border: none; cursor: pointer; font-size: 11.5px; padding: 1px 4px; line-height: 1; border-radius: 3px; transition: background 0.15s; font-family: 'Rajdhani', sans-serif; font-weight: 700;}
+    .btn-shift-info { color: var(--primary); letter-spacing: 0.5px; }
+    .btn-shift-info:hover { background: rgba(255, 42, 157, 0.2); }
+    .btn-delete-shift { color: #ef4444; }
     .btn-delete-shift:hover { background: rgba(239, 68, 68, 0.2); }
+
     .record-times { color: #fdf0f6; font-weight: 600; font-size: 12px; margin-bottom: 3px; }
     .record-earnings-container { display: flex; justify-content: space-between; align-items: baseline; margin-top: 3px; border-top: 1px dashed rgba(255,255,255,0.06); padding-top: 3px; }
     .record-earnings-discounted { color: #d9a9c0; font-size: 10.5px; }
@@ -496,44 +320,43 @@
     .btn-modal-cancel { background: #28141f; color: var(--primary); border: 1px solid var(--surface-border); }
     .btn-modal-cancel:hover { background: var(--primary); color: #fff; }
 
-    .screen-modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.88); backdrop-filter: blur(5px); display: none; align-items: center; justify-content: center; z-index: 1000; }
-    .screen-modal { background: #140c10; border: 2px solid var(--primary); border-radius: 10px; width: 320px; padding: 20px; box-shadow: 0 0 30px rgba(255, 42, 157, 0.25); position: relative; text-align: center; }
-    .screen-modal-close { position: absolute; top: 10px; right: 12px; background: transparent; border: none; color: #ef4444; font-size: 16px; font-weight: 700; cursor: pointer; padding: 4px; }
+    .screen-modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.88); backdrop-filter: blur(5px); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 15px; }
+    .screen-modal { background: #140c10; border: 2px solid var(--primary); border-radius: 10px; width: 320px; max-width: 100%; padding: 20px; box-shadow: 0 0 30px rgba(255, 42, 157, 0.25); position: relative; text-align: center; display: flex; flex-direction: column; }
+    .screen-modal-close { position: absolute; top: 10px; right: 12px; background: transparent; border: none; color: #ef4444; font-size: 16px; font-weight: 700; cursor: pointer; padding: 4px; z-index: 10; }
     .screen-modal-title { color: var(--primary); font-family: 'Rajdhani', sans-serif; font-size: 17px; font-weight: 700; margin-bottom: 14px; text-transform: uppercase; letter-spacing: 1px; }
     .screen-modal-input { width: 100%; background: #22131a; color: #fff; border: 1.5px solid var(--surface-border); border-radius: 6px; font-family: 'Rajdhani', sans-serif; font-size: 20px; font-weight: 700; text-align: center; padding: 8px; outline: none; margin-bottom: 14px; transition: all 0.2s; }
     .screen-modal-input:focus { border-color: var(--primary); box-shadow: 0 0 10px var(--primary-glow); }
-    .btn-screen-calc { width: 100%; background: var(--primary); color: #fff; font-family: 'Rajdhani', sans-serif; font-weight: 700; padding: 9px; font-size: 14px; border: none; border-radius: 5px; cursor: pointer; text-transform: uppercase; letter-spacing: 0.8px; box-shadow: 0 0 12px var(--primary-glow); }
+    .btn-screen-calc { width: 100%; background: var(--primary); color: #fff; font-family: 'Rajdhani', sans-serif; font-weight: 700; padding: 9px; font-size: 14px; border: none; border-radius: 5px; cursor: pointer; text-transform: uppercase; letter-spacing: 0.8px; box-shadow: 0 0 12px var(--primary-glow); transition: 0.2s; }
     .calc-result-box { background: #0c0608; border: 1px solid var(--surface-border); border-radius: 6px; padding: 14px; margin: 10px 0 14px 0; }
     .calc-result-val { color: var(--primary); font-family: 'Rajdhani', sans-serif; font-size: 26px; font-weight: 700; text-shadow: 0 0 10px var(--primary-glow); }
     .calc-subinfo { color: #d9a9c0; font-size: 11.5px; margin-top: 5px; }
 
-    /* --- RESPONSIVE DESIGN DLA TELEFONÓW --- */
+    /* Modal Szczegółów (Info) */
+    .shift-details-content { max-height: 60vh; overflow-y: auto; text-align: left; padding-right: 5px; margin-top: 5px; }
+    .shift-details-content::-webkit-scrollbar { width: 5px; }
+    .shift-details-content::-webkit-scrollbar-track { background: transparent; }
+    .shift-details-content::-webkit-scrollbar-thumb { background: var(--primary-dark); border-radius: 6px; }
+    
+    .transaction-card { background: rgba(255, 42, 157, 0.04); border: 1px solid rgba(255, 42, 157, 0.2); border-radius: 6px; padding: 10px; margin-bottom: 10px; transition: 0.2s; }
+    .transaction-card:hover { border-color: var(--primary); background: rgba(255, 42, 157, 0.08); }
+    
+    .t-header { display: flex; justify-content: space-between; align-items: center; color: var(--primary); font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 14.5px; border-bottom: 1px dashed rgba(255, 42, 157, 0.2); padding-bottom: 4px; margin-bottom: 6px; }
+    .t-meta { font-size: 11px; color: #d9a9c0; margin-bottom: 6px; font-weight: 500; }
+    
+    .t-item { display: flex; justify-content: space-between; font-size: 12px; color: #fdf0f6; margin-bottom: 3px; }
+    .t-item-name { color: #ff9ecf; font-weight: 600; }
+    .t-item-total { font-family: 'Rajdhani', sans-serif; font-weight: 700; color: #fff; }
+    
+    .legacy-msg { color: #f87171; font-size: 12.5px; text-align: center; padding: 15px; background: rgba(220, 38, 38, 0.1); border: 1px solid rgba(220, 38, 38, 0.3); border-radius: 6px; line-height: 1.5; }
+
+    /* RWD */
     @media (max-width: 1100px) {
-        body {
-            height: auto; 
-            overflow-y: auto; 
-            padding-bottom: 30px;
-        }
-        .container {
-            display: flex;
-            flex-direction: column;
-            overflow: visible;
-        }
-        .column {
-            overflow-y: visible; 
-            max-height: none;
-        }
-        .history-panel {
-            height: 600px; 
-            margin-bottom: 20px;
-        }
-        .search-expandable-bar.active {
-            width: calc(100% - 50px);
-            z-index: 100;
-        }
-        h1.main-title {
-            font-size: 1.8rem;
-        }
+        body { height: auto; overflow-y: auto; padding-bottom: 30px; }
+        .container { display: flex; flex-direction: column; overflow: visible; }
+        .column { overflow-y: visible; max-height: none; }
+        .history-panel { height: 600px; margin-bottom: 20px; }
+        .search-expandable-bar.active { width: calc(100% - 50px); z-index: 100; }
+        h1.main-title { font-size: 1.8rem; }
     }
 </style>
 </head>
@@ -543,37 +366,24 @@
 
 <div class="header-bar">
     <button class="btn-search-toggle" onclick="toggleSearch()" title="Szukaj produktu">🔍</button>
-    
     <div class="search-expandable-bar" id="searchBar">
         <span style="color: var(--primary); font-size: 16px; margin-right: 4px;">🔍</span>
         <input type="text" id="productSearchInput" class="search-input-field" placeholder="Wpisz nazwę produktu..." oninput="filterProducts(this.value)">
         <button class="btn-close-search" onclick="toggleSearch()" title="Zamknij wyszukiwarkę">✕</button>
     </div>
-
     <h1 class="main-title" id="mainHeaderTitle">PUF PUF PASS</h1>
 </div>
 
 <div class="container">
     <div class="column">
-        <div class="box" id="cat-nasiona">
-            <h3 class="box-title">🌱 Nasiona Weedu</h3>
-        </div>
-        <div class="box" id="cat-produkty">
-            <h3 class="box-title">📦 Produkty & Akcesoria</h3>
-        </div>
-        <div class="box" id="cat-nawozy">
-            <h3 class="box-title">🧪 Nawozy</h3>
-        </div>
+        <div class="box" id="cat-nasiona"><h3 class="box-title">🌱 Nasiona Weedu</h3></div>
+        <div class="box" id="cat-produkty"><h3 class="box-title">📦 Produkty & Akcesoria</h3></div>
+        <div class="box" id="cat-nawozy"><h3 class="box-title">🧪 Nawozy</h3></div>
     </div>
 
     <div class="column">
-        <div class="box" id="cat-jedzenie">
-            <h3 class="box-title">🍪 Jedzenie & Picie</h3>
-        </div>
-        <div class="box" id="cat-jointy">
-            <h3 class="box-title">🚬 Jointy</h3>
-        </div>
-        
+        <div class="box" id="cat-jedzenie"><h3 class="box-title">🍪 Jedzenie & Picie</h3></div>
+        <div class="box" id="cat-jointy"><h3 class="box-title">🚬 Jointy</h3></div>
         <div class="box chart-box" id="chartBoxContainer">
             <div class="chart-header-row">
                 <h3 class="box-title" style="margin: 0;">📈 Wykres Zarobków</h3>
@@ -583,9 +393,7 @@
                     <button class="btn-tab" id="btnChart50z" onclick="updateChartType('50z')">50 ZMIAN</button>
                 </div>
             </div>
-            <div style="position: relative; height: 160px; width: 100%;">
-                <canvas id="earningsChart"></canvas>
-            </div>
+            <div style="position: relative; height: 160px; width: 100%;"><canvas id="earningsChart"></canvas></div>
         </div>
     </div>
 
@@ -601,7 +409,6 @@
                 <option value="LSC">🔧 LSC</option>
                 <option value="VESUVIO">🍕 VESUVIO</option>
             </select>
-
             <span class="label">💼 Rola</span>
             <div class="role-buttons">
                 <button class="btn btn-pracownik" onclick="setRole('pracownik')" id="btn-pracownik">Pracownik</button>
@@ -656,9 +463,7 @@
         <div class="box">
             <h3 class="box-title" style="margin-bottom: 4px;">📊 Tabela zniżek</h3>
             <table class="discount-table">
-                <thead>
-                    <tr><th>Firma</th><th>Pracownik</th><th>Zarząd</th></tr>
-                </thead>
+                <thead><tr><th>Firma</th><th>Pracownik</th><th>Zarząd</th></tr></thead>
                 <tbody>
                     <tr><td>🥖 Piekarnia Bochen</td><td>-20%</td><td>-30%</td></tr>
                     <tr><td>🍹 Tropical Drinks</td><td>-15%</td><td>-25%</td></tr>
@@ -680,24 +485,13 @@
                 <button class="btn-tab" id="tabToday" onclick="setHistoryFilter('today')">Dzisiaj</button>
             </div>
         </div>
-
         <div class="history-content" id="historyContent"></div>
         <div class="history-footer">
-            <div class="history-footer-row">
-                <span class="history-footer-label">Łączny czas pracy:</span>
-                <span class="history-footer-val" id="totalWorkTime">0h 0m</span>
-            </div>
-            <div class="history-footer-row">
-                <span class="history-footer-label">Łączny zarobek:</span>
-                <span class="history-footer-val" id="totalWorkEarnings">$0</span>
-            </div>
-            <div class="history-footer-row">
-                <span class="history-footer-label">Odliczone 10%:</span>
-                <span class="history-footer-val" id="totalWorkEarningsDiscounted">$0</span>
-            </div>
+            <div class="history-footer-row"><span class="history-footer-label">Łączny czas pracy:</span><span class="history-footer-val" id="totalWorkTime">0h 0m</span></div>
+            <div class="history-footer-row"><span class="history-footer-label">Łączny zarobek:</span><span class="history-footer-val" id="totalWorkEarnings">$0</span></div>
+            <div class="history-footer-row"><span class="history-footer-label">Odliczone 10%:</span><span class="history-footer-val" id="totalWorkEarningsDiscounted">$0</span></div>
             <button class="btn-clear-all" onclick="promptClearAll()">🗑️ Wyczyść całą historię</button>
         </div>
-
         <div class="custom-modal-overlay" id="customConfirmModal">
             <div class="custom-modal">
                 <div class="custom-modal-title" id="modalTitle">Potwierdzenie</div>
@@ -729,6 +523,15 @@
             <div class="calc-subinfo" id="calcDiscountSubinfo">Odliczono 10%: $0</div>
         </div>
         <button class="btn-screen-calc" onclick="closeCalcModal()">ZAMKNIJ</button>
+    </div>
+</div>
+
+<!-- MODAL: SZCZEGÓŁY ZMIANY -->
+<div class="screen-modal-overlay" id="shiftDetailsModal">
+    <div class="screen-modal" style="width: 500px;">
+        <button class="screen-modal-close" onclick="closeShiftDetails()">✕</button>
+        <div class="screen-modal-title" id="detailsModalTitle">KARTA ZMIANY</div>
+        <div class="shift-details-content" id="shiftDetailsContent"></div>
     </div>
 </div>
 
@@ -791,42 +594,29 @@ function toggleSearch() {
     const bar = document.getElementById('searchBar');
     const input = document.getElementById('productSearchInput');
     bar.classList.toggle('active');
-
-    if (bar.classList.contains('active')) {
-        setTimeout(() => input.focus(), 150);
-    } else {
-        input.value = '';
-        filterProducts('');
-    }
+    if (bar.classList.contains('active')) { setTimeout(() => input.focus(), 150); } 
+    else { input.value = ''; filterProducts(''); }
 }
 
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
         const bar = document.getElementById('searchBar');
-        if (bar && bar.classList.contains('active')) {
-            toggleSearch();
-        }
+        if (bar && bar.classList.contains('active')) toggleSearch();
+        closeShiftDetails();
+        closeCalcModal();
     }
 });
 
 function filterProducts(query) {
     const cleanQuery = query.trim().toLowerCase();
     const chartBox = document.getElementById('chartBoxContainer');
-
-    if (chartBox) {
-        if (cleanQuery !== '') {
-            chartBox.classList.add('hidden-box');
-        } else {
-            chartBox.classList.remove('hidden-box');
-        }
-    }
+    if (chartBox) { chartBox.classList.toggle('hidden-box', cleanQuery !== ''); }
     
     for (const key in items) {
         let visibleCount = 0;
         items[key].forEach(item => {
             const row = document.getElementById(`row-${item.id}`);
             if (!row) return;
-
             if (cleanQuery === '' || item.name.toLowerCase().includes(cleanQuery)) {
                 row.classList.remove('hidden-item');
                 visibleCount++;
@@ -834,15 +624,8 @@ function filterProducts(query) {
                 row.classList.add('hidden-item');
             }
         });
-
         const box = document.getElementById(`cat-${key}`);
-        if (box) {
-            if (visibleCount === 0 && cleanQuery !== '') {
-                box.classList.add('hidden-box');
-            } else {
-                box.classList.remove('hidden-box');
-            }
-        }
+        if (box) { box.classList.toggle('hidden-box', visibleCount === 0 && cleanQuery !== ''); }
     }
 }
 
@@ -884,30 +667,8 @@ function initChart() {
     const ctx = document.getElementById('earningsChart').getContext('2d');
     earningsChart = new Chart(ctx, {
         type: 'line',
-        data: {
-            labels: [],
-            datasets: [{
-                label: 'Zarobek',
-                data: [],
-                borderColor: '#ff2a9d',
-                backgroundColor: 'rgba(255, 42, 157, 0.2)',
-                borderWidth: 2,
-                fill: true,
-                tension: 0.4,
-                pointRadius: 2,
-                pointBackgroundColor: '#ff2a9d'
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            animation: { duration: 600, easing: 'easeOutQuart' },
-            plugins: { legend: { display: false } },
-            scales: {
-                x: { ticks: { color: '#a38393', font: { size: 9, family: 'Inter' } }, grid: { color: 'rgba(90, 35, 65, 0.15)' } },
-                y: { ticks: { color: '#a38393', font: { size: 9, family: 'Inter' }, callback: v => '$' + v }, grid: { color: 'rgba(90, 35, 65, 0.15)' }, beginAtZero: true }
-            }
-        }
+        data: { labels: [], datasets: [{ label: 'Zarobek', data: [], borderColor: '#ff2a9d', backgroundColor: 'rgba(255, 42, 157, 0.2)', borderWidth: 2, fill: true, tension: 0.4, pointRadius: 2, pointBackgroundColor: '#ff2a9d' }] },
+        options: { responsive: true, maintainAspectRatio: false, animation: { duration: 600, easing: 'easeOutQuart' }, plugins: { legend: { display: false } }, scales: { x: { ticks: { color: '#a38393', font: { size: 9, family: 'Inter' } }, grid: { color: 'rgba(90, 35, 65, 0.15)' } }, y: { ticks: { color: '#a38393', font: { size: 9, family: 'Inter' }, callback: v => '$' + v }, grid: { color: 'rgba(90, 35, 65, 0.15)' }, beginAtZero: true } } }
     });
     updateChartData();
 }
@@ -922,8 +683,7 @@ function updateChartType(mode) {
 
 function updateChartData() {
     if(!earningsChart) return;
-    let labels = [];
-    let data = [];
+    let labels = [], data = [];
     const now = new Date();
 
     if (currentChartMode === '50z') {
@@ -931,54 +691,32 @@ function updateChartData() {
         labels = recentShifts.map((s, i) => `#${shifts.length - recentShifts.length + i + 1}`);
         data = recentShifts.map(s => s.earnings);
     } else if (currentChartMode === '24h') {
-        for(let i=23; i>=0; i--) {
-            const d = new Date(now.getTime() - i * 60 * 60 * 1000);
-            labels.push(`${pad(d.getHours())}:00`);
-            data.push(0);
-        }
+        for(let i=23; i>=0; i--) { labels.push(`${pad(new Date(now.getTime() - i * 3600000).getHours())}:00`); data.push(0); }
         shifts.forEach(s => {
-            const sTime = new Date(s.endTime || s.startTime);
-            const diffHours = Math.floor((now - sTime) / (1000 * 60 * 60));
-            if (diffHours >= 0 && diffHours < 24) {
-                data[23 - diffHours] += s.earnings;
-            }
+            const diffHours = Math.floor((now - new Date(s.endTime || s.startTime)) / 3600000);
+            if (diffHours >= 0 && diffHours < 24) data[23 - diffHours] += s.earnings;
         });
     } else if (currentChartMode === '31d') {
-        for(let i=30; i>=0; i--) {
-            const d = new Date(now.getTime() - i * 24 * 60 * 60 * 1000);
-            labels.push(`${pad(d.getDate())}.${pad(d.getMonth()+1)}`);
-            data.push(0);
-        }
+        for(let i=30; i>=0; i--) { const d = new Date(now.getTime() - i * 86400000); labels.push(`${pad(d.getDate())}.${pad(d.getMonth()+1)}`); data.push(0); }
         shifts.forEach(s => {
-            const sTime = new Date(s.endTime || s.startTime);
-            const diffDays = Math.floor((now - sTime) / (1000 * 60 * 60 * 24));
-            if (diffDays >= 0 && diffDays < 31) {
-                data[30 - diffDays] += s.earnings;
-            }
+            const diffDays = Math.floor((now - new Date(s.endTime || s.startTime)) / 86400000);
+            if (diffDays >= 0 && diffDays < 31) data[30 - diffDays] += s.earnings;
         });
     }
-
-    earningsChart.data.labels = labels;
-    earningsChart.data.datasets[0].data = data;
-    earningsChart.update();
+    earningsChart.data.labels = labels; earningsChart.data.datasets[0].data = data; earningsChart.update();
 }
 
 function renderCategory(catKey, containerId) {
     const container = document.getElementById(containerId);
     items[catKey].forEach(item => {
         const div = document.createElement('div');
-        div.className = 'item-row';
-        div.id = `row-${item.id}`;
+        div.className = 'item-row'; div.id = `row-${item.id}`;
         div.innerHTML = `<span class="item-name">${item.name}</span><span class="item-price" title="Kliknij, aby dodać +1" onclick="addItemQuick('${item.id}')">$${item.price.toLocaleString()}</span><input type="number" min="0" value="0" class="item-input" id="${item.id}" onchange="calculate()" onkeyup="calculate()">`;
         container.appendChild(div);
     });
 }
 
-function addItemQuick(id) {
-    const input = document.getElementById(id);
-    input.value = (parseInt(input.value) || 0) + 1;
-    calculate();
-}
+function addItemQuick(id) { const input = document.getElementById(id); input.value = (parseInt(input.value) || 0) + 1; calculate(); }
 
 function setRole(role) {
     currentRole = role;
@@ -990,64 +728,39 @@ function setRole(role) {
 function formatMoney(amount) { return Math.round(amount).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
 
 function calculate() {
-    let totalBase = 0;
-    let totalItems = 0;
+    let totalBase = 0, totalItems = 0;
     for (const key in items) {
         items[key].forEach(item => {
             const qty = parseInt(document.getElementById(item.id).value) || 0;
-            totalBase += qty * item.price;
-            totalItems += qty;
+            totalBase += qty * item.price; totalItems += qty;
         });
     }
     const client = document.getElementById('clientSelect').value;
     const discountPercent = discounts[client][currentRole];
-    const discountAmount = totalBase * discountPercent;
-    const finalTotal = totalBase - discountAmount;
+    const finalTotal = totalBase - (totalBase * discountPercent);
     
     document.getElementById('totalSumText').innerText = `SUMA: $${formatMoney(finalTotal)}`;
     document.getElementById('itemsCountBadge').innerText = `Pozycji: ${totalItems} szt.`;
-    
-    if (discountPercent > 0) { document.getElementById('discountInfoText').innerText = `Rabat ${discountPercent*100}% | Wartość: $${formatMoney(totalBase)}`; } 
-    else { document.getElementById('discountInfoText').innerText = `Brak rabatu | Wartość: $${formatMoney(totalBase)}`; }
+    document.getElementById('discountInfoText').innerText = discountPercent > 0 ? `Rabat ${discountPercent*100}% | Wartość: $${formatMoney(totalBase)}` : `Brak rabatu | Wartość: $${formatMoney(totalBase)}`;
 
-    const kosztTowaru = 0; 
-    const marzaPrzed = totalBase - kosztTowaru;
-    const zyskPo = finalTotal - kosztTowaru;
-    let marzaProc = 0;
-    if (finalTotal > 0) { marzaProc = (zyskPo / finalTotal) * 100; } 
-    else if (totalBase > 0 && finalTotal === 0) { marzaProc = -100; }
-
+    const kosztTowaru = 0, zyskPo = finalTotal - kosztTowaru;
     document.getElementById('val-koszt').innerText = `$${kosztTowaru}`;
-    document.getElementById('val-marza-przed').innerText = `$${formatMoney(marzaPrzed)}`;
+    document.getElementById('val-marza-przed').innerText = `$${formatMoney(totalBase - kosztTowaru)}`;
     document.getElementById('val-zysk').innerText = `$${formatMoney(zyskPo)}`;
-    document.getElementById('val-marza-proc').innerText = `${marzaProc.toFixed(1)}%`;
-}
-
-function getCurrentZysk() {
-    let totalBase = 0;
-    for (const key in items) {
-        items[key].forEach(item => {
-            const qty = parseInt(document.getElementById(item.id).value) || 0;
-            totalBase += qty * item.price;
-        });
-    }
-    return totalBase - (totalBase * discounts[document.getElementById('clientSelect').value][currentRole]);
+    document.getElementById('val-marza-proc').innerText = `${(finalTotal > 0 ? (zyskPo / finalTotal)*100 : (totalBase > 0 ? -100 : 0)).toFixed(1)}%`;
 }
 
 function pad(num) { return num.toString().padStart(2, '0'); }
 function formatDate(dateStr) { const d = new Date(dateStr); return `${pad(d.getDate())}.${pad(d.getMonth()+1)}.${d.getFullYear()}`; }
 function formatTime(dateStr) { const d = new Date(dateStr); return `${pad(d.getHours())}:${pad(d.getMinutes())}`; }
+function formatDateTimeSeconds(dateStr) { const d = new Date(dateStr); return `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())} ${pad(d.getDate())}.${pad(d.getMonth()+1)}.${d.getFullYear()}`; }
 
 function startShift() {
     if (activeShiftId) return;
     const now = new Date().toISOString();
     const newShift = { id: Date.now().toString(), startTime: now, endTime: null, earnings: 0, salesHistory: [], active: true };
-    shifts.push(newShift);
-    activeShiftId = newShift.id;
-    saveData();
-    updateShiftStatusUI();
-    renderHistory();
-    updateChartData();
+    shifts.push(newShift); activeShiftId = newShift.id;
+    saveData(); updateShiftStatusUI(); renderHistory(); updateChartData();
     showToast('🔴 ZMIANA ROZPOCZĘTA', `Czas startu: ${formatTime(now)}`);
 }
 
@@ -1056,10 +769,7 @@ function endShift() {
     const shift = shifts.find(s => s.id === activeShiftId);
     if (shift) { shift.endTime = new Date().toISOString(); shift.active = false; }
     activeShiftId = null;
-    saveData();
-    updateShiftStatusUI();
-    renderHistory();
-    updateChartData();
+    saveData(); updateShiftStatusUI(); renderHistory(); updateChartData();
     showToast('🏁 ZMIANA ZAKOŃCZONA', `Łączny utarg ze zmiany: $${formatMoney(shift ? shift.earnings : 0)}`);
 }
 
@@ -1070,12 +780,8 @@ function startLiveTimer() {
         if (activeShiftId) {
             const shift = shifts.find(s => s.id === activeShiftId);
             if (shift) {
-                const diffMs = Date.now() - new Date(shift.startTime).getTime();
-                const totalSec = Math.floor(diffMs / 1000);
-                const hrs = Math.floor(totalSec / 3600);
-                const mins = Math.floor((totalSec % 3600) / 60);
-                const secs = totalSec % 60;
-                timerEl.innerText = `(${pad(hrs)}:${pad(mins)}:${pad(secs)})`;
+                const totalSec = Math.floor((Date.now() - new Date(shift.startTime).getTime()) / 1000);
+                timerEl.innerText = `(${pad(Math.floor(totalSec / 3600))}:${pad(Math.floor((totalSec % 3600) / 60))}:${pad(totalSec % 60)})`;
                 return;
             }
         }
@@ -1097,36 +803,57 @@ function promptDeleteShift(shiftId) {
     openConfirmModal("USUŃ ZMIANĘ", "Czy na pewno chcesz usunąć tę zmianę z historii?", function() {
         shifts = shifts.filter(s => s.id !== shiftId);
         if (activeShiftId === shiftId) { activeShiftId = null; updateShiftStatusUI(); }
-        saveData();
-        renderHistory();
-        updateChartData();
+        saveData(); renderHistory(); updateChartData();
         showToast('🗑️ USUNIĘTO', 'Wpis zmiany został usunięty');
     });
 }
 
 function promptClearAll() {
     openConfirmModal("WYCZYŚĆ WSZYSTKO", "Czy na pewno chcesz bezpowrotnie usunąć CAŁĄ historię pracy?", function() {
-        shifts = [];
-        activeShiftId = null;
-        saveData();
-        updateShiftStatusUI();
-        renderHistory();
-        updateChartData();
+        shifts = []; activeShiftId = null;
+        saveData(); updateShiftStatusUI(); renderHistory(); updateChartData();
         showToast('🗑️ WYCZYSZCZONO', 'Cała historia została zresetowana');
     });
 }
 
 function sell() {
     if (!activeShiftId) { showToast('⚠️ UWAGA', 'Musisz najpierw wystartować zmianę!'); return; }
-    const zysk = getCurrentZysk();
+    
+    let totalBase = 0;
+    let soldItems = [];
+
+    for (const key in items) {
+        items[key].forEach(item => {
+            const qty = parseInt(document.getElementById(item.id).value) || 0;
+            if (qty > 0) {
+                totalBase += qty * item.price;
+                soldItems.push({ id: item.id, name: item.name, qty: qty, price: item.price, total: qty * item.price });
+            }
+        });
+    }
+
+    if (soldItems.length === 0) return;
+
+    const client = document.getElementById('clientSelect').value;
+    const discountPercent = discounts[client][currentRole];
+    const zysk = totalBase - (totalBase * discountPercent);
+
     if (zysk <= 0) return;
+
     const shift = shifts.find(s => s.id === activeShiftId);
     if (shift) {
         shift.earnings += zysk;
-        shift.salesHistory.push(zysk);
-        saveData();
-        renderHistory();
-        updateChartData();
+        shift.salesHistory.push({
+            timestamp: new Date().toISOString(),
+            earnings: zysk,
+            totalBeforeDiscount: totalBase,
+            discountPercent: discountPercent,
+            client: client,
+            role: currentRole,
+            items: soldItems
+        });
+        
+        saveData(); renderHistory(); updateChartData();
         spawnMoneyFloat(`$${formatMoney(zysk)}`);
         showToast('💵 SPRZEDAŻ POMYŚLNA', `Doliczono $${formatMoney(zysk)} do zmiany`);
         resetInputs();
@@ -1138,11 +865,10 @@ function undo() {
     const shift = shifts.find(s => s.id === activeShiftId);
     if (shift && shift.salesHistory.length > 0) {
         const last = shift.salesHistory.pop();
-        shift.earnings -= last;
-        saveData();
-        renderHistory();
-        updateChartData();
-        showToast('↩️ COFNIĘTO', `Usunięto ostatnią transakcję: -$${formatMoney(last)}`);
+        const amount = typeof last === 'number' ? last : last.earnings;
+        shift.earnings -= amount;
+        saveData(); renderHistory(); updateChartData();
+        showToast('↩️ COFNIĘTO', `Usunięto ostatnią transakcję: -$${formatMoney(amount)}`);
     }
 }
 
@@ -1215,7 +941,10 @@ function renderHistory() {
         div.innerHTML = `
             <div class="record-header">
                 <span class="record-date">${dateStr}</span>
-                <button class="btn-delete-shift" onclick="promptDeleteShift('${shift.id}')" title="Usuń zmianę">✕</button>
+                <div style="display:flex; gap: 6px;">
+                    <button class="btn-shift-action btn-shift-info" onclick="openShiftDetails('${shift.id}')" title="Szczegóły zmiany">📄 INFO</button>
+                    <button class="btn-shift-action btn-delete-shift" onclick="promptDeleteShift('${shift.id}')" title="Usuń zmianę">✕</button>
+                </div>
             </div>
             <div class="record-times">${timeStr}</div>
             <div class="record-earnings-container">
@@ -1232,6 +961,57 @@ function renderHistory() {
     document.getElementById('totalWorkEarningsDiscounted').innerText = `$${formatMoney(totalMoney * 0.90)}`;
     document.getElementById('dzisiajPrzychod').innerText = `$${formatMoney(todayMoney)}`;
     document.getElementById('dzisiajZysk').innerText = `$${formatMoney(todayMoney)}`;
+}
+
+// LOGIKA MODALU SZCZEGÓŁÓW ZMIANY (BEZ RACHUNKU RP)
+function openShiftDetails(shiftId) {
+    const shift = shifts.find(s => s.id === shiftId);
+    if (!shift) return;
+
+    document.getElementById('detailsModalTitle').innerText = `KARTA ZMIANY z dn. ${formatDate(shift.startTime)}`;
+    const content = document.getElementById('shiftDetailsContent');
+    content.innerHTML = '';
+
+    if (!shift.salesHistory || shift.salesHistory.length === 0) {
+        content.innerHTML = `<div class="legacy-msg">Brak transakcji na tej zmianie.</div>`;
+    } else {
+        const isLegacy = typeof shift.salesHistory[0] === 'number';
+        if (isLegacy) {
+            const rawAmounts = shift.salesHistory.map(s => `$${formatMoney(s)}`).join(', ');
+            content.innerHTML = `<div class="legacy-msg">⚠️ <strong>STARSZA WERSJA ZMIANY (brak danych)</strong><br><br>System zapisał dla tej zmiany wyłącznie surowe kwoty zysku ze względu na to, że została wykonana przed aktualizacją.<br><br>Zapisane kwoty: ${rawAmounts}</div>`;
+        } else {
+            shift.salesHistory.slice().reverse().forEach((sale) => {
+                const card = document.createElement('div');
+                card.className = 'transaction-card';
+                
+                let itemsHtml = '';
+                sale.items.forEach(it => {
+                    itemsHtml += `<div class="t-item">
+                        <span><span class="t-item-name">${it.qty}x ${it.name}</span> ($${formatMoney(it.price)}/szt)</span>
+                        <span class="t-item-total">$${formatMoney(it.total)}</span>
+                    </div>`;
+                });
+
+                const discountTxt = sale.discountPercent > 0 ? `Rabat: ${sale.discountPercent*100}%` : `Brak rabatu`;
+                const clientTxt = sale.client !== 'Brak' ? sale.client : `Klient detaliczny`;
+
+                card.innerHTML = `
+                    <div class="t-header">
+                        <span>⏱️ ${formatDateTimeSeconds(sale.timestamp)}</span>
+                        <span>ZYSK: $${formatMoney(sale.earnings)}</span>
+                    </div>
+                    <div class="t-meta">👤 Rola: ${sale.role.toUpperCase()} | 🏢 ${clientTxt} | 💸 ${discountTxt}</div>
+                    <div>${itemsHtml}</div>
+                `;
+                content.appendChild(card);
+            });
+        }
+    }
+    document.getElementById('shiftDetailsModal').style.display = 'flex';
+}
+
+function closeShiftDetails() {
+    document.getElementById('shiftDetailsModal').style.display = 'none';
 }
 
 function openCalcStep1() {
