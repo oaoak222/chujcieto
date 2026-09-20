@@ -67,12 +67,30 @@
 
     .header-bar {
         display: flex;
-        flex-direction: column;
         align-items: center;
         justify-content: center;
         position: relative;
         margin-bottom: 6px;
         min-height: 58px;
+        width: 100%;
+    }
+
+    /* Wycentrowanie pomiędzy końcem paska wyszukiwania a przyciskiem motywu */
+    .header-center-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        transition: left 0.45s cubic-bezier(0.16, 1, 0.3, 1), transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+        z-index: 5;
+    }
+
+    .header-bar.search-open .header-center-content {
+        left: calc(100% - 250px);
+        transform: translateX(-50%);
     }
     
     h1.main-title {
@@ -90,6 +108,14 @@
         justify-content: center;
         gap: 14px;
         line-height: 1;
+        transition: font-size 0.35s ease;
+        white-space: nowrap;
+    }
+
+    .header-bar.search-open h1.main-title {
+        font-size: 1.7rem;
+        letter-spacing: 3px;
+        gap: 8px;
     }
 
     h1.main-title::before, h1.main-title::after {
@@ -97,7 +123,14 @@
         height: 2px;
         width: 80px;
         background: linear-gradient(90deg, transparent, var(--primary));
+        transition: width 0.35s ease;
     }
+
+    .header-bar.search-open h1.main-title::before,
+    .header-bar.search-open h1.main-title::after {
+        width: 25px;
+    }
+
     h1.main-title::after {
         background: linear-gradient(90deg, var(--primary), transparent);
     }
@@ -278,8 +311,9 @@
         z-index: 20;
     }
 
+    /* Pasek zostawia przestrzeń na idealnie wycentrowany tytuł i przycisk motywu */
     .search-expandable-bar.active {
-        width: calc(100% - 322px);
+        width: calc(100% - 500px);
         opacity: 1;
         pointer-events: all;
     }
@@ -458,7 +492,6 @@
     .shift-status-dot { width: 8px; height: 8px; border-radius: 50%; background: #64748b; transition: all 0.3s; }
     .shift-status-dot.active { background: var(--primary); box-shadow: 0 0 10px var(--primary); animation: pulseRadar 1.6s infinite; }
 
-    /* Style dla neonowych statusów */
     .neon-status {
         font-family: 'Rajdhani', sans-serif;
         font-size: 15px;
@@ -767,6 +800,7 @@
         .column { overflow-y: visible; max-height: none; }
         .history-panel { height: 600px; margin-bottom: 20px; }
         .search-expandable-bar.active { width: calc(100% - 50px); z-index: 100; }
+        .header-bar.search-open .header-center-content { opacity: 0; pointer-events: none; }
         h1.main-title { font-size: 1.8rem; }
     }
 </style>
@@ -776,7 +810,7 @@
 <canvas id="fireworksCanvas"></canvas>
 <div class="toast-container" id="toastContainer"></div>
 
-<div class="header-bar">
+<div class="header-bar" id="mainHeaderBar">
     <button class="btn-search-toggle" onclick="toggleSearch()" title="Szukaj produktu">🔍</button>
     <div class="search-expandable-bar" id="searchBar">
         <span style="color: var(--primary); font-size: 16px; margin-right: 4px;">🔍</span>
@@ -784,16 +818,18 @@
         <button class="btn-close-search" onclick="toggleSearch()" title="Zamknij wyszukiwarkę">✕</button>
     </div>
     
-    <h1 class="main-title" id="mainHeaderTitle">PUF PUF PASS</h1>
+    <div class="header-center-content">
+        <h1 class="main-title" id="mainHeaderTitle">PUF PUF PASS</h1>
 
-    <div class="goal-container">
-        <button class="btn-set-goal" id="btnOpenGoalModal" onclick="openGoalModal()">🎯 Ustaw cel</button>
-        <div class="goal-progress-wrap" id="goalProgressWrap">
-            <div class="goal-bar-bg" id="goalBarBgContainer">
-                <div class="goal-bar-fill" id="goalBarFill"></div>
+        <div class="goal-container">
+            <button class="btn-set-goal" id="btnOpenGoalModal" onclick="openGoalModal()">🎯 Ustaw cel</button>
+            <div class="goal-progress-wrap" id="goalProgressWrap">
+                <div class="goal-bar-bg" id="goalBarBgContainer">
+                    <div class="goal-bar-fill" id="goalBarFill"></div>
+                </div>
+                <div class="goal-text-display" id="goalTextDisplay">$0 / $0 (0%)</div>
+                <button class="btn-reset-goal" onclick="resetGoal()" title="Resetuj cel">✕</button>
             </div>
-            <div class="goal-text-display" id="goalTextDisplay">$0 / $0 (0%)</div>
-            <button class="btn-reset-goal" onclick="resetGoal()" title="Resetuj cel">✕</button>
         </div>
     </div>
 
@@ -1407,10 +1443,18 @@ function setupOutsideModalClick() {
 
 function toggleSearch() {
     const bar = document.getElementById('searchBar');
+    const header = document.getElementById('mainHeaderBar');
     const input = document.getElementById('productSearchInput');
+    
     bar.classList.toggle('active');
-    if (bar.classList.contains('active')) { setTimeout(() => input.focus(), 150); } 
-    else { input.value = ''; filterProducts(''); }
+    header.classList.toggle('search-open');
+    
+    if (bar.classList.contains('active')) { 
+        setTimeout(() => input.focus(), 150); 
+    } else { 
+        input.value = ''; 
+        filterProducts(''); 
+    }
 }
 
 document.addEventListener('keydown', (e) => {
@@ -1727,18 +1771,15 @@ function updateShiftStatusUI() {
     const dot = document.getElementById('shiftDot');
     if (activeShiftId) {
         const shift = shifts.find(s => s.id === activeShiftId);
-        // Status neonowy OPEN z godziną startu
         statusText.innerHTML = `<span class="neon-status neon-open">OPEN</span> <span class="shift-start-time">od ${formatTime(shift.startTime)}</span>`;
         dot.className = 'shift-status-dot active';
     } else {
-        // Status neonowy CLOSED
         statusText.innerHTML = `<span class="neon-status neon-closed">CLOSED</span>`;
         dot.className = 'shift-status-dot';
         document.getElementById('shiftLiveTimer').innerText = '';
     }
 }
 
-/* LOGIKA FILTROWANIA HISTORII PO DATACH I GODZINACH */
 function setHistoryFilter(mode) {
     currentHistoryFilter = mode;
     document.getElementById('tabAll').className = `btn-tab ${mode === 'all' ? 'active' : ''}`;
@@ -1779,17 +1820,17 @@ function renderHistory() {
     const todayStr = formatDate(new Date().toISOString());
     const reversedShifts = [...shifts].reverse();
 
-    const singleVal = document.getElementById('singleDateInput').value; // YYYY-MM-DD
+    const singleVal = document.getElementById('singleDateInput').value;
     const startVal = document.getElementById('startDateInput').value;
     const endVal = document.getElementById('endDateInput').value;
-    const startTimeVal = document.getElementById('startTimeInput').value; // HH:MM
-    const endTimeVal = document.getElementById('endTimeInput').value; // HH:MM
+    const startTimeVal = document.getElementById('startTimeInput').value;
+    const endTimeVal = document.getElementById('endTimeInput').value;
 
     reversedShifts.forEach(shift => {
         const d1 = formatDate(shift.startTime);
         const t1 = formatTime(shift.startTime);
         const shiftDateObj = new Date(shift.startTime);
-        const rawIsoDate = shift.startTime.split('T')[0]; // YYYY-MM-DD
+        const rawIsoDate = shift.startTime.split('T')[0];
         const shiftTimeHHMM = pad(shiftDateObj.getHours()) + ':' + pad(shiftDateObj.getMinutes());
 
         let dateStr = d1, timeStr = `${t1} - Trwa...`;
