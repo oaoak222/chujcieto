@@ -75,7 +75,7 @@
         width: 100%;
     }
 
-    /* Wycentrowanie pomiędzy końcem paska wyszukiwania a przyciskiem motywu */
+    /* Pozycjonowanie napisu i celu po wysunięciu wyszukiwarki */
     .header-center-content {
         display: flex;
         flex-direction: column;
@@ -311,7 +311,6 @@
         z-index: 20;
     }
 
-    /* Pasek zostawia przestrzeń na idealnie wycentrowany tytuł i przycisk motywu */
     .search-expandable-bar.active {
         width: calc(100% - 500px);
         opacity: 1;
@@ -613,6 +612,34 @@
     .history-footer-row:last-child { margin-bottom: 0; }
     .history-footer-label { color: #d9a9c0; }
     .history-footer-val { color: var(--primary); font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 13px; }
+    
+    /* Przyciski kopii zapasowej w stopce */
+    .backup-buttons-container {
+        display: flex;
+        gap: 6px;
+        margin-top: 7px;
+    }
+    .btn-backup {
+        flex: 1;
+        background: rgba(255, 42, 157, 0.08);
+        color: #fce7f3;
+        border: 1px solid var(--primary-a30);
+        border-radius: 4px;
+        padding: 5px;
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 11px;
+        cursor: pointer;
+        font-weight: 700;
+        transition: all 0.2s;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    .btn-backup:hover {
+        background: var(--primary);
+        color: #fff;
+        box-shadow: 0 0 10px var(--primary-glow);
+    }
+    
     .btn-clear-all { width: 100%; background: rgba(69, 10, 10, 0.4); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.35); border-radius: 4px; padding: 5px; font-family: 'Rajdhani', sans-serif; font-size: 11.5px; cursor: pointer; font-weight: 700; margin-top: 6px; transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.5px; }
     .btn-clear-all:hover { background: #dc2626; color: #fff; }
 
@@ -941,7 +968,7 @@
         </div>
     </div>
 
-    <!-- HISTORIA Z ZAAWANSOWANYM FILTREM DAT I GODZIN -->
+    <!-- HISTORIA Z ZAAWANSOWANYM FILTREM ORAZ PRZYCISKAMI KOPII -->
     <div class="history-panel">
         <div class="history-header">
             <div class="history-header-top">
@@ -983,12 +1010,22 @@
         </div>
 
         <div class="history-content" id="historyContent"></div>
+        
         <div class="history-footer">
             <div class="history-footer-row"><span class="history-footer-label">Łączny czas pracy:</span><span class="history-footer-val" id="totalWorkTime">0h 0m</span></div>
             <div class="history-footer-row"><span class="history-footer-label">Łączny zarobek:</span><span class="history-footer-val" id="totalWorkEarnings">$0</span></div>
             <div class="history-footer-row"><span class="history-footer-label">Odliczone 10%:</span><span class="history-footer-val" id="totalWorkEarningsDiscounted">$0</span></div>
+            
+            <!-- Przyciski importu i eksportu -->
+            <div class="backup-buttons-container">
+                <button class="btn-backup" onclick="exportDataBackup()" title="Pobierz kopię danych do pliku JSON">💾 Kopia zapasowa</button>
+                <button class="btn-backup" onclick="triggerImportFileInput()" title="Wczytaj dane z pliku JSON">📥 Wczytaj plik</button>
+                <input type="file" id="backupFileInput" style="display: none;" accept=".json" onchange="importDataBackup(event)">
+            </div>
+
             <button class="btn-clear-all" onclick="promptClearAll()">🗑️ Wyczyść całą historię</button>
         </div>
+
         <div class="custom-modal-overlay" id="customConfirmModal">
             <div class="custom-modal">
                 <div class="custom-modal-title" id="modalTitle">Potwierdzenie</div>
@@ -1392,6 +1429,79 @@ function launchExplosionAt(x, y) {
         }
     }
     animate();
+}
+
+/* EKSPORT I IMPORT DANYCH (KOPIA ZAPASOWA) */
+function exportDataBackup() {
+    const exportData = {
+        version: "1.0",
+        exportDate: new Date().toISOString(),
+        shifts: shifts,
+        activeShiftId: activeShiftId,
+        targetGoal: targetGoal,
+        savedTheme: savedTheme,
+        recentCustomColors: recentCustomColors,
+        favoriteColors: favoriteColors
+    };
+
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportData, null, 2));
+    const dlAnchorElem = document.createElement('a');
+    dlAnchorElem.setAttribute("href", dataStr);
+    const dateFile = new Date().toISOString().split('T')[0];
+    dlAnchorElem.setAttribute("download", `puf_puf_pass_backup_${dateFile}.json`);
+    dlAnchorElem.click();
+    showToast('💾 WYEKSPORTOWANO', 'Pobrano plik z kopią zapasową');
+}
+
+function triggerImportFileInput() {
+    document.getElementById('backupFileInput').click();
+}
+
+function importDataBackup(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        try {
+            const imported = JSON.parse(e.target.result);
+            if (!imported.shifts || !Array.isArray(imported.shifts)) {
+                showToast('❌ BŁĄD', 'Nieprawidłowy format pliku JSON');
+                return;
+            }
+
+            openConfirmModal("WCZYTAJ KOPIĘ", "Czy na pewno chcesz nadpisać obecne dane plikiem z kopii?", function() {
+                shifts = imported.shifts || [];
+                activeShiftId = imported.activeShiftId || null;
+                targetGoal = imported.targetGoal || 0;
+                
+                if (imported.savedTheme) {
+                    savedTheme = imported.savedTheme;
+                    applyThemeCore(savedTheme);
+                    document.getElementById('customColorPicker').value = savedTheme;
+                }
+                if (imported.recentCustomColors) recentCustomColors = imported.recentCustomColors;
+                if (imported.favoriteColors) favoriteColors = imported.favoriteColors;
+
+                saveData();
+                localStorage.setItem('pos_target_goal', targetGoal);
+                localStorage.setItem('pos_theme', savedTheme);
+                localStorage.setItem('pos_recent_custom_colors', JSON.stringify(recentCustomColors));
+                localStorage.setItem('pos_favorite_colors', JSON.stringify(favoriteColors));
+
+                renderHistory();
+                updateShiftStatusUI();
+                updateChartData();
+                updateGoalUI();
+                renderColorSlots();
+                showToast('✅ WCZYTANO', 'Dane zostały pomyślnie przywrócone!');
+            });
+        } catch (err) {
+            showToast('❌ BŁĄD', 'Wystąpił błąd podczas odczytu pliku');
+        }
+    };
+    reader.readAsText(file);
+    event.target.value = '';
 }
 
 function init() {
