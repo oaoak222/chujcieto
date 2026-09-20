@@ -2,7 +2,7 @@
 <html lang="pl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 <title>PUF PUF PASS — POS FiveM</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
@@ -30,6 +30,7 @@
             linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
             linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
         background-size: 100% 100%, 100% 100%, 30px 30px, 30px 30px;
+        background-attachment: fixed;
         color: var(--text-main);
         font-family: 'Inter', sans-serif;
         margin: 0;
@@ -209,7 +210,6 @@
                     box-shadow 0.2s;
     }
 
-    /* Płynne chowanie całego boksu */
     .box.hidden-box {
         max-height: 0 !important;
         opacity: 0 !important;
@@ -223,9 +223,7 @@
         transform: scale(0.96);
     }
 
-    .box:hover {
-        border-color: rgba(255, 42, 157, 0.35);
-    }
+    .box:hover { border-color: rgba(255, 42, 157, 0.35); }
 
     .box-title {
         font-family: 'Rajdhani', sans-serif;
@@ -277,9 +275,7 @@
         pointer-events: none;
     }
 
-    .item-row:hover {
-        background: var(--surface-hover);
-    }
+    .item-row:hover { background: var(--surface-hover); }
 
     .item-name {
         font-size: 13px;
@@ -356,10 +352,7 @@
 
     select:focus { border-color: var(--primary); }
 
-    .role-buttons, .shift-buttons, .action-buttons {
-        display: flex;
-        gap: 6px;
-    }
+    .role-buttons, .shift-buttons, .action-buttons { display: flex; gap: 6px; }
 
     .btn {
         flex: 1;
@@ -386,28 +379,9 @@
     .btn-pause { background: linear-gradient(135deg, #eab308, #ca8a04); color: #1a1202; }
     .btn-stop { background: linear-gradient(135deg, #ef4444, #b91c1c); color: #fff; }
 
-    .shift-status {
-        font-size: 12px;
-        color: var(--text-muted);
-        margin-bottom: 8px;
-        display: flex;
-        align-items: center;
-        gap: 7px;
-    }
-
-    .shift-status-dot {
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background: #64748b;
-        transition: all 0.3s;
-    }
-
-    .shift-status-dot.active {
-        background: var(--primary);
-        box-shadow: 0 0 10px var(--primary);
-        animation: pulseRadar 1.6s infinite;
-    }
+    .shift-status { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; display: flex; align-items: center; gap: 7px; }
+    .shift-status-dot { width: 8px; height: 8px; border-radius: 50%; background: #64748b; transition: all 0.3s; }
+    .shift-status-dot.active { background: var(--primary); box-shadow: 0 0 10px var(--primary); animation: pulseRadar 1.6s infinite; }
 
     @keyframes pulseRadar {
         0% { transform: scale(1); opacity: 1; }
@@ -415,122 +389,33 @@
         100% { transform: scale(1); opacity: 1; }
     }
 
-    .shift-live-timer {
-        color: var(--primary);
-        font-family: 'Rajdhani', sans-serif;
-        font-weight: 700;
-        font-size: 13px;
-        letter-spacing: 0.5px;
-        margin-left: auto;
-    }
+    .shift-live-timer { color: var(--primary); font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 13px; letter-spacing: 0.5px; margin-left: auto; }
 
     .suma-box-container { position: relative; }
-
-    .suma-box {
-        border: 1.5px solid var(--primary);
-        background: linear-gradient(180deg, rgba(255, 42, 157, 0.08), rgba(0,0,0,0.4));
-        border-radius: 8px;
-        padding: 9px;
-        text-align: center;
-        box-shadow: inset 0 0 16px rgba(255, 42, 157, 0.08), 0 0 14px var(--primary-glow);
-    }
-
-    .suma-header-row {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 3px;
-    }
-
-    .btn-clear-cart {
-        background: rgba(255, 77, 77, 0.15);
-        color: #ff6b6b;
-        border: 1px solid rgba(255, 77, 77, 0.3);
-        border-radius: 4px;
-        padding: 2px 7px;
-        font-size: 10.5px;
-        font-family: 'Rajdhani', sans-serif;
-        font-weight: 700;
-        cursor: pointer;
-        transition: 0.15s;
-    }
+    .suma-box { border: 1.5px solid var(--primary); background: linear-gradient(180deg, rgba(255, 42, 157, 0.08), rgba(0,0,0,0.4)); border-radius: 8px; padding: 9px; text-align: center; box-shadow: inset 0 0 16px rgba(255, 42, 157, 0.08), 0 0 14px var(--primary-glow); }
+    .suma-header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 3px; }
+    .btn-clear-cart { background: rgba(255, 77, 77, 0.15); color: #ff6b6b; border: 1px solid rgba(255, 77, 77, 0.3); border-radius: 4px; padding: 2px 7px; font-size: 10.5px; font-family: 'Rajdhani', sans-serif; font-weight: 700; cursor: pointer; transition: 0.15s; }
     .btn-clear-cart:hover { background: #dc2626; color: #fff; }
-
     .items-count-badge { font-size: 11px; color: #d9a9c0; font-weight: 500; }
-
-    .suma-val {
-        font-family: 'Rajdhani', sans-serif;
-        color: var(--primary);
-        font-size: 25px;
-        font-weight: 700;
-        letter-spacing: 1px;
-        text-shadow: 0 0 8px var(--primary-glow);
-    }
+    .suma-val { font-family: 'Rajdhani', sans-serif; color: var(--primary); font-size: 25px; font-weight: 700; letter-spacing: 1px; text-shadow: 0 0 8px var(--primary-glow); }
 
     .discount-info { text-align: center; color: var(--text-muted); font-size: 11px; margin-top: 4px; font-weight: 500; }
-
     .stats-row { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px; color: #e2b8cc; }
     .stats-val { color: var(--primary); font-weight: 600; font-family: 'Rajdhani', sans-serif; font-size: 13.5px; }
+    .stats-desc { font-size: 9.5px; color: #d9a9c0; margin-top: 6px; line-height: 1.3; border-top: 1px dashed rgba(255,255,255,0.06); padding-top: 5px; }
 
-    .stats-desc {
-        font-size: 9.5px;
-        color: #d9a9c0;
-        margin-top: 6px;
-        line-height: 1.3;
-        border-top: 1px dashed rgba(255,255,255,0.06);
-        padding-top: 5px;
-    }
-
-    .dzisiaj-box {
-        text-align: center;
-        padding: 7px;
-        background: linear-gradient(180deg, rgba(26,14,21,0.5), rgba(14,8,11,0.7));
-    }
-
+    .dzisiaj-box { text-align: center; padding: 7px; background: linear-gradient(180deg, rgba(26,14,21,0.5), rgba(14,8,11,0.7)); }
     .dzisiaj-title { color: #d9a9c0; font-size: 11px; font-weight: 600; font-family: 'Rajdhani', sans-serif; }
     .dzisiaj-val { color: var(--primary); font-family: 'Rajdhani', sans-serif; font-size: 19px; font-weight: 700; margin: 2px 0; }
     .dzisiaj-zysk { color: #d9a9c0; font-size: 11px; }
     .dzisiaj-zysk span { color: var(--primary); font-weight: 700; }
 
     .action-container { position: relative; }
+    .btn-sprzedane { background: linear-gradient(135deg, #ff2a9d, #d10074); color: #fff; font-weight: 700; font-size: 13px; padding: 9px; box-shadow: 0 0 12px rgba(255, 42, 157, 0.25); }
+    .btn-cofnij { background: linear-gradient(135deg, #f59e0b, #d97706); color: #1a1002; font-weight: 700; font-size: 13px; padding: 9px; }
 
-    .btn-sprzedane { 
-        background: linear-gradient(135deg, #ff2a9d, #d10074); 
-        color: #fff; 
-        font-weight: 700; 
-        font-size: 13px; 
-        padding: 9px;
-        box-shadow: 0 0 12px rgba(255, 42, 157, 0.25);
-    }
-    
-    .btn-cofnij { 
-        background: linear-gradient(135deg, #f59e0b, #d97706); 
-        color: #1a1002; 
-        font-weight: 700; 
-        font-size: 13px; 
-        padding: 9px; 
-    }
-
-    .floating-money {
-        position: absolute;
-        bottom: 45px;
-        left: 25%;
-        transform: translateX(-50%);
-        color: var(--primary);
-        font-family: 'Rajdhani', sans-serif;
-        font-size: 20px;
-        font-weight: 700;
-        text-shadow: 0 0 10px var(--primary);
-        pointer-events: none;
-        animation: floatUp 1.1s forwards cubic-bezier(0.18, 0.89, 0.32, 1.28);
-        z-index: 100;
-    }
-
-    @keyframes floatUp {
-        0% { opacity: 0; transform: translate(-50%, 15px) scale(0.7); }
-        30% { opacity: 1; transform: translate(-50%, -5px) scale(1.2); }
-        100% { opacity: 0; transform: translate(-50%, -35px) scale(0.9); }
-    }
+    .floating-money { position: absolute; bottom: 45px; left: 25%; transform: translateX(-50%); color: var(--primary); font-family: 'Rajdhani', sans-serif; font-size: 20px; font-weight: 700; text-shadow: 0 0 10px var(--primary); pointer-events: none; animation: floatUp 1.1s forwards cubic-bezier(0.18, 0.89, 0.32, 1.28); z-index: 100; }
+    @keyframes floatUp { 0% { opacity: 0; transform: translate(-50%, 15px) scale(0.7); } 30% { opacity: 1; transform: translate(-50%, -5px) scale(1.2); } 100% { opacity: 0; transform: translate(-50%, -35px) scale(0.9); } }
 
     .discount-table { width: 100%; border-collapse: collapse; font-size: 11px; }
     .discount-table th { color: var(--primary); font-family: 'Rajdhani', sans-serif; letter-spacing: 0.8px; text-align: left; padding-bottom: 4px; border-bottom: 1px solid var(--surface-border); font-weight: 700; }
@@ -538,51 +423,14 @@
     .discount-table td { padding: 3px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #f9d8e7; }
     .discount-table td:nth-child(2), .discount-table td:last-child { text-align: right; font-weight: 700; font-family: 'Rajdhani', sans-serif; color: var(--primary); }
 
-    .btn-calc-discount {
-        width: 100%;
-        background: #1e0d15;
-        color: var(--primary);
-        border: 1px solid var(--surface-border);
-        border-radius: 5px;
-        padding: 6px;
-        font-family: 'Rajdhani', sans-serif;
-        font-size: 12.5px;
-        font-weight: 700;
-        cursor: pointer;
-        margin-top: 7px;
-        text-transform: uppercase;
-        letter-spacing: 0.8px;
-        transition: all 0.2s;
-    }
+    .btn-calc-discount { width: 100%; background: #1e0d15; color: var(--primary); border: 1px solid var(--surface-border); border-radius: 5px; padding: 6px; font-family: 'Rajdhani', sans-serif; font-size: 12.5px; font-weight: 700; cursor: pointer; margin-top: 7px; text-transform: uppercase; letter-spacing: 0.8px; transition: all 0.2s; }
     .btn-calc-discount:hover { background: var(--primary); color: #fff; box-shadow: 0 0 10px var(--primary-glow); }
 
     .btn-tab-group { display: flex; gap: 6px; }
+    .btn-tab { background: transparent; color: #d9a9c0; border: 1px solid rgba(255, 42, 157, 0.3); border-radius: 4px; padding: 3px 8px; font-size: 11px; font-family: 'Rajdhani', sans-serif; font-weight: 700; cursor: pointer; transition: all 0.2s; }
+    .btn-tab.active { background: var(--primary); color: #fff; border-color: var(--primary); box-shadow: 0 0 8px rgba(255, 42, 157, 0.4); }
 
-    .btn-tab {
-        background: transparent;
-        color: #d9a9c0;
-        border: 1px solid rgba(255, 42, 157, 0.3);
-        border-radius: 4px;
-        padding: 3px 8px;
-        font-size: 11px;
-        font-family: 'Rajdhani', sans-serif;
-        font-weight: 700;
-        cursor: pointer;
-        transition: all 0.2s;
-    }
-
-    .btn-tab.active {
-        background: var(--primary);
-        color: #fff;
-        border-color: var(--primary);
-        box-shadow: 0 0 8px rgba(255, 42, 157, 0.4);
-    }
-
-    .chart-box { 
-        display: flex; 
-        flex-direction: column; 
-        gap: 8px; 
-    }
+    .chart-box { display: flex; flex-direction: column; gap: 8px; transition: opacity 0.25s, transform 0.25s; }
     .chart-header-row { display: flex; justify-content: space-between; align-items: center; }
 
     .history-panel {
@@ -599,52 +447,15 @@
         position: relative;
         box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
     }
-
-    .history-header {
-        background: rgba(15, 10, 13, 0.85);
-        padding: 10px 10px;
-        border-bottom: 1px solid var(--surface-border);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .history-header-title {
-        color: var(--primary);
-        font-family: 'Rajdhani', sans-serif;
-        font-weight: 700;
-        font-size: 14.5px;
-        letter-spacing: 1px;
-        text-transform: uppercase;
-    }
-
-    .history-content {
-        flex-grow: 1;
-        overflow-y: auto;
-        padding: 9px;
-    }
-
+    .history-header { background: rgba(15, 10, 13, 0.85); padding: 10px 10px; border-bottom: 1px solid var(--surface-border); display: flex; justify-content: space-between; align-items: center; }
+    .history-header-title { color: var(--primary); font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 14.5px; letter-spacing: 1px; text-transform: uppercase; }
+    .history-content { flex-grow: 1; overflow-y: auto; padding: 9px; }
     .history-content::-webkit-scrollbar { width: 5px; }
     .history-content::-webkit-scrollbar-track { background: transparent; }
     .history-content::-webkit-scrollbar-thumb { background: var(--primary-dark); border-radius: 6px; }
 
-    .shift-record {
-        background: rgba(26, 18, 22, 0.6);
-        border: 1px solid rgba(90, 35, 65, 0.35);
-        border-radius: 6px;
-        padding: 7px 9px;
-        margin-bottom: 6px;
-        font-size: 11.5px;
-        position: relative;
-        transition: all 0.2s;
-        animation: slideInRecord 0.3s ease-out;
-    }
-
-    @keyframes slideInRecord {
-        from { opacity: 0; transform: translateY(-10px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-
+    .shift-record { background: rgba(26, 18, 22, 0.6); border: 1px solid rgba(90, 35, 65, 0.35); border-radius: 6px; padding: 7px 9px; margin-bottom: 6px; font-size: 11.5px; position: relative; transition: all 0.2s; animation: slideInRecord 0.3s ease-out; }
+    @keyframes slideInRecord { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
     .shift-record:hover { border-color: rgba(255, 42, 157, 0.3); background: rgba(34, 22, 28, 0.7); }
     .shift-record.active-record { border-color: var(--primary); box-shadow: inset 0 0 8px rgba(255, 42, 157, 0.15), 0 0 10px rgba(255, 42, 157, 0.15); }
 
@@ -652,9 +463,7 @@
     .record-date { color: #d9a9c0; font-size: 10px; font-weight: 500; }
     .btn-delete-shift { background: transparent; border: none; color: #ef4444; cursor: pointer; font-size: 11.5px; padding: 1px 4px; line-height: 1; border-radius: 3px; transition: background 0.15s; }
     .btn-delete-shift:hover { background: rgba(239, 68, 68, 0.2); }
-
     .record-times { color: #fdf0f6; font-weight: 600; font-size: 12px; margin-bottom: 3px; }
-    
     .record-earnings-container { display: flex; justify-content: space-between; align-items: baseline; margin-top: 3px; border-top: 1px dashed rgba(255,255,255,0.06); padding-top: 3px; }
     .record-earnings-discounted { color: #d9a9c0; font-size: 10.5px; }
     .record-earnings-discounted span { color: var(--primary); font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 12px; }
@@ -665,7 +474,6 @@
     .history-footer-row:last-child { margin-bottom: 0; }
     .history-footer-label { color: #d9a9c0; }
     .history-footer-val { color: var(--primary); font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 13px; }
-
     .btn-clear-all { width: 100%; background: rgba(69, 10, 10, 0.4); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.35); border-radius: 4px; padding: 5px; font-family: 'Rajdhani', sans-serif; font-size: 11.5px; cursor: pointer; font-weight: 700; margin-top: 6px; transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.5px; }
     .btn-clear-all:hover { background: #dc2626; color: #fff; }
 
@@ -698,6 +506,35 @@
     .calc-result-box { background: #0c0608; border: 1px solid var(--surface-border); border-radius: 6px; padding: 14px; margin: 10px 0 14px 0; }
     .calc-result-val { color: var(--primary); font-family: 'Rajdhani', sans-serif; font-size: 26px; font-weight: 700; text-shadow: 0 0 10px var(--primary-glow); }
     .calc-subinfo { color: #d9a9c0; font-size: 11.5px; margin-top: 5px; }
+
+    /* --- RESPONSIVE DESIGN DLA TELEFONÓW --- */
+    @media (max-width: 1100px) {
+        body {
+            height: auto; 
+            overflow-y: auto; 
+            padding-bottom: 30px;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            overflow: visible;
+        }
+        .column {
+            overflow-y: visible; 
+            max-height: none;
+        }
+        .history-panel {
+            height: 600px; 
+            margin-bottom: 20px;
+        }
+        .search-expandable-bar.active {
+            width: calc(100% - 50px);
+            z-index: 100;
+        }
+        h1.main-title {
+            font-size: 1.8rem;
+        }
+    }
 </style>
 </head>
 <body>
@@ -709,7 +546,7 @@
     
     <div class="search-expandable-bar" id="searchBar">
         <span style="color: var(--primary); font-size: 16px; margin-right: 4px;">🔍</span>
-        <input type="text" id="productSearchInput" class="search-input-field" placeholder="Wpisz nazwę szukanego produktu..." oninput="filterProducts(this.value)">
+        <input type="text" id="productSearchInput" class="search-input-field" placeholder="Wpisz nazwę produktu..." oninput="filterProducts(this.value)">
         <button class="btn-close-search" onclick="toggleSearch()" title="Zamknij wyszukiwarkę">✕</button>
     </div>
 
@@ -976,7 +813,6 @@ function filterProducts(query) {
     const cleanQuery = query.trim().toLowerCase();
     const chartBox = document.getElementById('chartBoxContainer');
 
-    // Chowanie/pokazywanie wykresu zarobków podczas szukania z płynnym efektem
     if (chartBox) {
         if (cleanQuery !== '') {
             chartBox.classList.add('hidden-box');
@@ -999,7 +835,6 @@ function filterProducts(query) {
             }
         });
 
-        // Płynne ukrywanie/pokazywanie całego boksu za pomocą klasy CSS
         const box = document.getElementById(`cat-${key}`);
         if (box) {
             if (visibleCount === 0 && cleanQuery !== '') {
