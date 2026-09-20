@@ -1,0 +1,1229 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PUF PUF PASS — POS FiveM</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Rajdhani:wght@600;700&display=swap');
+    
+    :root {
+        --primary: #ff2a9d;
+        --primary-glow: rgba(255, 42, 157, 0.28);
+        --primary-dark: #3d0a26;
+        --surface: rgba(18, 14, 16, 0.8);
+        --surface-border: rgba(90, 35, 65, 0.5);
+        --surface-hover: rgba(45, 20, 32, 0.45);
+        --bg: #080507;
+        --text-main: #fdf0f6;
+        --text-muted: #a38393;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+        background-color: var(--bg);
+        background-image: 
+            radial-gradient(circle at 10% 10%, rgba(80, 20, 55, 0.18), transparent 40%),
+            radial-gradient(circle at 90% 90%, rgba(70, 20, 50, 0.15), transparent 45%),
+            linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+        background-size: 100% 100%, 100% 100%, 30px 30px, 30px 30px;
+        color: var(--text-main);
+        font-family: 'Inter', sans-serif;
+        margin: 0;
+        padding: 10px 18px 6px 18px;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+    
+    h1.main-title {
+        font-family: 'Rajdhani', sans-serif;
+        color: var(--primary);
+        text-align: center;
+        font-size: 2.3rem;
+        margin: 0 0 8px 0;
+        text-transform: uppercase;
+        font-weight: 700;
+        letter-spacing: 4px;
+        text-shadow: 0 0 12px var(--primary-glow), 0 0 24px rgba(255, 42, 157, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+    }
+
+    h1.main-title::before, h1.main-title::after {
+        content: '';
+        height: 2px;
+        width: 70px;
+        background: linear-gradient(90deg, transparent, var(--primary));
+    }
+    h1.main-title::after {
+        background: linear-gradient(90deg, var(--primary), transparent);
+    }
+
+    .container {
+        display: grid;
+        grid-template-columns: minmax(270px, 1.05fr) minmax(270px, 1.05fr) 330px 310px;
+        gap: 12px;
+        flex-grow: 1;
+        overflow: hidden;
+        margin-bottom: 4px;
+    }
+
+    .column {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        overflow-y: auto;
+        padding-right: 5px;
+    }
+
+    .column::-webkit-scrollbar { width: 5px; }
+    .column::-webkit-scrollbar-track { background: transparent; }
+    .column::-webkit-scrollbar-thumb { background: var(--primary-dark); border-radius: 6px; }
+    .column::-webkit-scrollbar-thumb:hover { background: #61103d; }
+
+    .box {
+        background: var(--surface);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border: 1px solid var(--surface-border);
+        border-radius: 8px;
+        padding: 11px 13px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
+        transition: border-color 0.2s, box-shadow 0.2s;
+        position: relative;
+    }
+
+    .box:hover {
+        border-color: rgba(255, 42, 157, 0.35);
+    }
+
+    .box-title {
+        font-family: 'Rajdhani', sans-serif;
+        color: var(--primary);
+        font-size: 14.5px;
+        margin: 0 0 8px 0;
+        font-weight: 700;
+        letter-spacing: 1.2px;
+        text-transform: uppercase;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .box-title::after {
+        content: '';
+        flex-grow: 1;
+        height: 1px;
+        background: linear-gradient(90deg, rgba(255, 42, 157, 0.3), transparent);
+        margin-left: 6px;
+    }
+
+    .item-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 5px;
+        padding: 4px 6px;
+        border-radius: 5px;
+        transition: background 0.15s;
+    }
+
+    .item-row:hover {
+        background: var(--surface-hover);
+    }
+
+    .item-name {
+        font-size: 13px;
+        font-weight: 500;
+        color: #e5e7eb;
+        flex-grow: 1;
+    }
+
+    .item-price {
+        color: var(--primary);
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+        margin-right: 10px;
+        background: rgba(255, 42, 157, 0.08);
+        padding: 2px 6px;
+        border-radius: 4px;
+        border: 1px solid rgba(255, 42, 157, 0.15);
+        cursor: pointer;
+        user-select: none;
+        transition: 0.15s;
+    }
+
+    .item-price:hover {
+        background: rgba(255, 42, 157, 0.2);
+        transform: scale(1.05);
+    }
+
+    .item-input {
+        width: 44px;
+        height: 23px;
+        background: #170f13;
+        border: 1px solid rgba(255, 42, 157, 0.25);
+        border-radius: 4px;
+        text-align: center;
+        font-weight: 700;
+        font-size: 13px;
+        color: #fff;
+        outline: none;
+        transition: all 0.2s;
+    }
+
+    .item-input:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 8px var(--primary-glow);
+        background: #22141a;
+    }
+
+    .label {
+        color: var(--primary);
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        margin-bottom: 5px;
+        display: block;
+    }
+
+    select {
+        width: 100%;
+        padding: 6px 9px;
+        background: #140d10;
+        color: #e5e7eb;
+        border: 1px solid var(--surface-border);
+        border-radius: 5px;
+        font-family: inherit;
+        font-weight: 600;
+        font-size: 12.5px;
+        outline: none;
+        margin-bottom: 8px;
+        transition: border 0.2s;
+    }
+
+    select:focus { border-color: var(--primary); }
+
+    .role-buttons, .shift-buttons, .action-buttons {
+        display: flex;
+        gap: 6px;
+    }
+
+    .btn {
+        flex: 1;
+        padding: 7px 5px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        transition: transform 0.1s, filter 0.15s, background 0.2s;
+    }
+
+    .btn:active { transform: scale(0.96); }
+    .btn-pracownik { background: var(--primary); color: #1a020d; box-shadow: 0 0 10px var(--primary-glow); }
+    .btn-zarzad { background: #1e0e15; color: #f3a7d0; border: 1px solid var(--surface-border); }
+    .btn-zarzad:hover { background: #2f1622; }
+    .btn-start { background: linear-gradient(135deg, #ff2a9d, #d10074); color: #fff; }
+    .btn-pause { background: linear-gradient(135deg, #eab308, #ca8a04); color: #1a1202; }
+    .btn-stop { background: linear-gradient(135deg, #ef4444, #b91c1c); color: #fff; }
+
+    .shift-status {
+        font-size: 12px;
+        color: var(--text-muted);
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 7px;
+    }
+
+    .shift-status-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #64748b;
+        transition: all 0.3s;
+    }
+
+    .shift-status-dot.active {
+        background: var(--primary);
+        box-shadow: 0 0 10px var(--primary);
+        animation: pulseRadar 1.6s infinite;
+    }
+
+    @keyframes pulseRadar {
+        0% { transform: scale(1); opacity: 1; }
+        50% { transform: scale(1.4); opacity: 0.6; box-shadow: 0 0 14px var(--primary); }
+        100% { transform: scale(1); opacity: 1; }
+    }
+
+    .shift-live-timer {
+        color: var(--primary);
+        font-family: 'Rajdhani', sans-serif;
+        font-weight: 700;
+        font-size: 13px;
+        letter-spacing: 0.5px;
+        margin-left: auto;
+    }
+
+    .suma-box-container { position: relative; }
+
+    .suma-box {
+        border: 1.5px solid var(--primary);
+        background: linear-gradient(180deg, rgba(255, 42, 157, 0.08), rgba(0,0,0,0.4));
+        border-radius: 8px;
+        padding: 9px;
+        text-align: center;
+        box-shadow: inset 0 0 16px rgba(255, 42, 157, 0.08), 0 0 14px var(--primary-glow);
+    }
+
+    .suma-header-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 3px;
+    }
+
+    .btn-clear-cart {
+        background: rgba(255, 77, 77, 0.15);
+        color: #ff6b6b;
+        border: 1px solid rgba(255, 77, 77, 0.3);
+        border-radius: 4px;
+        padding: 2px 7px;
+        font-size: 10.5px;
+        font-family: 'Rajdhani', sans-serif;
+        font-weight: 700;
+        cursor: pointer;
+        transition: 0.15s;
+    }
+    .btn-clear-cart:hover { background: #dc2626; color: #fff; }
+
+    .items-count-badge { font-size: 11px; color: #d9a9c0; font-weight: 500; }
+
+    .suma-val {
+        font-family: 'Rajdhani', sans-serif;
+        color: var(--primary);
+        font-size: 25px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-shadow: 0 0 8px var(--primary-glow);
+    }
+
+    .discount-info { text-align: center; color: var(--text-muted); font-size: 11px; margin-top: 4px; font-weight: 500; }
+
+    .stats-row { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px; color: #e2b8cc; }
+    .stats-val { color: var(--primary); font-weight: 600; font-family: 'Rajdhani', sans-serif; font-size: 13.5px; }
+
+    .stats-desc {
+        font-size: 9.5px;
+        color: #d9a9c0;
+        margin-top: 6px;
+        line-height: 1.3;
+        border-top: 1px dashed rgba(255,255,255,0.06);
+        padding-top: 5px;
+    }
+
+    .dzisiaj-box {
+        text-align: center;
+        padding: 7px;
+        background: linear-gradient(180deg, rgba(26,14,21,0.5), rgba(14,8,11,0.7));
+    }
+
+    .dzisiaj-title { color: #d9a9c0; font-size: 11px; font-weight: 600; font-family: 'Rajdhani', sans-serif; }
+    .dzisiaj-val { color: var(--primary); font-family: 'Rajdhani', sans-serif; font-size: 19px; font-weight: 700; margin: 2px 0; }
+    .dzisiaj-zysk { color: #d9a9c0; font-size: 11px; }
+    .dzisiaj-zysk span { color: var(--primary); font-weight: 700; }
+
+    .action-container { position: relative; }
+
+    .btn-sprzedane { 
+        background: linear-gradient(135deg, #ff2a9d, #d10074); 
+        color: #fff; 
+        font-weight: 700; 
+        font-size: 13px; 
+        padding: 9px;
+        box-shadow: 0 0 12px rgba(255, 42, 157, 0.25);
+    }
+    
+    .btn-cofnij { 
+        background: linear-gradient(135deg, #f59e0b, #d97706); 
+        color: #1a1002; 
+        font-weight: 700; 
+        font-size: 13px; 
+        padding: 9px; 
+    }
+
+    .floating-money {
+        position: absolute;
+        bottom: 45px;
+        left: 25%;
+        transform: translateX(-50%);
+        color: var(--primary);
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 20px;
+        font-weight: 700;
+        text-shadow: 0 0 10px var(--primary);
+        pointer-events: none;
+        animation: floatUp 1.1s forwards cubic-bezier(0.18, 0.89, 0.32, 1.28);
+        z-index: 100;
+    }
+
+    @keyframes floatUp {
+        0% { opacity: 0; transform: translate(-50%, 15px) scale(0.7); }
+        30% { opacity: 1; transform: translate(-50%, -5px) scale(1.2); }
+        100% { opacity: 0; transform: translate(-50%, -35px) scale(0.9); }
+    }
+
+    .discount-table { width: 100%; border-collapse: collapse; font-size: 11px; }
+    .discount-table th { color: var(--primary); font-family: 'Rajdhani', sans-serif; letter-spacing: 0.8px; text-align: left; padding-bottom: 4px; border-bottom: 1px solid var(--surface-border); font-weight: 700; }
+    .discount-table th:last-child, .discount-table th:nth-child(2) { text-align: right; }
+    .discount-table td { padding: 3px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.04); color: #f9d8e7; }
+    .discount-table td:nth-child(2), .discount-table td:last-child { text-align: right; font-weight: 700; font-family: 'Rajdhani', sans-serif; color: var(--primary); }
+
+    .btn-calc-discount {
+        width: 100%;
+        background: #1e0d15;
+        color: var(--primary);
+        border: 1px solid var(--surface-border);
+        border-radius: 5px;
+        padding: 6px;
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 12.5px;
+        font-weight: 700;
+        cursor: pointer;
+        margin-top: 7px;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        transition: all 0.2s;
+    }
+    .btn-calc-discount:hover { background: var(--primary); color: #fff; box-shadow: 0 0 10px var(--primary-glow); }
+
+    /* PRZYCISKI STYLIZOWANE */
+    .btn-tab-group {
+        display: flex;
+        gap: 6px;
+    }
+
+    .btn-tab {
+        background: transparent;
+        color: #d9a9c0;
+        border: 1px solid rgba(255, 42, 157, 0.3);
+        border-radius: 4px;
+        padding: 3px 8px;
+        font-size: 11px;
+        font-family: 'Rajdhani', sans-serif;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .btn-tab.active {
+        background: var(--primary);
+        color: #fff;
+        border-color: var(--primary);
+        box-shadow: 0 0 8px rgba(255, 42, 157, 0.4);
+    }
+
+    /* PŁYTA Z WYKRESEM POD JOINTY */
+    .chart-box {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .chart-header-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    /* PANEL HISTORII */
+    .history-panel {
+        background: var(--surface);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border: 1px solid var(--surface-border);
+        border-radius: 8px;
+        display: flex;
+        flex-direction: column;
+        height: calc(100% - 4px);
+        box-sizing: border-box;
+        overflow: hidden;
+        position: relative;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
+    }
+
+    .history-header {
+        background: rgba(15, 10, 13, 0.85);
+        padding: 10px 10px;
+        border-bottom: 1px solid var(--surface-border);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .history-header-title {
+        color: var(--primary);
+        font-family: 'Rajdhani', sans-serif;
+        font-weight: 700;
+        font-size: 14.5px;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+    }
+
+    .history-content {
+        flex-grow: 1;
+        overflow-y: auto;
+        padding: 9px;
+    }
+
+    .history-content::-webkit-scrollbar { width: 5px; }
+    .history-content::-webkit-scrollbar-track { background: transparent; }
+    .history-content::-webkit-scrollbar-thumb { background: var(--primary-dark); border-radius: 6px; }
+
+    .shift-record {
+        background: rgba(26, 18, 22, 0.6);
+        border: 1px solid rgba(90, 35, 65, 0.35);
+        border-radius: 6px;
+        padding: 7px 9px;
+        margin-bottom: 6px;
+        font-size: 11.5px;
+        position: relative;
+        transition: all 0.2s;
+        animation: slideInRecord 0.3s ease-out;
+    }
+
+    @keyframes slideInRecord {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .shift-record:hover { border-color: rgba(255, 42, 157, 0.3); background: rgba(34, 22, 28, 0.7); }
+    .shift-record.active-record { border-color: var(--primary); box-shadow: inset 0 0 8px rgba(255, 42, 157, 0.15), 0 0 10px rgba(255, 42, 157, 0.15); }
+
+    .record-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 3px; }
+    .record-date { color: #d9a9c0; font-size: 10px; font-weight: 500; }
+    .btn-delete-shift { background: transparent; border: none; color: #ef4444; cursor: pointer; font-size: 11.5px; padding: 1px 4px; line-height: 1; border-radius: 3px; transition: background 0.15s; }
+    .btn-delete-shift:hover { background: rgba(239, 68, 68, 0.2); }
+
+    .record-times { color: #fdf0f6; font-weight: 600; font-size: 12px; margin-bottom: 3px; }
+    
+    .record-earnings-container { display: flex; justify-content: space-between; align-items: baseline; margin-top: 3px; border-top: 1px dashed rgba(255,255,255,0.06); padding-top: 3px; }
+    .record-earnings-discounted { color: #d9a9c0; font-size: 10.5px; }
+    .record-earnings-discounted span { color: var(--primary); font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 12px; }
+    .record-earnings { color: var(--primary); font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 13px; }
+
+    .history-footer { background: rgba(15, 10, 13, 0.9); padding: 8px 10px; border-top: 1px solid var(--surface-border); font-size: 11.5px; }
+    .history-footer-row { display: flex; justify-content: space-between; margin-bottom: 3px; }
+    .history-footer-row:last-child { margin-bottom: 0; }
+    .history-footer-label { color: #d9a9c0; }
+    .history-footer-val { color: var(--primary); font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 13px; }
+
+    .btn-clear-all { width: 100%; background: rgba(69, 10, 10, 0.4); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.35); border-radius: 4px; padding: 5px; font-family: 'Rajdhani', sans-serif; font-size: 11.5px; cursor: pointer; font-weight: 700; margin-top: 6px; transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.5px; }
+    .btn-clear-all:hover { background: #dc2626; color: #fff; }
+
+    /* TOAST NOTIFICATION */
+    .toast-container { position: fixed; top: 20px; right: 25px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
+    .toast { background: rgba(15, 10, 13, 0.95); border: 1.5px solid var(--primary); border-radius: 6px; padding: 10px 16px; min-width: 250px; box-shadow: 0 8px 25px rgba(0,0,0,0.6), 0 0 15px var(--primary-glow); transform: translateX(120%); transition: transform 0.35s cubic-bezier(0.18, 0.89, 0.32, 1.28), opacity 0.3s; opacity: 0; position: relative; overflow: hidden; }
+    .toast.show { transform: translateX(0); opacity: 1; }
+    .toast-title { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 14px; color: var(--primary); text-transform: uppercase; letter-spacing: 0.8px; display: flex; align-items: center; gap: 6px; }
+    .toast-msg { font-size: 12px; color: #e5e7eb; margin-top: 3px; }
+    .toast-progress { position: absolute; bottom: 0; left: 0; height: 2.5px; background: var(--primary); width: 100%; animation: toastTimer 2.8s linear forwards; }
+    @keyframes toastTimer { from { width: 100%; } to { width: 0%; } }
+
+    /* Modale */
+    .custom-modal-overlay { position: absolute; inset: 0; background: rgba(8, 4, 6, 0.92); backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; z-index: 50; padding: 16px; box-sizing: border-box; }
+    .custom-modal { background: #160d11; border: 1.5px solid var(--primary); border-radius: 8px; width: 100%; padding: 16px 12px; box-shadow: 0 0 20px rgba(255, 42, 157, 0.25); text-align: center; }
+    .custom-modal-title { color: #f87171; font-family: 'Rajdhani', sans-serif; font-size: 15px; font-weight: 700; margin-bottom: 5px; text-transform: uppercase; }
+    .custom-modal-desc { color: #e5e7eb; font-size: 12px; line-height: 1.4; margin-bottom: 14px; }
+    .custom-modal-actions { display: flex; gap: 8px; }
+    .btn-modal { flex: 1; padding: 8px; font-family: 'Rajdhani', sans-serif; font-size: 12.5px; font-weight: 700; border-radius: 4px; cursor: pointer; border: none; text-transform: uppercase; letter-spacing: 0.5px; transition: 0.15s; }
+    .btn-modal-confirm { background: #dc2626; color: #fff; }
+    .btn-modal-confirm:hover { background: #ef4444; }
+    .btn-modal-cancel { background: #28141f; color: var(--primary); border: 1px solid var(--surface-border); }
+    .btn-modal-cancel:hover { background: var(--primary); color: #fff; }
+
+    .screen-modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.88); backdrop-filter: blur(5px); display: none; align-items: center; justify-content: center; z-index: 1000; }
+    .screen-modal { background: #140c10; border: 2px solid var(--primary); border-radius: 10px; width: 320px; padding: 20px; box-shadow: 0 0 30px rgba(255, 42, 157, 0.25); position: relative; text-align: center; }
+    .screen-modal-close { position: absolute; top: 10px; right: 12px; background: transparent; border: none; color: #ef4444; font-size: 16px; font-weight: 700; cursor: pointer; padding: 4px; }
+    .screen-modal-title { color: var(--primary); font-family: 'Rajdhani', sans-serif; font-size: 17px; font-weight: 700; margin-bottom: 14px; text-transform: uppercase; letter-spacing: 1px; }
+    .screen-modal-input { width: 100%; background: #22131a; color: #fff; border: 1.5px solid var(--surface-border); border-radius: 6px; font-family: 'Rajdhani', sans-serif; font-size: 20px; font-weight: 700; text-align: center; padding: 8px; outline: none; margin-bottom: 14px; transition: all 0.2s; }
+    .screen-modal-input:focus { border-color: var(--primary); box-shadow: 0 0 10px var(--primary-glow); }
+    .btn-screen-calc { width: 100%; background: var(--primary); color: #fff; font-family: 'Rajdhani', sans-serif; font-weight: 700; padding: 9px; font-size: 14px; border: none; border-radius: 5px; cursor: pointer; text-transform: uppercase; letter-spacing: 0.8px; box-shadow: 0 0 12px var(--primary-glow); }
+    .calc-result-box { background: #0c0608; border: 1px solid var(--surface-border); border-radius: 6px; padding: 14px; margin: 10px 0 14px 0; }
+    .calc-result-val { color: var(--primary); font-family: 'Rajdhani', sans-serif; font-size: 26px; font-weight: 700; text-shadow: 0 0 10px var(--primary-glow); }
+    .calc-subinfo { color: #d9a9c0; font-size: 11.5px; margin-top: 5px; }
+</style>
+</head>
+<body>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<h1 class="main-title">PUF PUF PASS</h1>
+
+<div class="container">
+    <!-- Kolumna 1: Nasiona, Produkty, Nawozy -->
+    <div class="column">
+        <div class="box" id="cat-nasiona">
+            <h3 class="box-title">🌱 Nasiona Weedu</h3>
+        </div>
+        <div class="box" id="cat-produkty">
+            <h3 class="box-title">📦 Produkty & Akcesoria</h3>
+        </div>
+        <div class="box" id="cat-nawozy">
+            <h3 class="box-title">🧪 Nawozy</h3>
+        </div>
+    </div>
+
+    <!-- Kolumna 2: Jedzenie, Jointy, oraz WYKRES POD JOINTAMI -->
+    <div class="column">
+        <div class="box" id="cat-jedzenie">
+            <h3 class="box-title">🍪 Jedzenie & Picie</h3>
+        </div>
+        <div class="box" id="cat-jointy">
+            <h3 class="box-title">🚬 Jointy</h3>
+        </div>
+        
+        <!-- Wykres zarobków przeniesiony pod JOINTY -->
+        <div class="box chart-box">
+            <div class="chart-header-row">
+                <h3 class="box-title" style="margin: 0;">📈 Wykres Zarobków</h3>
+                <div class="btn-tab-group">
+                    <button class="btn-tab active" id="btnChart24h" onclick="updateChartType('24h')">24H</button>
+                    <button class="btn-tab" id="btnChart31d" onclick="updateChartType('31d')">31D</button>
+                    <button class="btn-tab" id="btnChart50z" onclick="updateChartType('50z')">50 ZMIAN</button>
+                </div>
+            </div>
+            <div style="position: relative; height: 160px; width: 100%;">
+                <canvas id="earningsChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Kolumna 3: Formularz, Suma, Statystyki -->
+    <div class="column">
+        <div class="box">
+            <span class="label">🏢 Firma / klient</span>
+            <select id="clientSelect">
+                <option value="Brak">👤 Brak</option>
+                <option value="Piekarnia Bochen">🥖 Piekarnia Bochen</option>
+                <option value="Tropical Drinks">🍹 Tropical Drinks</option>
+                <option value="Burger Shot">🍔 Burger Shot</option>
+                <option value="Armor Armor">🛡️ Armor Armor</option>
+                <option value="LSC">🔧 LSC</option>
+                <option value="VESUVIO">🍕 VESUVIO</option>
+            </select>
+
+            <span class="label">💼 Rola</span>
+            <div class="role-buttons">
+                <button class="btn btn-pracownik" onclick="setRole('pracownik')" id="btn-pracownik">Pracownik</button>
+                <button class="btn btn-zarzad" onclick="setRole('zarzad')" id="btn-zarzad">Zarząd</button>
+            </div>
+        </div>
+
+        <div class="box">
+            <span class="label">👤 Sprzedawca / zmiana</span>
+            <div class="shift-status">
+                <span class="shift-status-dot" id="shiftDot"></span>
+                <span id="shiftStatusText">Brak aktywnej zmiany</span>
+                <span class="shift-live-timer" id="shiftLiveTimer"></span>
+            </div>
+            <div class="shift-buttons">
+                <button class="btn btn-start" onclick="startShift()">⏱️ Start</button>
+                <button class="btn btn-pause">☕ Przerwa</button>
+                <button class="btn btn-stop" onclick="endShift()">🏁 Koniec</button>
+            </div>
+        </div>
+
+        <div class="suma-box-container">
+            <div class="suma-box">
+                <div class="suma-header-row">
+                    <span class="items-count-badge" id="itemsCountBadge">Pozycji: 0 szt.</span>
+                    <button class="btn-clear-cart" onclick="resetInputs()" title="Wyczyść koszyk">🧹 Wyczyść</button>
+                </div>
+                <div class="suma-val" id="totalSumText">SUMA: $0</div>
+            </div>
+        </div>
+        <div class="discount-info" id="discountInfoText">Brak rabatu | Wartość: $0</div>
+
+        <div class="box">
+            <div class="stats-row"><span>💸 Koszt towaru</span><span class="stats-val" id="val-koszt">$0</span></div>
+            <div class="stats-row"><span>📈 Marża przed rabatem</span><span class="stats-val" id="val-marza-przed">$0</span></div>
+            <div class="stats-row"><span>💰 ZYSK po rabacie</span><span class="stats-val" id="val-zysk">$0</span></div>
+            <div class="stats-row"><span>📊 Marża %</span><span class="stats-val" id="val-marza-proc">0.0%</span></div>
+            <div class="stats-desc">Produkty bez podanej ceny zakupu są obecnie liczone jako koszt $0.</div>
+        </div>
+
+        <div class="box dzisiaj-box">
+            <div class="dzisiaj-title">💵 DZISIAJ — PRZYCHÓD</div>
+            <div class="dzisiaj-val" id="dzisiajPrzychod">$0</div>
+            <div class="dzisiaj-zysk">💰 Zysk: <span id="dzisiajZysk">$0</span></div>
+        </div>
+
+        <div class="action-container action-buttons" id="actionArea">
+            <button class="btn btn-sprzedane" onclick="sell()">☑️ SPRZEDANE</button>
+            <button class="btn btn-cofnij" onclick="undo()">↩️ COFNIJ OSTATNIĄ</button>
+        </div>
+
+        <div class="box">
+            <h3 class="box-title" style="margin-bottom: 4px;">📊 Tabela zniżek</h3>
+            <table class="discount-table">
+                <thead>
+                    <tr><th>Firma</th><th>Pracownik</th><th>Zarząd</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>🥖 Piekarnia Bochen</td><td>-20%</td><td>-30%</td></tr>
+                    <tr><td>🍹 Tropical Drinks</td><td>-15%</td><td>-25%</td></tr>
+                    <tr><td>🍔 Burger Shot</td><td>-15%</td><td>-20%</td></tr>
+                    <tr><td>🛡️ Armor Armor</td><td>-15%</td><td>-25%</td></tr>
+                    <tr><td>🔧 LSC</td><td>-20%</td><td>-25%</td></tr>
+                    <tr><td>🍕 VESUVIO</td><td>-20%</td><td>-35%</td></tr>
+                </tbody>
+            </table>
+            <button class="btn-calc-discount" onclick="openCalcStep1()">💸 Odlicz 10%</button>
+        </div>
+    </div>
+
+    <!-- Kolumna 4: Panel Historii -->
+    <div class="history-panel">
+        <div class="history-header">
+            <span class="history-header-title">📜 HISTORIA</span>
+            <div class="btn-tab-group">
+                <button class="btn-tab active" id="tabAll" onclick="setHistoryFilter('all')">Wszystkie</button>
+                <button class="btn-tab" id="tabToday" onclick="setHistoryFilter('today')">Dzisiaj</button>
+            </div>
+        </div>
+
+        <div class="history-content" id="historyContent"></div>
+        <div class="history-footer">
+            <div class="history-footer-row">
+                <span class="history-footer-label">Łączny czas pracy:</span>
+                <span class="history-footer-val" id="totalWorkTime">0h 0m</span>
+            </div>
+            <div class="history-footer-row">
+                <span class="history-footer-label">Łączny zarobek:</span>
+                <span class="history-footer-val" id="totalWorkEarnings">$0</span>
+            </div>
+            <div class="history-footer-row">
+                <span class="history-footer-label">Odliczone 10%:</span>
+                <span class="history-footer-val" id="totalWorkEarningsDiscounted">$0</span>
+            </div>
+            <button class="btn-clear-all" onclick="promptClearAll()">🗑️ Wyczyść całą historię</button>
+        </div>
+
+        <div class="custom-modal-overlay" id="customConfirmModal">
+            <div class="custom-modal">
+                <div class="custom-modal-title" id="modalTitle">Potwierdzenie</div>
+                <div class="custom-modal-desc" id="modalDesc">Czy na pewno chcesz wykonać tę akcję?</div>
+                <div class="custom-modal-actions">
+                    <button class="btn-modal btn-modal-confirm" id="btnModalConfirm">USUŃ</button>
+                    <button class="btn-modal btn-modal-cancel" onclick="closeConfirmModal()">ANULUJ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="screen-modal-overlay" id="screenCalcModalStep1">
+    <div class="screen-modal">
+        <button class="screen-modal-close" onclick="closeCalcModal()">✕</button>
+        <div class="screen-modal-title">Wpisz kwotę</div>
+        <input type="text" inputmode="numeric" id="calcInputVal" class="screen-modal-input" placeholder="np. 50000" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+        <button class="btn-screen-calc" onclick="performCalc()">Odlicz 10%</button>
+    </div>
+</div>
+
+<div class="screen-modal-overlay" id="screenCalcModalStep2">
+    <div class="screen-modal">
+        <button class="screen-modal-close" onclick="closeCalcModal()">✕</button>
+        <div class="screen-modal-title">Kwota po odliczeniu 10%</div>
+        <div class="calc-result-box">
+            <div class="calc-result-val" id="calcResultDisplay">$0</div>
+            <div class="calc-subinfo" id="calcDiscountSubinfo">Odliczono 10%: $0</div>
+        </div>
+        <button class="btn-screen-calc" onclick="closeCalcModal()">ZAMKNIJ</button>
+    </div>
+</div>
+
+<script>
+const items = {
+    nasiona: [
+        { id: 'n1', name: 'Nasiono Blue Dream', price: 5000 },
+        { id: 'n2', name: 'Nasiono Purple Haze', price: 3500 },
+        { id: 'n3', name: 'Nasiono White Widow', price: 3000 },
+        { id: 'n4', name: 'Nasiono Og Kush', price: 2500 }
+    ],
+    produkty: [
+        { id: 'p1', name: 'System Nawadniania', price: 60000 },
+        { id: 'p2', name: 'Doniczka', price: 40000 },
+        { id: 'p3', name: 'Namiot Uprawny', price: 200000 },
+        { id: 'p4', name: 'Bongo', price: 20000 },
+        { id: 'p5', name: 'Stół do pakowania', price: 170000 },
+        { id: 'p6', name: 'Bibułka', price: 1500 },
+        { id: 'p7', name: 'Pistalkowe Woreczki', price: 2000 },
+        { id: 'p8', name: 'Zapalniczka', price: 200 }
+    ],
+    nawozy: [
+        { id: 'w1', name: 'Nawóz Premium', price: 10000 },
+        { id: 'w2', name: 'Nawóz Plonowy', price: 10000 }
+    ],
+    jedzenie: [
+        { id: 'j1', name: 'Ciastko Weed', price: 3500 },
+        { id: 'j2', name: 'Ciastko Puff', price: 3500 },
+        { id: 'j3', name: 'Herbata Ziołowa', price: 5500 },
+        { id: 'j4', name: 'Żelki Weed', price: 5500 }
+    ],
+    jointy: [
+        { id: 't1', name: 'Joint Blue Dream', price: 7500 },
+        { id: 't2', name: 'Joint Purple Haze', price: 7500 },
+        { id: 't3', name: 'Joint White Widow', price: 7500 },
+        { id: 't4', name: 'Joint Og Kush', price: 7500 }
+    ]
+};
+
+const discounts = {
+    "Piekarnia Bochen": { pracownik: 0.20, zarzad: 0.30 },
+    "Tropical Drinks": { pracownik: 0.15, zarzad: 0.25 },
+    "Burger Shot": { pracownik: 0.15, zarzad: 0.20 },
+    "Armor Armor": { pracownik: 0.15, zarzad: 0.25 },
+    "LSC": { pracownik: 0.20, zarzad: 0.25 },
+    "VESUVIO": { pracownik: 0.20, zarzad: 0.35 },
+    "Brak": { pracownik: 0, zarzad: 0 }
+};
+
+let currentRole = 'pracownik';
+let shifts = JSON.parse(localStorage.getItem('pos_shifts')) || [];
+let activeShiftId = localStorage.getItem('pos_active_shift_id') || null;
+let pendingConfirmCallback = null;
+let liveTimerInterval = null;
+let currentHistoryFilter = 'all';
+let currentChartMode = '24h';
+let earningsChart = null;
+
+function showToast(title, message) {
+    const container = document.getElementById('toastContainer');
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.innerHTML = `<div class="toast-title">${title}</div><div class="toast-msg">${message}</div><div class="toast-progress"></div>`;
+    container.appendChild(toast);
+    setTimeout(() => toast.classList.add('show'), 20);
+    setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 400); }, 2800);
+}
+
+function spawnMoneyFloat(text) {
+    const area = document.getElementById('actionArea');
+    const floatEl = document.createElement('div');
+    floatEl.className = 'floating-money';
+    floatEl.innerText = `+${text}`;
+    area.appendChild(floatEl);
+    setTimeout(() => floatEl.remove(), 1100);
+}
+
+function init() {
+    renderCategory('nasiona', 'cat-nasiona');
+    renderCategory('produkty', 'cat-produkty');
+    renderCategory('nawozy', 'cat-nawozy');
+    renderCategory('jedzenie', 'cat-jedzenie');
+    renderCategory('jointy', 'cat-jointy');
+    document.getElementById('clientSelect').addEventListener('change', calculate);
+    checkDanglingShift();
+    renderHistory();
+    updateShiftStatusUI();
+    calculate();
+    startLiveTimer();
+    initChart();
+}
+
+function initChart() {
+    const ctx = document.getElementById('earningsChart').getContext('2d');
+    earningsChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: [{
+                label: 'Zarobek',
+                data: [],
+                borderColor: '#ff2a9d',
+                backgroundColor: 'rgba(255, 42, 157, 0.2)',
+                borderWidth: 2,
+                fill: true,
+                tension: 0.4,
+                pointRadius: 2,
+                pointBackgroundColor: '#ff2a9d'
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: { duration: 600, easing: 'easeOutQuart' },
+            plugins: { legend: { display: false } },
+            scales: {
+                x: { ticks: { color: '#a38393', font: { size: 9, family: 'Inter' } }, grid: { color: 'rgba(90, 35, 65, 0.15)' } },
+                y: { ticks: { color: '#a38393', font: { size: 9, family: 'Inter' }, callback: v => '$' + v }, grid: { color: 'rgba(90, 35, 65, 0.15)' }, beginAtZero: true }
+            }
+        }
+    });
+    updateChartData();
+}
+
+function updateChartType(mode) {
+    currentChartMode = mode;
+    document.getElementById('btnChart24h').className = `btn-tab ${mode === '24h' ? 'active' : ''}`;
+    document.getElementById('btnChart31d').className = `btn-tab ${mode === '31d' ? 'active' : ''}`;
+    document.getElementById('btnChart50z').className = `btn-tab ${mode === '50z' ? 'active' : ''}`;
+    updateChartData();
+}
+
+function updateChartData() {
+    if(!earningsChart) return;
+    let labels = [];
+    let data = [];
+    const now = new Date();
+
+    if (currentChartMode === '50z') {
+        const recentShifts = shifts.slice(-50);
+        labels = recentShifts.map((s, i) => `#${shifts.length - recentShifts.length + i + 1}`);
+        data = recentShifts.map(s => s.earnings);
+    } else if (currentChartMode === '24h') {
+        for(let i=23; i>=0; i--) {
+            const d = new Date(now.getTime() - i * 60 * 60 * 1000);
+            labels.push(`${pad(d.getHours())}:00`);
+            data.push(0);
+        }
+        shifts.forEach(s => {
+            const sTime = new Date(s.endTime || s.startTime);
+            const diffHours = Math.floor((now - sTime) / (1000 * 60 * 60));
+            if (diffHours >= 0 && diffHours < 24) {
+                data[23 - diffHours] += s.earnings;
+            }
+        });
+    } else if (currentChartMode === '31d') {
+        for(let i=30; i>=0; i--) {
+            const d = new Date(now.getTime() - i * 24 * 60 * 60 * 1000);
+            labels.push(`${pad(d.getDate())}.${pad(d.getMonth()+1)}`);
+            data.push(0);
+        }
+        shifts.forEach(s => {
+            const sTime = new Date(s.endTime || s.startTime);
+            const diffDays = Math.floor((now - sTime) / (1000 * 60 * 60 * 24));
+            if (diffDays >= 0 && diffDays < 31) {
+                data[30 - diffDays] += s.earnings;
+            }
+        });
+    }
+
+    earningsChart.data.labels = labels;
+    earningsChart.data.datasets[0].data = data;
+    earningsChart.update();
+}
+
+function renderCategory(catKey, containerId) {
+    const container = document.getElementById(containerId);
+    items[catKey].forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'item-row';
+        div.innerHTML = `<span class="item-name">${item.name}</span><span class="item-price" title="Kliknij, aby dodać +1" onclick="addItemQuick('${item.id}')">$${item.price.toLocaleString()}</span><input type="number" min="0" value="0" class="item-input" id="${item.id}" onchange="calculate()" onkeyup="calculate()">`;
+        container.appendChild(div);
+    });
+}
+
+function addItemQuick(id) {
+    const input = document.getElementById(id);
+    input.value = (parseInt(input.value) || 0) + 1;
+    calculate();
+}
+
+function setRole(role) {
+    currentRole = role;
+    document.getElementById('btn-pracownik').className = `btn ${role === 'pracownik' ? 'btn-pracownik' : 'btn-zarzad'}`;
+    document.getElementById('btn-zarzad').className = `btn ${role === 'zarzad' ? 'btn-pracownik' : 'btn-zarzad'}`;
+    calculate();
+}
+
+function formatMoney(amount) { return Math.round(amount).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
+
+function calculate() {
+    let totalBase = 0;
+    let totalItems = 0;
+    for (const key in items) {
+        items[key].forEach(item => {
+            const qty = parseInt(document.getElementById(item.id).value) || 0;
+            totalBase += qty * item.price;
+            totalItems += qty;
+        });
+    }
+    const client = document.getElementById('clientSelect').value;
+    const discountPercent = discounts[client][currentRole];
+    const discountAmount = totalBase * discountPercent;
+    const finalTotal = totalBase - discountAmount;
+    
+    document.getElementById('totalSumText').innerText = `SUMA: $${formatMoney(finalTotal)}`;
+    document.getElementById('itemsCountBadge').innerText = `Pozycji: ${totalItems} szt.`;
+    
+    if (discountPercent > 0) { document.getElementById('discountInfoText').innerText = `Rabat ${discountPercent*100}% | Wartość: $${formatMoney(totalBase)}`; } 
+    else { document.getElementById('discountInfoText').innerText = `Brak rabatu | Wartość: $${formatMoney(totalBase)}`; }
+
+    const kosztTowaru = 0; 
+    const marzaPrzed = totalBase - kosztTowaru;
+    const zyskPo = finalTotal - kosztTowaru;
+    let marzaProc = 0;
+    if (finalTotal > 0) { marzaProc = (zyskPo / finalTotal) * 100; } 
+    else if (totalBase > 0 && finalTotal === 0) { marzaProc = -100; }
+
+    document.getElementById('val-koszt').innerText = `$${kosztTowaru}`;
+    document.getElementById('val-marza-przed').innerText = `$${formatMoney(marzaPrzed)}`;
+    document.getElementById('val-zysk').innerText = `$${formatMoney(zyskPo)}`;
+    document.getElementById('val-marza-proc').innerText = `${marzaProc.toFixed(1)}%`;
+}
+
+function getCurrentZysk() {
+    let totalBase = 0;
+    for (const key in items) {
+        items[key].forEach(item => {
+            const qty = parseInt(document.getElementById(item.id).value) || 0;
+            totalBase += qty * item.price;
+        });
+    }
+    return totalBase - (totalBase * discounts[document.getElementById('clientSelect').value][currentRole]);
+}
+
+function pad(num) { return num.toString().padStart(2, '0'); }
+function formatDate(dateStr) { const d = new Date(dateStr); return `${pad(d.getDate())}.${pad(d.getMonth()+1)}.${d.getFullYear()}`; }
+function formatTime(dateStr) { const d = new Date(dateStr); return `${pad(d.getHours())}:${pad(d.getMinutes())}`; }
+
+function startShift() {
+    if (activeShiftId) return;
+    const now = new Date().toISOString();
+    const newShift = { id: Date.now().toString(), startTime: now, endTime: null, earnings: 0, salesHistory: [], active: true };
+    shifts.push(newShift);
+    activeShiftId = newShift.id;
+    saveData();
+    updateShiftStatusUI();
+    renderHistory();
+    updateChartData();
+    showToast('🔴 ZMIANA ROZPOCZĘTA', `Czas startu: ${formatTime(now)}`);
+}
+
+function endShift() {
+    if (!activeShiftId) return;
+    const shift = shifts.find(s => s.id === activeShiftId);
+    if (shift) { shift.endTime = new Date().toISOString(); shift.active = false; }
+    activeShiftId = null;
+    saveData();
+    updateShiftStatusUI();
+    renderHistory();
+    updateChartData();
+    showToast('🏁 ZMIANA ZAKOŃCZONA', `Łączny utarg ze zmiany: $${formatMoney(shift ? shift.earnings : 0)}`);
+}
+
+function startLiveTimer() {
+    if (liveTimerInterval) clearInterval(liveTimerInterval);
+    liveTimerInterval = setInterval(() => {
+        const timerEl = document.getElementById('shiftLiveTimer');
+        if (activeShiftId) {
+            const shift = shifts.find(s => s.id === activeShiftId);
+            if (shift) {
+                const diffMs = Date.now() - new Date(shift.startTime).getTime();
+                const totalSec = Math.floor(diffMs / 1000);
+                const hrs = Math.floor(totalSec / 3600);
+                const mins = Math.floor((totalSec % 3600) / 60);
+                const secs = totalSec % 60;
+                timerEl.innerText = `(${pad(hrs)}:${pad(mins)}:${pad(secs)})`;
+                return;
+            }
+        }
+        timerEl.innerText = '';
+    }, 1000);
+}
+
+function openConfirmModal(title, desc, onConfirm) {
+    document.getElementById('modalTitle').innerText = title;
+    document.getElementById('modalDesc').innerText = desc;
+    document.getElementById('customConfirmModal').style.display = 'flex';
+    pendingConfirmCallback = onConfirm;
+}
+
+function closeConfirmModal() { document.getElementById('customConfirmModal').style.display = 'none'; pendingConfirmCallback = null; }
+document.getElementById('btnModalConfirm').onclick = function() { if (pendingConfirmCallback) pendingConfirmCallback(); closeConfirmModal(); };
+
+function promptDeleteShift(shiftId) {
+    openConfirmModal("USUŃ ZMIANĘ", "Czy na pewno chcesz usunąć tę zmianę z historii?", function() {
+        shifts = shifts.filter(s => s.id !== shiftId);
+        if (activeShiftId === shiftId) { activeShiftId = null; updateShiftStatusUI(); }
+        saveData();
+        renderHistory();
+        updateChartData();
+        showToast('🗑️ USUNIĘTO', 'Wpis zmiany został usunięty');
+    });
+}
+
+function promptClearAll() {
+    openConfirmModal("WYCZYŚĆ WSZYSTKO", "Czy na pewno chcesz bezpowrotnie usunąć CAŁĄ historię pracy?", function() {
+        shifts = [];
+        activeShiftId = null;
+        saveData();
+        updateShiftStatusUI();
+        renderHistory();
+        updateChartData();
+        showToast('🗑️ WYCZYSZCZONO', 'Cała historia została zresetowana');
+    });
+}
+
+function sell() {
+    if (!activeShiftId) { showToast('⚠️ UWAGA', 'Musisz najpierw wystartować zmianę!'); return; }
+    const zysk = getCurrentZysk();
+    if (zysk <= 0) return;
+    const shift = shifts.find(s => s.id === activeShiftId);
+    if (shift) {
+        shift.earnings += zysk;
+        shift.salesHistory.push(zysk);
+        saveData();
+        renderHistory();
+        updateChartData();
+        spawnMoneyFloat(`$${formatMoney(zysk)}`);
+        showToast('💵 SPRZEDAŻ POMYŚLNA', `Doliczono $${formatMoney(zysk)} do zmiany`);
+        resetInputs();
+    }
+}
+
+function undo() {
+    if (!activeShiftId) return;
+    const shift = shifts.find(s => s.id === activeShiftId);
+    if (shift && shift.salesHistory.length > 0) {
+        const last = shift.salesHistory.pop();
+        shift.earnings -= last;
+        saveData();
+        renderHistory();
+        updateChartData();
+        showToast('↩️ COFNIĘTO', `Usunięto ostatnią transakcję: -$${formatMoney(last)}`);
+    }
+}
+
+function resetInputs() {
+    for (const key in items) { items[key].forEach(item => { document.getElementById(item.id).value = 0; }); }
+    document.getElementById('clientSelect').value = 'Brak';
+    setRole('pracownik');
+    calculate();
+}
+
+function saveData() {
+    localStorage.setItem('pos_shifts', JSON.stringify(shifts));
+    if (activeShiftId) { localStorage.setItem('pos_active_shift_id', activeShiftId); } 
+    else { localStorage.removeItem('pos_active_shift_id'); }
+}
+
+function checkDanglingShift() {
+    if (activeShiftId) {
+        const shift = shifts.find(s => s.id === activeShiftId);
+        if (shift) { shift.endTime = new Date().toISOString(); shift.active = false; activeShiftId = null; saveData(); }
+    }
+}
+
+function updateShiftStatusUI() {
+    const statusText = document.getElementById('shiftStatusText');
+    const dot = document.getElementById('shiftDot');
+    if (activeShiftId) {
+        const shift = shifts.find(s => s.id === activeShiftId);
+        statusText.innerHTML = `<span style="color:#fdf0f6; font-weight:600;">Od ${formatTime(shift.startTime)}</span>`;
+        dot.className = 'shift-status-dot active';
+    } else {
+        statusText.innerHTML = "Brak aktywnej zmiany";
+        dot.className = 'shift-status-dot';
+        document.getElementById('shiftLiveTimer').innerText = '';
+    }
+}
+
+function setHistoryFilter(mode) {
+    currentHistoryFilter = mode;
+    document.getElementById('tabAll').className = `btn-tab ${mode === 'all' ? 'active' : ''}`;
+    document.getElementById('tabToday').className = `btn-tab ${mode === 'today' ? 'active' : ''}`;
+    renderHistory();
+}
+
+function renderHistory() {
+    const container = document.getElementById('historyContent');
+    container.innerHTML = '';
+    let totalMs = 0, totalMoney = 0, todayMoney = 0;
+    const todayStr = formatDate(new Date().toISOString());
+    const reversedShifts = [...shifts].reverse();
+
+    reversedShifts.forEach(shift => {
+        const d1 = formatDate(shift.startTime);
+        const t1 = formatTime(shift.startTime);
+        let dateStr = d1, timeStr = `${t1} - Trwa...`;
+        
+        if (!shift.active && shift.endTime) {
+            const d2 = formatDate(shift.endTime);
+            dateStr = (d1 === d2) ? d1 : `${d1} - ${d2}`;
+            timeStr = `${t1} - ${formatTime(shift.endTime)}`;
+            totalMs += (new Date(shift.endTime) - new Date(shift.startTime));
+        }
+
+        totalMoney += shift.earnings;
+        if (d1 === todayStr) todayMoney += shift.earnings;
+        if (currentHistoryFilter === 'today' && d1 !== todayStr) return;
+
+        const div = document.createElement('div');
+        div.className = `shift-record ${shift.active ? 'active-record' : ''}`;
+        div.innerHTML = `
+            <div class="record-header">
+                <span class="record-date">${dateStr}</span>
+                <button class="btn-delete-shift" onclick="promptDeleteShift('${shift.id}')" title="Usuń zmianę">✕</button>
+            </div>
+            <div class="record-times">${timeStr}</div>
+            <div class="record-earnings-container">
+                <div class="record-earnings-discounted">-10%: <span>$${formatMoney(shift.earnings * 0.90)}</span></div>
+                <div class="record-earnings">Zarobek: $${formatMoney(shift.earnings)}</div>
+            </div>
+        `;
+        container.appendChild(div);
+    });
+
+    let totalMins = Math.floor(totalMs / 60000);
+    document.getElementById('totalWorkTime').innerText = `${Math.floor(totalMins / 60)}h ${totalMins % 60}m`;
+    document.getElementById('totalWorkEarnings').innerText = `$${formatMoney(totalMoney)}`;
+    document.getElementById('totalWorkEarningsDiscounted').innerText = `$${formatMoney(totalMoney * 0.90)}`;
+    document.getElementById('dzisiajPrzychod').innerText = `$${formatMoney(todayMoney)}`;
+    document.getElementById('dzisiajZysk').innerText = `$${formatMoney(todayMoney)}`;
+}
+
+function openCalcStep1() {
+    document.getElementById('calcInputVal').value = '';
+    document.getElementById('screenCalcModalStep1').style.display = 'flex';
+    document.getElementById('calcInputVal').focus();
+}
+
+function closeCalcModal() {
+    document.getElementById('screenCalcModalStep1').style.display = 'none';
+    document.getElementById('screenCalcModalStep2').style.display = 'none';
+}
+
+function performCalc() {
+    const val = parseFloat(document.getElementById('calcInputVal').value) || 0;
+    document.getElementById('screenCalcModalStep1').style.display = 'none';
+    document.getElementById('calcResultDisplay').innerText = `$${formatMoney(val * 0.90)}`;
+    document.getElementById('calcDiscountSubinfo').innerText = `Odliczono 10%: -$${formatMoney(val * 0.10)} z kwoty $${formatMoney(val)}`;
+    document.getElementById('screenCalcModalStep2').style.display = 'flex';
+}
+
+window.addEventListener('beforeunload', function() { if (activeShiftId) endShift(); });
+window.onload = init;
+</script>
+</body>
+</html>
