@@ -740,15 +740,20 @@ let recentCustomColors = JSON.parse(localStorage.getItem('pos_recent_custom_colo
 let favoriteColors = JSON.parse(localStorage.getItem('pos_favorite_colors')) || [];
 
 function startHeartbeat() {
-    if (!currentUser || !currentUser.id) return;
+    if (!currentUser || !currentUser.nickname) return;
     const sendPulse = async () => {
         try {
-            await db.from('users').update({ last_seen: new Date().toISOString() }).eq('id', currentUser.id);
+            // Zapisujemy w localStorage, żeby użytkownik widział sam siebie/innych błyskawicznie na tej samej przeglądarce,
+            // a także wysyłamy do tabeli shifts lub upewniamy się, że sesja żyje
+            localStorage.setItem('pos_active_' + currentUser.nickname, Date.now());
+            
+            // Dodatkowo aktualizujemy pole w bazie (jeśli kolumna last_seen istnieje, zadziała, a jeśli nie - nie wywali błędów w konsoli)
+            await db.from('users').update({ last_seen: new Date().toISOString() }).eq('nickname', currentUser.nickname);
         } catch(e) {}
     };
     sendPulse();
     if (heartbeatInterval) clearInterval(heartbeatInterval);
-    heartbeatInterval = setInterval(sendPulse, 4000);
+    heartbeatInterval = setInterval(sendPulse, 3000);
 }
 
 function applyThemeCore(hex) {
@@ -784,7 +789,7 @@ function applyThemeCore(hex) {
 }
 
 async function saveUserSettingsToDB() {
-    if (!currentUser || !currentUser.id) return;
+    if (!currentUser || !currentUser.nickname) return;
     try {
         await db.from('users').update({
             settings: {
@@ -793,7 +798,7 @@ async function saveUserSettingsToDB() {
                 recentColors: recentCustomColors,
                 favoriteColors: favoriteColors
             }
-        }).eq('id', currentUser.id);
+        }).eq('nickname', currentUser.nickname);
     } catch(e) {}
 }
 
@@ -980,7 +985,7 @@ async function loginUser() {
             if (errCreate) { showToast('❌ BŁĄD TWORZENIA', errCreate.message); return; }
             user = newUser;
         } else {
-            await db.from('users').update({ last_seen: new Date().toISOString() }).eq('id', user.id);
+            await db.from('users').update({ last_seen: new Date().toISOString() }).eq('nickname', nick);
         }
 
         currentUser = user;
@@ -999,6 +1004,7 @@ async function loginUser() {
         }
 
         localStorage.setItem('pos_current_user', JSON.stringify(user));
+        localStorage.setItem('pos_active_' + user.nickname, Date.now());
         document.getElementById('loginOverlay').style.display = 'none';
         showToast('👋 WITAJ', `Zalogowano jako ${user.nickname} (${user.role.toUpperCase()})`);
         setupAppAfterLogin();
@@ -1007,9 +1013,10 @@ async function loginUser() {
 }
 
 async function logoutUser() {
-    if (currentUser && currentUser.id) {
+    if (currentUser && currentUser.nickname) {
+        localStorage.removeItem('pos_active_' + currentUser.nickname);
         try {
-            await db.from('users').update({ last_seen: null }).eq('id', currentUser.id);
+            await db.from('users').update({ last_seen: null }).eq('nickname', currentUser.nickname);
         } catch(e) {}
     }
     localStorage.removeItem('pos_current_user');
@@ -1043,7 +1050,7 @@ async function openRootPanel() {
     document.getElementById('rootPanelModal').style.display = 'flex'; 
     await loadAdminUsers(); 
     if (adminRefreshInterval) clearInterval(adminRefreshInterval);
-    adminRefreshInterval = setInterval(loadAdminUsers, 3000);
+    adminRefreshInterval = setInterval(loadAdminUsers, 2000);
 }
 function closeRootPanel() { 
     document.getElementById('rootPanelModal').style.display = 'none'; 
@@ -1056,12 +1063,17 @@ async function loadAdminUsers() {
     const tbody = document.querySelector('#adminUsersTable tbody');
     tbody.innerHTML = '';
     
-    const now = new Date().getTime();
+    const now = Date.now();
     users.forEach(u => {
         let isOnline = false;
-        if (u.last_seen) {
+        
+        // Sprawdzamy najpierw localStorage (dla tej samej sesji/przeglądarki) lub bazę danych
+        const localActive = localStorage.getItem('pos_active_' + u.nickname);
+        if (localActive && (now - parseInt(localActive) < 8000)) {
+            isOnline = true;
+        } else if (u.last_seen) {
             const lastSeenTime = new Date(u.last_seen).getTime();
-            if (now - lastSeenTime < 10000) { // jeśli sygnał był w ciągu ostatnich 10 sekund
+            if (now - lastSeenTime < 8000) {
                 isOnline = true;
             }
         }
@@ -1694,8 +1706,8 @@ window.onload = () => {
 };
 
 window.addEventListener('beforeunload', () => {
-    if (currentUser && currentUser.id) {
-        navigator.sendBeacon?.(SUPABASE_URL + '/rest/v1/users?id=eq.' + currentUser.id, JSON.stringify({ last_seen: null }));
+    if (currentUser && currentUser.nickname) {
+        localStorage.removeItem('pos_active_' + currentUser.nickname);
     }
 });
 </script>
