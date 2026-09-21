@@ -62,169 +62,28 @@
         overflow: hidden;
     }
 
-    /* Modal logowania */
-    .login-overlay {
-        position: fixed;
-        inset: 0;
-        background: rgba(6, 3, 5, 0.96);
-        backdrop-filter: blur(14px);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 10000;
-    }
-    .login-box {
-        background: var(--surface);
-        border: 2px solid var(--primary);
-        box-shadow: 0 0 35px var(--primary-glow);
-        padding: 28px 24px;
-        border-radius: 12px;
-        width: 340px;
-        text-align: center;
-    }
-    .login-title {
-        font-family: 'Rajdhani', sans-serif;
-        font-size: 26px;
-        font-weight: 800;
-        color: var(--primary);
-        letter-spacing: 2px;
-        margin-bottom: 6px;
-    }
-    .login-sub {
-        font-size: 12px;
-        color: var(--text-muted);
-        margin-bottom: 20px;
-    }
-    .login-input {
-        width: 100%;
-        background: #170d13;
-        border: 1.5px solid var(--surface-border);
-        color: #fff;
-        padding: 10px;
-        border-radius: 6px;
-        font-family: 'Rajdhani', sans-serif;
-        font-size: 18px;
-        font-weight: 700;
-        text-align: center;
-        outline: none;
-        margin-bottom: 16px;
-        transition: 0.2s;
-    }
-    .login-input:focus {
-        border-color: var(--primary);
-        box-shadow: 0 0 10px var(--primary-glow);
-    }
-    .btn-login {
-        width: 100%;
-        background: var(--primary);
-        color: #1a020d;
-        border: none;
-        padding: 10px;
-        border-radius: 6px;
-        font-family: 'Rajdhani', sans-serif;
-        font-size: 15px;
-        font-weight: 800;
-        cursor: pointer;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        transition: 0.2s;
-    }
-    .btn-login:hover {
-        background: #fff;
-        box-shadow: 0 0 14px #fff;
-    }
+    .login-overlay { position: fixed; inset: 0; background: rgba(6, 3, 5, 0.96); backdrop-filter: blur(14px); display: flex; align-items: center; justify-content: center; z-index: 10000; }
+    .login-box { background: var(--surface); border: 2px solid var(--primary); box-shadow: 0 0 35px var(--primary-glow); padding: 28px 24px; border-radius: 12px; width: 340px; text-align: center; }
+    .login-title { font-family: 'Rajdhani', sans-serif; font-size: 26px; font-weight: 800; color: var(--primary); letter-spacing: 2px; margin-bottom: 6px; }
+    .login-sub { font-size: 12px; color: var(--text-muted); margin-bottom: 20px; }
+    .login-input { width: 100%; background: #170d13; border: 1.5px solid var(--surface-border); color: #fff; padding: 10px; border-radius: 6px; font-family: 'Rajdhani', sans-serif; font-size: 18px; font-weight: 700; text-align: center; outline: none; margin-bottom: 16px; transition: 0.2s; }
+    .login-input:focus { border-color: var(--primary); box-shadow: 0 0 10px var(--primary-glow); }
+    .btn-login { width: 100%; background: var(--primary); color: #1a020d; border: none; padding: 10px; border-radius: 6px; font-family: 'Rajdhani', sans-serif; font-size: 15px; font-weight: 800; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: 0.2s; }
+    .btn-login:hover { background: #fff; box-shadow: 0 0 14px #fff; }
 
-    /* Pasek profilu użytkownika */
-    .user-badge-bar {
-        position: absolute;
-        right: 50px;
-        top: 50%;
-        transform: translateY(-50%);
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        background: var(--surface);
-        border: 1px solid var(--surface-border);
-        padding: 4px 10px;
-        border-radius: 6px;
-        font-size: 12px;
-        font-family: 'Rajdhani', sans-serif;
-        font-weight: 700;
-    }
-    .badge-role-root {
-        color: #ef4444;
-        background: rgba(239, 68, 68, 0.15);
-        border: 1px solid rgba(239, 68, 68, 0.3);
-        padding: 1px 5px;
-        border-radius: 4px;
-    }
-    .badge-role-member {
-        color: var(--neon-green);
-        background: rgba(0, 255, 102, 0.15);
-        border: 1px solid rgba(0, 255, 102, 0.3);
-        padding: 1px 5px;
-        border-radius: 4px;
-    }
-    .btn-logout {
-        background: transparent;
-        border: none;
-        color: #ef4444;
-        cursor: pointer;
-        font-weight: 800;
-        font-size: 12px;
-        padding: 0 3px;
-    }
+    .user-badge-bar { position: absolute; right: 50px; top: 50%; transform: translateY(-50%); display: flex; align-items: center; gap: 8px; background: var(--surface); border: 1px solid var(--surface-border); padding: 4px 10px; border-radius: 6px; font-size: 12px; font-family: 'Rajdhani', sans-serif; font-weight: 700; }
+    .badge-role-root { color: #ef4444; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.3); padding: 1px 5px; border-radius: 4px; }
+    .badge-role-member { color: var(--neon-green); background: rgba(0, 255, 102, 0.15); border: 1px solid rgba(0, 255, 102, 0.3); padding: 1px 5px; border-radius: 4px; }
+    .btn-logout { background: transparent; border: none; color: #ef4444; cursor: pointer; font-weight: 800; font-size: 12px; padding: 0 3px; }
+    .btn-open-root { background: transparent; border: 1px solid var(--primary); color: var(--primary); padding: 2px 6px; border-radius: 4px; cursor: pointer; font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 11px; transition: 0.2s; }
+    .btn-open-root:hover { background: var(--primary); color: #fff; }
 
-    .header-bar {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: relative;
-        margin-bottom: 6px;
-        min-height: 58px;
-        width: 100%;
-    }
-    .header-center-content {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-        transition: left 0.45s cubic-bezier(0.16, 1, 0.3, 1), transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
-        z-index: 5;
-    }
-    .header-bar.search-open .header-center-content {
-        left: calc(100% - 250px);
-        transform: translateX(-50%);
-    }
-    h1.main-title {
-        font-family: 'Rajdhani', sans-serif;
-        color: var(--primary);
-        text-align: center;
-        font-size: 2.2rem;
-        margin: 0;
-        text-transform: uppercase;
-        font-weight: 800;
-        letter-spacing: 5px;
-        text-shadow: 0 0 14px var(--primary-glow), 0 0 28px var(--primary-a35);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 14px;
-        line-height: 1;
-        white-space: nowrap;
-        transition: font-size 0.35s ease;
-    }
+    .header-bar { display: flex; align-items: center; justify-content: center; position: relative; margin-bottom: 6px; min-height: 58px; width: 100%; }
+    .header-center-content { display: flex; flex-direction: column; align-items: center; justify-content: center; position: absolute; left: 50%; transform: translateX(-50%); transition: left 0.45s cubic-bezier(0.16, 1, 0.3, 1), transform 0.45s cubic-bezier(0.16, 1, 0.3, 1); z-index: 5; }
+    .header-bar.search-open .header-center-content { left: calc(100% - 250px); transform: translateX(-50%); }
+    h1.main-title { font-family: 'Rajdhani', sans-serif; color: var(--primary); text-align: center; font-size: 2.2rem; margin: 0; text-transform: uppercase; font-weight: 800; letter-spacing: 5px; text-shadow: 0 0 14px var(--primary-glow), 0 0 28px var(--primary-a35); display: flex; align-items: center; justify-content: center; gap: 14px; line-height: 1; white-space: nowrap; transition: font-size 0.35s ease; }
     .header-bar.search-open h1.main-title { font-size: 1.7rem; letter-spacing: 3px; gap: 8px; }
-    h1.main-title::before, h1.main-title::after {
-        content: '';
-        height: 2px;
-        width: 80px;
-        background: linear-gradient(90deg, transparent, var(--primary));
-        transition: width 0.35s ease;
-    }
+    h1.main-title::before, h1.main-title::after { content: ''; height: 2px; width: 80px; background: linear-gradient(90deg, transparent, var(--primary)); transition: width 0.35s ease; }
     .header-bar.search-open h1.main-title::before, .header-bar.search-open h1.main-title::after { width: 25px; }
     h1.main-title::after { background: linear-gradient(90deg, var(--primary), transparent); }
 
@@ -264,8 +123,19 @@
     .item-row:hover { background: var(--surface-hover); }
     .item-name { font-size: 13px; font-weight: 500; color: #e5e7eb; flex-grow: 1; }
     .item-price { color: var(--primary); font-family: 'Rajdhani', sans-serif; font-size: 14px; font-weight: 700; margin-right: 8px; background: var(--primary-a08); padding: 2px 6px; border-radius: 4px; border: 1px solid var(--primary-a15); cursor: pointer; user-select: none; }
+    
     .stepper-control { display: flex; align-items: center; background: #140c10; border: 1px solid var(--primary-a30); border-radius: 5px; overflow: hidden; }
-    .item-input { width: 36px; height: 23px; background: transparent; border: none; text-align: center; font-weight: 700; font-family: 'Rajdhani', sans-serif; font-size: 14px; color: #fff; outline: none; }
+    
+    /* Poprawione style ukrywania natywnych strzałek */
+    .item-input { 
+        width: 36px; height: 23px; background: transparent !important; border: none; text-align: center; 
+        font-weight: 700; font-family: 'Rajdhani', sans-serif; font-size: 14px; color: #fff; outline: none; 
+        -moz-appearance: textfield !important; appearance: none !important; 
+    }
+    .item-input::-webkit-outer-spin-button, .item-input::-webkit-inner-spin-button { 
+        -webkit-appearance: none !important; appearance: none !important; margin: 0 !important; display: none !important; 
+    }
+    
     .stepper-btn-group { display: flex; flex-direction: column; border-left: 1px solid var(--primary-a20); }
     .btn-step { width: 17px; height: 11px; background: rgba(255,255,255,0.02); border: none; color: #aaa; font-size: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0; }
 
@@ -342,7 +212,7 @@
     .btn-clear-all { width: 100%; background: rgba(69, 10, 10, 0.4); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.35); border-radius: 4px; padding: 5px; font-family: 'Rajdhani', sans-serif; font-size: 11.5px; cursor: pointer; font-weight: 700; margin-top: 6px; text-transform: uppercase; }
 
     .toast-container { position: fixed; top: 20px; right: 25px; z-index: 99999; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
-    .toast { background: rgba(15, 10, 13, 0.95); border: 1.5px solid var(--primary); border-radius: 6px; padding: 10px 16px; min-width: 250px; box-shadow: 0 0 15px var(--primary-glow); transform: translateX(120%); transition: 0.35s; opacity: 0; }
+    .toast { background: rgba(15, 10, 13, 0.95); border: 1.5px solid var(--primary); border-radius: 6px; padding: 10px 16px; min-width: 250px; box-shadow: 0 8px 25px rgba(0,0,0,0.6), 0 0 15px var(--primary-glow); transform: translateX(120%); transition: 0.35s; opacity: 0; }
     .toast.show { transform: translateX(0); opacity: 1; }
     .toast-title { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 14px; color: var(--primary); text-transform: uppercase; }
     .toast-msg { font-size: 12px; color: #e5e7eb; margin-top: 3px; }
@@ -357,6 +227,16 @@
     .theme-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 12px; }
     .theme-btn { height: 40px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.2); cursor: pointer; }
     .custom-color-input { width: 100%; height: 38px; border: 1px solid var(--surface-border); border-radius: 6px; background: transparent; cursor: pointer; outline: none; }
+    
+    .custom-modal { background: #160d11; border: 1.5px solid var(--primary); border-radius: 8px; width: 100%; max-width: 320px; padding: 16px 12px; box-shadow: 0 0 20px var(--primary-a25); text-align: center; }
+    .custom-modal-title { color: #f87171; font-family: 'Rajdhani', sans-serif; font-size: 16px; font-weight: 700; margin-bottom: 8px; text-transform: uppercase; }
+    .custom-modal-desc { color: #e5e7eb; font-size: 13px; line-height: 1.4; margin-bottom: 16px; }
+    .custom-modal-actions { display: flex; gap: 8px; }
+    .btn-modal { flex: 1; padding: 8px; font-family: 'Rajdhani', sans-serif; font-size: 12.5px; font-weight: 700; border-radius: 4px; cursor: pointer; border: none; text-transform: uppercase; letter-spacing: 0.5px; transition: 0.15s; }
+    .btn-modal-confirm { background: var(--primary); color: #000; box-shadow: 0 0 10px var(--primary-glow); }
+    .btn-modal-confirm:hover { background: #fff; }
+    .btn-modal-cancel { background: #28141f; color: var(--primary); border: 1px solid var(--surface-border); }
+    .btn-modal-cancel:hover { background: var(--surface-hover); color: #fff; }
 </style>
 </head>
 <body>
@@ -397,6 +277,7 @@
     <div class="user-badge-bar" id="userBadgeBar" style="display: none;">
         <span id="badgeNick">Nick</span>
         <span id="badgeRole" class="badge-role-member">MEMBER</span>
+        <button id="btnOpenRootPanel" class="btn-open-root" style="display:none;" onclick="openRootPanel()">👑 PANEL ROOT</button>
         <button class="btn-logout" onclick="logoutUser()" title="Wyloguj się">🚪</button>
     </div>
 
@@ -540,6 +421,44 @@
     </div>
 </div>
 
+<!-- Modal dla potwierdzeń zastępujący domyślne alerty z przeglądarki -->
+<div class="custom-modal-overlay" id="customConfirmModal" style="z-index: 99999;">
+    <div class="custom-modal">
+        <div class="custom-modal-title" id="modalTitle">Potwierdzenie</div>
+        <div class="custom-modal-desc" id="modalDesc">Czy na pewno chcesz wykonać tę akcję?</div>
+        <div class="custom-modal-actions">
+            <button class="btn-modal btn-modal-confirm" id="btnModalConfirm">POTWIERDŹ</button>
+            <button class="btn-modal btn-modal-cancel" onclick="closeConfirmModal()">ANULUJ</button>
+        </div>
+    </div>
+</div>
+
+<!-- PANEL ROOT MODAL (Zarządzanie Użytkownikami) -->
+<div class="screen-modal-overlay" id="rootPanelModal">
+    <div class="screen-modal" style="width: 500px; max-width: 95%;">
+        <button class="screen-modal-close" onclick="closeRootPanel()">✕</button>
+        <div class="screen-modal-title">👑 ZARZĄDZANIE UŻYTKOWNIKAMI</div>
+        
+        <div style="display:flex; gap: 8px; margin-bottom: 15px;">
+            <input type="text" id="newUserName" class="login-input" style="margin-bottom:0;" placeholder="Nick gracza...">
+            <select id="newUserRole" style="margin-bottom:0; width: 120px;">
+                <option value="member">MEMBER</option>
+                <option value="root">ROOT</option>
+            </select>
+            <button class="btn-login" style="width: auto; padding: 10px 15px;" onclick="adminAddUser()">DODAJ</button>
+        </div>
+
+        <div style="max-height: 350px; overflow-y: auto; border: 1px solid var(--surface-border); border-radius: 6px;">
+            <table class="discount-table" id="adminUsersTable" style="margin-bottom: 0;">
+                <thead style="background: rgba(0,0,0,0.4);">
+                    <tr><th style="padding: 8px;">Nick</th><th>Rola</th><th style="text-align:right; padding-right: 8px;">Akcja</th></tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
 <!-- Modal celu -->
 <div class="screen-modal-overlay" id="goalModal">
     <div class="screen-modal">
@@ -567,6 +486,15 @@
     </div>
 </div>
 
+<!-- Szczegóły zmiany Modal -->
+<div class="screen-modal-overlay" id="shiftDetailsModal">
+    <div class="screen-modal" style="width: 500px;">
+        <button class="screen-modal-close" onclick="closeShiftDetails()">✕</button>
+        <div class="screen-modal-title" id="detailsModalTitle">KARTA ZMIANY</div>
+        <div class="shift-details-content" id="shiftDetailsContent"></div>
+    </div>
+</div>
+
 <script>
 // ==========================================
 // KONFIGURACJA SUPABASE
@@ -576,6 +504,7 @@ const SUPABASE_KEY = "sb_publishable_DFPE12LWS2uhCarP3EbESg_yfEHSvVv";
 const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let currentUser = JSON.parse(localStorage.getItem('pos_current_user')) || null;
+let pendingConfirmCallback = null;
 
 const items = {
     nasiona: [
@@ -632,7 +561,23 @@ let currentChartMode = '24h';
 let earningsChart = null;
 let targetGoal = parseFloat(localStorage.getItem('pos_target_goal')) || 0;
 
-// Logowanie użytkownika po samym nicku
+// Zastąpienie natywnych alertów przez Custom Modal
+function openConfirmModal(title, desc, onConfirm) {
+    document.getElementById('modalTitle').innerText = title;
+    document.getElementById('modalDesc').innerText = desc;
+    document.getElementById('customConfirmModal').style.display = 'flex';
+    pendingConfirmCallback = onConfirm;
+}
+function closeConfirmModal() { 
+    document.getElementById('customConfirmModal').style.display = 'none'; 
+    pendingConfirmCallback = null; 
+}
+document.getElementById('btnModalConfirm').onclick = function() { 
+    if (pendingConfirmCallback) pendingConfirmCallback(); 
+    closeConfirmModal(); 
+};
+
+// Logowanie
 async function loginUser() {
     const input = document.getElementById('loginNickInput');
     const nick = input.value.trim();
@@ -643,10 +588,9 @@ async function loginUser() {
 
     try {
         let { data: user, error } = await db.from('users').select('*').ilike('nickname', nick).maybeSingle();
-        
         if (error) {
             console.error("Supabase Error:", error);
-            showToast('❌ BŁĄD BAZY', error.message || 'Sprawdź konsolę F12');
+            showToast('❌ BŁĄD BAZY', error.message);
             return;
         }
 
@@ -692,12 +636,71 @@ async function setupAppAfterLogin() {
 
     if (currentUser.role === 'root') {
         document.getElementById('rootWorkerFilterArea').style.display = 'block';
+        document.getElementById('btnOpenRootPanel').style.display = 'block';
         loadWorkerFilterOptions();
     } else {
         document.getElementById('rootWorkerFilterArea').style.display = 'none';
+        document.getElementById('btnOpenRootPanel').style.display = 'none';
     }
 
     await syncShiftsFromDB();
+}
+
+// PANEL ROOT
+async function openRootPanel() {
+    document.getElementById('rootPanelModal').style.display = 'flex';
+    await loadAdminUsers();
+}
+function closeRootPanel() {
+    document.getElementById('rootPanelModal').style.display = 'none';
+}
+
+async function loadAdminUsers() {
+    const { data: users, error } = await db.from('users').select('*').order('created_at', { ascending: false });
+    if(error) return;
+    const tbody = document.querySelector('#adminUsersTable tbody');
+    tbody.innerHTML = '';
+    users.forEach(u => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td style="padding: 8px;">${u.nickname}</td>
+            <td><span class="${u.role === 'root' ? 'badge-role-root' : 'badge-role-member'}">${u.role.toUpperCase()}</span></td>
+            <td style="text-align:right; padding-right: 8px;">
+                <button class="btn-shift-action btn-delete-shift" onclick="adminDeleteUser('${u.id}', '${u.nickname}')">✕ Usuń</button>
+            </td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+async function adminAddUser() {
+    const nick = document.getElementById('newUserName').value.trim();
+    const role = document.getElementById('newUserRole').value;
+    if(!nick) return;
+
+    const { error } = await db.from('users').insert([{ nickname: nick, role: role }]);
+    if(error) {
+        showToast('❌ BŁĄD', 'Nie udało się dodać (może nick już istnieje?)');
+    } else {
+        showToast('✅ DODANO', `Gracz ${nick} pomyślnie utworzony`);
+        document.getElementById('newUserName').value = '';
+        await loadAdminUsers();
+        loadWorkerFilterOptions();
+    }
+}
+
+function adminDeleteUser(id, nick) {
+    if(nick === currentUser.nickname) {
+        showToast('⚠️ UWAGA', 'Nie możesz usunąć samego siebie z panelu!');
+        return;
+    }
+    openConfirmModal("USUŃ GRACZA", `Czy na pewno chcesz usunąć gracza ${nick}? Wyczyszczone zostaną również wszystkie jego zmiany.`, async () => {
+        await db.from('users').delete().eq('id', id);
+        showToast('🗑️ USUNIĘTO', `Gracz ${nick} został usunięty.`);
+        await loadAdminUsers();
+        loadWorkerFilterOptions();
+        syncShiftsFromDB();
+    });
 }
 
 async function loadWorkerFilterOptions() {
@@ -705,19 +708,14 @@ async function loadWorkerFilterOptions() {
     const select = document.getElementById('workerSelectFilter');
     select.innerHTML = '<option value="ALL">🌐 Wszyscy pracownicy</option>';
     if (users) {
-        users.forEach(u => {
-            select.innerHTML += `<option value="${u.nickname}">👤 ${u.nickname}</option>`;
-        });
+        users.forEach(u => { select.innerHTML += `<option value="${u.nickname}">👤 ${u.nickname}</option>`; });
     }
 }
 
 async function syncShiftsFromDB() {
     try {
         let query = db.from('shifts').select('*').order('created_at', { ascending: false });
-        
-        if (currentUser.role !== 'root') {
-            query = query.eq('user_nickname', currentUser.nickname);
-        }
+        if (currentUser.role !== 'root') query = query.eq('user_nickname', currentUser.nickname);
 
         const { data, error } = await query;
         if (!error && data) {
@@ -734,9 +732,7 @@ async function syncShiftsFromDB() {
             const active = shifts.find(s => s.active && s.user === currentUser.nickname);
             activeShiftId = active ? active.id : null;
         }
-    } catch (e) {
-        console.error(e);
-    }
+    } catch (e) { console.error(e); }
     updateShiftStatusUI();
     renderHistory();
     updateChartData();
@@ -747,16 +743,7 @@ async function startShift() {
     const now = new Date().toISOString();
     const newId = Date.now().toString();
 
-    const newShift = {
-        id: newId,
-        user_nickname: currentUser.nickname,
-        start_time: now,
-        end_time: null,
-        earnings: 0,
-        sales_history: [],
-        is_active: true
-    };
-
+    const newShift = { id: newId, user_nickname: currentUser.nickname, start_time: now, end_time: null, earnings: 0, sales_history: [], is_active: true };
     const { error } = await db.from('shifts').insert([newShift]);
     if (!error) {
         activeShiftId = newId;
@@ -771,21 +758,14 @@ async function endShift() {
     const now = new Date().toISOString();
     const shift = shifts.find(s => s.id === activeShiftId);
     
-    await db.from('shifts').update({
-        end_time: now,
-        is_active: false
-    }).eq('id', activeShiftId);
-
+    await db.from('shifts').update({ end_time: now, is_active: false }).eq('id', activeShiftId);
     activeShiftId = null;
     await syncShiftsFromDB();
     showToast('🏁 ZMIANA', `Zakończono zmianę. Utarg: $${formatMoney(shift ? shift.earnings : 0)}`);
 }
 
 async function sell() {
-    if (!activeShiftId) {
-        showToast('⚠️ UWAGA', 'Najpierw wystartuj zmianę!');
-        return;
-    }
+    if (!activeShiftId) { showToast('⚠️ UWAGA', 'Najpierw wystartuj zmianę!'); return; }
 
     let totalBase = 0, soldItems = [];
     for (const key in items) {
@@ -807,21 +787,11 @@ async function sell() {
     const shift = shifts.find(s => s.id === activeShiftId);
     if (shift) {
         const updatedHistory = [...shift.salesHistory, {
-            timestamp: new Date().toISOString(),
-            earnings: zysk,
-            totalBeforeDiscount: totalBase,
-            discountPercent: discountPercent,
-            client: client,
-            role: currentRole,
-            items: soldItems
+            timestamp: new Date().toISOString(), earnings: zysk, totalBeforeDiscount: totalBase, discountPercent: discountPercent, client: client, role: currentRole, items: soldItems
         }];
         const newEarnings = shift.earnings + zysk;
 
-        await db.from('shifts').update({
-            earnings: newEarnings,
-            sales_history: updatedHistory
-        }).eq('id', activeShiftId);
-
+        await db.from('shifts').update({ earnings: newEarnings, sales_history: updatedHistory }).eq('id', activeShiftId);
         await syncShiftsFromDB();
         showToast('💵 SPRZEDAŻ', `Doliczono $${formatMoney(zysk)}`);
         resetInputs();
@@ -836,38 +806,28 @@ async function undo() {
         const amount = typeof last === 'number' ? last : last.earnings;
         const newEarnings = Math.max(0, shift.earnings - amount);
 
-        await db.from('shifts').update({
-            earnings: newEarnings,
-            sales_history: shift.salesHistory
-        }).eq('id', activeShiftId);
-
+        await db.from('shifts').update({ earnings: newEarnings, sales_history: shift.salesHistory }).eq('id', activeShiftId);
         await syncShiftsFromDB();
         showToast('↩️ COFNIĘTO', `Usunięto transakcję: -$${formatMoney(amount)}`);
     }
 }
 
-async function deleteShift(shiftId) {
-    if (currentUser.role !== 'root') {
-        showToast('⛔ ODMOWA', 'Tylko ROOT może usuwać wpisy z bazy');
-        return;
-    }
-    if (confirm("Czy na pewno chcesz usunąć ten wpis z bazy?")) {
+function deleteShift(shiftId) {
+    if (currentUser.role !== 'root') { showToast('⛔ ODMOWA', 'Tylko ROOT może usuwać wpisy z bazy'); return; }
+    openConfirmModal("USUŃ ZMIANĘ", "Czy na pewno chcesz bezpowrotnie usunąć tę zmianę z bazy danych?", async () => {
         await db.from('shifts').delete().eq('id', shiftId);
         await syncShiftsFromDB();
         showToast('🗑️ USUNIĘTO', 'Wpis został usunięty');
-    }
+    });
 }
 
-async function promptClearAll() {
-    if (currentUser.role !== 'root') {
-        showToast('⛔ ODMOWA', 'Tylko ROOT może wyczyścić całą historię');
-        return;
-    }
-    if (confirm("Czy na pewno chcesz usunąć WSZYSTKIE wpisy z bazy danych?")) {
+function promptClearAll() {
+    if (currentUser.role !== 'root') { showToast('⛔ ODMOWA', 'Tylko ROOT może wyczyścić całą historię'); return; }
+    openConfirmModal("WYCZYŚĆ WSZYSTKO", "Czy na pewno chcesz usunąć WSZYSTKIE wpisy z bazy danych? Tej akcji nie da się cofnąć.", async () => {
         await db.from('shifts').delete().neq('id', '0');
         await syncShiftsFromDB();
         showToast('🗑️ WYCZYSZCZONO', 'Wszystkie zmiany zostały usunięte');
-    }
+    });
 }
 
 function renderHistory() {
@@ -875,13 +835,10 @@ function renderHistory() {
     container.innerHTML = '';
     let totalMs = 0, totalMoney = 0, todayMoney = 0;
     const todayStr = formatDate(new Date().toISOString());
-
     const workerFilter = document.getElementById('workerSelectFilter') ? document.getElementById('workerSelectFilter').value : 'ALL';
 
     shifts.forEach(shift => {
-        if (currentUser.role === 'root' && workerFilter !== 'ALL' && shift.user !== workerFilter) {
-            return;
-        }
+        if (currentUser.role === 'root' && workerFilter !== 'ALL' && shift.user !== workerFilter) return;
 
         const d1 = formatDate(shift.startTime);
         const t1 = formatTime(shift.startTime);
@@ -905,7 +862,10 @@ function renderHistory() {
         div.innerHTML = `
             <div class="record-header">
                 <span class="record-date">${userTag}${d1}</span>
-                <div>${deleteBtn}</div>
+                <div>
+                    <button class="btn-shift-action btn-shift-info" onclick="openShiftDetails('${shift.id}')">📄 INFO</button>
+                    ${deleteBtn}
+                </div>
             </div>
             <div style="font-weight: 600; color: #fff;">${timeStr}</div>
             <div style="display:flex; justify-content:space-between; margin-top: 4px; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 3px;">
@@ -924,13 +884,40 @@ function renderHistory() {
     document.getElementById('dzisiajZysk').innerText = `$${formatMoney(todayMoney)}`;
 }
 
-// Eksport i import
+function openShiftDetails(shiftId) {
+    const shift = shifts.find(s => s.id === shiftId);
+    if (!shift) return;
+
+    document.getElementById('detailsModalTitle').innerText = `KARTA ZMIANY (${formatDate(shift.startTime)})`;
+    const content = document.getElementById('shiftDetailsContent');
+    content.innerHTML = '';
+
+    if (!shift.salesHistory || shift.salesHistory.length === 0) {
+        content.innerHTML = `<div class="legacy-msg">Brak zarejestrowanych transakcji na tej zmianie.</div>`;
+    } else {
+        const isLegacy = typeof shift.salesHistory[0] === 'number';
+        if (isLegacy) {
+            content.innerHTML = `<div class="legacy-msg">⚠️ Starsza wersja zmiany bez szczegółów.</div>`;
+        } else {
+            shift.salesHistory.slice().reverse().forEach((sale) => {
+                const card = document.createElement('div');
+                card.className = 'transaction-card';
+                let itemsHtml = '';
+                sale.items.forEach(it => { itemsHtml += `<div class="t-item"><span><span class="t-item-name">${it.qty}x ${it.name}</span> ($${formatMoney(it.price)}/szt)</span><span class="t-item-total">$${formatMoney(it.total)}</span></div>`; });
+                const discountTxt = sale.discountPercent > 0 ? `Rabat: ${sale.discountPercent*100}%` : `Brak rabatu`;
+                const clientTxt = sale.client !== 'Brak' ? sale.client : `Klient detaliczny`;
+                card.innerHTML = `<div class="t-header"><span>⏱️ ${formatDateTimeSeconds(sale.timestamp)}</span><span>ZYSK: $${formatMoney(sale.earnings)}</span></div><div class="t-meta">👤 Rola: ${sale.role.toUpperCase()} | 🏢 ${clientTxt} | 💸 ${discountTxt}</div><div>${itemsHtml}</div>`;
+                content.appendChild(card);
+            });
+        }
+    }
+    document.getElementById('shiftDetailsModal').style.display = 'flex';
+}
+function closeShiftDetails() { document.getElementById('shiftDetailsModal').style.display = 'none'; }
+
+// Eksport i import z wykorzystaniem okna Custom Confirm
 function exportDataBackup() {
-    const exportData = {
-        exportDate: new Date().toISOString(),
-        user: currentUser ? currentUser.nickname : 'unknown',
-        shifts: shifts
-    };
+    const exportData = { exportDate: new Date().toISOString(), user: currentUser ? currentUser.nickname : 'unknown', shifts: shifts };
     const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportData, null, 2));
     const dl = document.createElement('a');
     dl.setAttribute("href", dataStr);
@@ -939,18 +926,16 @@ function exportDataBackup() {
     showToast('💾 WYEKSPORTOWANO', 'Pobrano plik kopii');
 }
 
-async function importDataBackup(event) {
+function importDataBackup(event) {
     const file = event.target.files[0];
     if (!file) return;
     const reader = new FileReader();
-    reader.onload = async function(e) {
+    reader.onload = function(e) {
         try {
             const imported = JSON.parse(e.target.result);
-            if (!imported.shifts || !Array.isArray(imported.shifts)) {
-                showToast('❌ BŁĄD', 'Nieprawidłowy plik');
-                return;
-            }
-            if (confirm(`Wczytać ${imported.shifts.length} zmian do bazy danych?`)) {
+            if (!imported.shifts || !Array.isArray(imported.shifts)) { showToast('❌ BŁĄD', 'Nieprawidłowy plik'); return; }
+            
+            openConfirmModal("WCZYTAJ KOPIĘ BAZY", `Czy na pewno chcesz zaimportować ${imported.shifts.length} zmian do głównej bazy danych?`, async () => {
                 for (let s of imported.shifts) {
                     await db.from('shifts').upsert([{
                         id: s.id || Date.now().toString(),
@@ -964,10 +949,8 @@ async function importDataBackup(event) {
                 }
                 await syncShiftsFromDB();
                 showToast('✅ WCZYTANO', 'Pomyślnie wgrano dane do bazy');
-            }
-        } catch (err) {
-            showToast('❌ BŁĄD', 'Błąd podczas odczytu pliku');
-        }
+            });
+        } catch (err) { showToast('❌ BŁĄD', 'Błąd podczas odczytu pliku'); }
     };
     reader.readAsText(file);
     event.target.value = '';
@@ -982,7 +965,7 @@ function renderCategory(catKey, containerId) {
             <span class="item-name">${item.name}</span>
             <span class="item-price" onclick="stepItem('${item.id}', 1)">$${item.price.toLocaleString()}</span>
             <div class="stepper-control">
-                <input type="number" min="0" value="0" class="item-input" id="${item.id}" onchange="calculate()">
+                <input type="number" min="0" value="0" class="item-input" id="${item.id}" oninput="if(this.value<0)this.value=0; calculate()">
                 <div class="stepper-btn-group">
                     <button class="btn-step" onclick="stepItem('${item.id}', 1)">▲</button>
                     <button class="btn-step" onclick="stepItem('${item.id}', -1)">▼</button>
@@ -998,25 +981,16 @@ function stepItem(id, step) {
     input.value = Math.max(0, (parseInt(input.value) || 0) + step);
     calculate();
 }
-function setRole(role) {
-    currentRole = role;
-    document.getElementById('btn-pracownik').className = `btn ${role === 'pracownik' ? 'btn-pracownik' : 'btn-zarzad'}`;
-    document.getElementById('btn-zarzad').className = `btn ${role === 'zarzad' ? 'btn-pracownik' : 'btn-zarzad'}`;
-    calculate();
-}
+function setRole(role) { currentRole = role; document.getElementById('btn-pracownik').className = `btn ${role === 'pracownik' ? 'btn-pracownik' : 'btn-zarzad'}`; document.getElementById('btn-zarzad').className = `btn ${role === 'zarzad' ? 'btn-pracownik' : 'btn-zarzad'}`; calculate(); }
 function formatMoney(amount) { return Math.round(amount).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
 function pad(num) { return num.toString().padStart(2, '0'); }
 function formatDate(dateStr) { const d = new Date(dateStr); return `${pad(d.getDate())}.${pad(d.getMonth()+1)}.${d.getFullYear()}`; }
 function formatTime(dateStr) { const d = new Date(dateStr); return `${pad(d.getHours())}:${pad(d.getMinutes())}`; }
+function formatDateTimeSeconds(dateStr) { const d = new Date(dateStr); return `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())} ${pad(d.getDate())}.${pad(d.getMonth()+1)}.${d.getFullYear()}`; }
 
 function calculate() {
     let totalBase = 0, totalItems = 0;
-    for (const key in items) {
-        items[key].forEach(item => {
-            const qty = parseInt(document.getElementById(item.id).value) || 0;
-            totalBase += qty * item.price; totalItems += qty;
-        });
-    }
+    for (const key in items) { items[key].forEach(item => { const qty = parseInt(document.getElementById(item.id).value) || 0; totalBase += qty * item.price; totalItems += qty; }); }
     const client = document.getElementById('clientSelect').value;
     const discountPercent = (discounts[client] && discounts[client][currentRole] !== undefined) ? discounts[client][currentRole] : 0;
     const finalTotal = totalBase - (totalBase * discountPercent);
@@ -1024,10 +998,7 @@ function calculate() {
     document.getElementById('itemsCountBadge').innerText = `Pozycji: ${totalItems} szt.`;
     document.getElementById('val-zysk').innerText = `$${formatMoney(finalTotal)}`;
 }
-function resetInputs() {
-    for (const key in items) items[key].forEach(i => document.getElementById(i.id).value = 0);
-    calculate();
-}
+function resetInputs() { for (const key in items) items[key].forEach(i => document.getElementById(i.id).value = 0); calculate(); }
 function updateShiftStatusUI() {
     const statusText = document.getElementById('shiftStatusText');
     const dot = document.getElementById('shiftDot');
@@ -1055,12 +1026,7 @@ function toggleSearch() {
 }
 function filterProducts(q) {
     const clean = q.toLowerCase();
-    for (const k in items) {
-        items[k].forEach(i => {
-            const el = document.getElementById(`row-${i.id}`);
-            if (el) el.classList.toggle('hidden-item', clean !== '' && !i.name.toLowerCase().includes(clean));
-        });
-    }
+    for (const k in items) { items[k].forEach(i => { const el = document.getElementById(`row-${i.id}`); if (el) el.classList.toggle('hidden-item', clean !== '' && !i.name.toLowerCase().includes(clean)); }); }
 }
 function setHistoryFilter(f) {
     currentHistoryFilter = f;
@@ -1133,7 +1099,6 @@ function updateChartData() {
     const now = new Date();
     let labels = [], data = [];
 
-    // Filtrujemy zmiany wg wybranego pracownika dla ROOT
     const workerFilter = document.getElementById('workerSelectFilter') ? document.getElementById('workerSelectFilter').value : 'ALL';
     const relevantShifts = shifts.filter(s => {
         if (currentUser && currentUser.role === 'root' && workerFilter !== 'ALL') {
@@ -1147,29 +1112,21 @@ function updateChartData() {
         labels = recent.map((s, i) => `#${i + 1}`);
         data = recent.map(s => s.earnings || 0);
     } else if (currentChartMode === '24h') {
-        // Generujemy 24 sloty godzinowe
         for (let i = 23; i >= 0; i--) {
             labels.push(`${pad(new Date(now.getTime() - i * 3600000).getHours())}:00`);
             data.push(0);
         }
-
         relevantShifts.forEach(s => {
-            // Jeśli zmiana ma historię sprzedaży, grupujemy po dokładnym czasie transakcji
             if (s.salesHistory && s.salesHistory.length > 0) {
                 s.salesHistory.forEach(sale => {
                     const t = new Date(sale.timestamp || s.startTime).getTime();
                     const diffHours = Math.floor((now.getTime() - t) / 3600000);
-                    if (diffHours >= 0 && diffHours < 24) {
-                        data[23 - diffHours] += (sale.earnings || 0);
-                    }
+                    if (diffHours >= 0 && diffHours < 24) { data[23 - diffHours] += (sale.earnings || 0); }
                 });
             } else if (s.earnings > 0) {
-                // Jeśli zmiana nie ma pojedynczych transakcji (starszy zapis)
                 const t = new Date(s.endTime || s.startTime).getTime();
                 const diffHours = Math.floor((now.getTime() - t) / 3600000);
-                if (diffHours >= 0 && diffHours < 24) {
-                    data[23 - diffHours] += s.earnings;
-                }
+                if (diffHours >= 0 && diffHours < 24) { data[23 - diffHours] += s.earnings; }
             }
         });
     } else if (currentChartMode === '31d') {
@@ -1178,13 +1135,10 @@ function updateChartData() {
             labels.push(`${pad(d.getDate())}.${pad(d.getMonth() + 1)}`);
             data.push(0);
         }
-
         relevantShifts.forEach(s => {
             const t = new Date(s.endTime || s.startTime).getTime();
             const diffDays = Math.floor((now.getTime() - t) / 86400000);
-            if (diffDays >= 0 && diffDays < 31) {
-                data[30 - diffDays] += (s.earnings || 0);
-            }
+            if (diffDays >= 0 && diffDays < 31) { data[30 - diffDays] += (s.earnings || 0); }
         });
     }
 
@@ -1212,11 +1166,27 @@ function saveGoal() {
     localStorage.setItem('pos_target_goal', targetGoal);
     closeGoalModal();
     showToast('🎯 CEL', `Ustawiono cel: $${formatMoney(targetGoal)}`);
+    updateGoalUI();
 }
 function resetGoal() {
     targetGoal = 0;
     localStorage.removeItem('pos_target_goal');
     document.getElementById('goalProgressWrap').style.display = 'none';
+    document.getElementById('btnOpenGoalModal').style.display = 'block';
+}
+
+function updateGoalUI() {
+    const btnOpen = document.getElementById('btnOpenGoalModal');
+    const wrap = document.getElementById('goalProgressWrap');
+    const fill = document.getElementById('goalBarFill');
+    const txt = document.getElementById('goalTextDisplay');
+    if (targetGoal <= 0) { btnOpen.style.display = 'block'; wrap.style.display = 'none'; return; }
+    btnOpen.style.display = 'none'; wrap.style.display = 'flex';
+    let currentEarnings = 0;
+    if (activeShiftId) { const shift = shifts.find(s => s.id === activeShiftId); if (shift) currentEarnings = shift.earnings; }
+    const pct = Math.min(100, Math.round((currentEarnings / targetGoal) * 100));
+    fill.style.width = `${pct}%`;
+    txt.innerHTML = `<span>$${formatMoney(currentEarnings)}</span> / $${formatMoney(targetGoal)} (${pct}%)`;
 }
 
 function startLiveTimer() {
