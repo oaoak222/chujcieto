@@ -66,8 +66,8 @@
     .login-overlay {
         position: fixed;
         inset: 0;
-        background: rgba(6, 3, 5, 0.95);
-        backdrop-filter: blur(12px);
+        background: rgba(6, 3, 5, 0.96);
+        backdrop-filter: blur(14px);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -134,7 +134,7 @@
         box-shadow: 0 0 14px #fff;
     }
 
-    /* Pasek użytkownika w prawym rogu */
+    /* Pasek profilu użytkownika */
     .user-badge-bar {
         position: absolute;
         right: 50px;
@@ -353,6 +353,10 @@
     .screen-modal-title { color: var(--primary); font-family: 'Rajdhani', sans-serif; font-size: 17px; font-weight: 700; margin-bottom: 14px; }
     .screen-modal-input { width: 100%; background: #22131a; color: #fff; border: 1.5px solid var(--surface-border); border-radius: 6px; font-family: 'Rajdhani', sans-serif; font-size: 20px; font-weight: 700; text-align: center; padding: 8px; outline: none; margin-bottom: 14px; }
     .btn-screen-calc { width: 100%; background: var(--primary); color: #0d0408; font-family: 'Rajdhani', sans-serif; font-weight: 700; padding: 9px; font-size: 14px; border: none; border-radius: 5px; cursor: pointer; text-transform: uppercase; }
+
+    .theme-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 12px; }
+    .theme-btn { height: 40px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.2); cursor: pointer; }
+    .custom-color-input { width: 100%; height: 38px; border: 1px solid var(--surface-border); border-radius: 6px; background: transparent; cursor: pointer; outline: none; }
 </style>
 </head>
 <body>
@@ -545,13 +549,33 @@
     </div>
 </div>
 
+<!-- Modal motywu -->
+<div class="screen-modal-overlay" id="themeModal">
+    <div class="screen-modal">
+        <button class="screen-modal-close" onclick="closeThemeModal()">✕</button>
+        <div class="screen-modal-title">WYBIERZ MOTYW</div>
+        <div class="theme-grid">
+            <button class="theme-btn" style="background: #ff2a9d;" onclick="setThemePreset('#ff2a9d')"></button>
+            <button class="theme-btn" style="background: #0ea5e9;" onclick="setThemePreset('#0ea5e9')"></button>
+            <button class="theme-btn" style="background: #ef4444;" onclick="setThemePreset('#ef4444')"></button>
+            <button class="theme-btn" style="background: #00ff66;" onclick="setThemePreset('#00ff66')"></button>
+            <button class="theme-btn" style="background: #a855f7;" onclick="setThemePreset('#a855f7')"></button>
+            <button class="theme-btn" style="background: #f1f5f9;" onclick="setThemePreset('#f1f5f9')"></button>
+        </div>
+        <input type="color" id="customColorPicker" class="custom-color-input" onchange="setThemePreset(this.value)">
+    </div>
+</div>
+
 <script>
 // ==========================================
 // KONFIGURACJA SUPABASE (TWOJE KLUCZE)
 // ==========================================
-const SUPABASE_URL = "https://fcltnhxqlzokesalptbz.supabase.co"; // np. https://xyz.supabase.co
-const SUPABASE_KEY = "sb_publishable_DFPE12LWS2uhCarP3EbESg_yfEHSvVv"; // Twój klucz
-const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY); //
+const SUPABASE_URL = "https://fcltnhxqlzokesalptbz.supabase.co";
+
+// TUTAJ WKLEJ DŁUGI KLUCZ ZACZYNAJĄCY SIĘ OD "eyJhbGci..." Z ZAKŁADKI API -> anon / public:
+const SUPABASE_KEY = "TUTAJ_WKLEJ_DLUGI_KLUCZ_ANON_PUBLIC";
+
+const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let currentUser = JSON.parse(localStorage.getItem('pos_current_user')) || null;
 
@@ -621,10 +645,20 @@ async function loginUser() {
 
     try {
         let { data: user, error } = await db.from('users').select('*').ilike('nickname', nick).maybeSingle();
+        
+        if (error) {
+            console.error("Supabase Error:", error);
+            showToast('❌ BŁĄD BAZY', error.message || 'Sprawdź konsolę F12');
+            return;
+        }
+
         if (!user) {
-            // Nowy gracz - domyślnie member
             const { data: newUser, error: errCreate } = await db.from('users').insert([{ nickname: nick, role: 'member' }]).select().single();
-            if (errCreate) throw errCreate;
+            if (errCreate) {
+                console.error("Supabase Create Error:", errCreate);
+                showToast('❌ BŁĄD TWORZENIA', errCreate.message);
+                return;
+            }
             user = newUser;
         }
 
@@ -634,8 +668,8 @@ async function loginUser() {
         showToast('👋 WITAJ', `Zalogowano jako ${user.nickname} (${user.role.toUpperCase()})`);
         setupAppAfterLogin();
     } catch (e) {
-        console.error(e);
-        showToast('❌ BŁĄD', 'Nie udało się połączyć z bazą Supabase');
+        console.error("Catch error:", e);
+        showToast('❌ BŁĄD', e.message || 'Błąd połączenia z bazą');
     }
 }
 
@@ -685,7 +719,6 @@ async function syncShiftsFromDB() {
     try {
         let query = db.from('shifts').select('*').order('created_at', { ascending: false });
         
-        // Jeśli zwykły pracownik (member), pobierz tylko jego zmiany
         if (currentUser.role !== 'root') {
             query = query.eq('user_nickname', currentUser.nickname);
         }
@@ -702,7 +735,6 @@ async function syncShiftsFromDB() {
                 active: s.is_active
             }));
 
-            // Sprawdź, czy gracz ma trwającą zmianę
             const active = shifts.find(s => s.active && s.user === currentUser.nickname);
             activeShiftId = active ? active.id : null;
         }
@@ -734,6 +766,7 @@ async function startShift() {
         activeShiftId = newId;
         await syncShiftsFromDB();
         showToast('🔴 ZMIANA', 'Rozpoczęto zmianę');
+        startLiveTimer();
     }
 }
 
@@ -829,6 +862,18 @@ async function deleteShift(shiftId) {
     }
 }
 
+async function promptClearAll() {
+    if (currentUser.role !== 'root') {
+        showToast('⛔ ODMOWA', 'Tylko ROOT może wyczyścić całą historię');
+        return;
+    }
+    if (confirm("Czy na pewno chcesz usunąć WSZYSTKIE wpisy z bazy danych?")) {
+        await db.from('shifts').delete().neq('id', '0');
+        await syncShiftsFromDB();
+        showToast('🗑️ WYCZYSZCZONO', 'Wszystkie zmiany zostały usunięte');
+    }
+}
+
 function renderHistory() {
     const container = document.getElementById('historyContent');
     container.innerHTML = '';
@@ -838,7 +883,6 @@ function renderHistory() {
     const workerFilter = document.getElementById('workerSelectFilter') ? document.getElementById('workerSelectFilter').value : 'ALL';
 
     shifts.forEach(shift => {
-        // Filtr ROOT
         if (currentUser.role === 'root' && workerFilter !== 'ALL' && shift.user !== workerFilter) {
             return;
         }
@@ -884,7 +928,55 @@ function renderHistory() {
     document.getElementById('dzisiajZysk').innerText = `$${formatMoney(todayMoney)}`;
 }
 
-// Podstawowe renderowanie kategorii i funkcji sklepu
+// Eksport i import
+function exportDataBackup() {
+    const exportData = {
+        exportDate: new Date().toISOString(),
+        user: currentUser ? currentUser.nickname : 'unknown',
+        shifts: shifts
+    };
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportData, null, 2));
+    const dl = document.createElement('a');
+    dl.setAttribute("href", dataStr);
+    dl.setAttribute("download", `backup_${currentUser ? currentUser.nickname : 'pos'}_${new Date().toISOString().split('T')[0]}.json`);
+    dl.click();
+    showToast('💾 WYEKSPORTOWANO', 'Pobrano plik kopii');
+}
+
+async function importDataBackup(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = async function(e) {
+        try {
+            const imported = JSON.parse(e.target.result);
+            if (!imported.shifts || !Array.isArray(imported.shifts)) {
+                showToast('❌ BŁĄD', 'Nieprawidłowy plik');
+                return;
+            }
+            if (confirm(`Wczytać ${imported.shifts.length} zmian do bazy danych?`)) {
+                for (let s of imported.shifts) {
+                    await db.from('shifts').upsert([{
+                        id: s.id || Date.now().toString(),
+                        user_nickname: currentUser.nickname,
+                        start_time: s.startTime || s.start_time,
+                        end_time: s.endTime || s.end_time,
+                        earnings: s.earnings || 0,
+                        sales_history: s.salesHistory || s.sales_history || [],
+                        is_active: false
+                    }]);
+                }
+                await syncShiftsFromDB();
+                showToast('✅ WCZYTANO', 'Pomyślnie wgrano dane do bazy');
+            }
+        } catch (err) {
+            showToast('❌ BŁĄD', 'Błąd podczas odczytu pliku');
+        }
+    };
+    reader.readAsText(file);
+    event.target.value = '';
+}
+
 function renderCategory(catKey, containerId) {
     const container = document.getElementById(containerId);
     items[catKey].forEach(item => {
@@ -1008,6 +1100,43 @@ function updateChartData() {
     earningsChart.update();
 }
 
+function openThemeModal() { document.getElementById('themeModal').style.display = 'flex'; }
+function closeThemeModal() { document.getElementById('themeModal').style.display = 'none'; }
+function setThemePreset(color) {
+    document.documentElement.style.setProperty('--primary', color);
+    closeThemeModal();
+}
+
+function openGoalModal() { document.getElementById('goalModal').style.display = 'flex'; }
+function closeGoalModal() { document.getElementById('goalModal').style.display = 'none'; }
+function saveGoal() {
+    targetGoal = parseFloat(document.getElementById('goalInputVal').value) || 0;
+    localStorage.setItem('pos_target_goal', targetGoal);
+    closeGoalModal();
+    showToast('🎯 CEL', `Ustawiono cel: $${formatMoney(targetGoal)}`);
+}
+function resetGoal() {
+    targetGoal = 0;
+    localStorage.removeItem('pos_target_goal');
+    document.getElementById('goalProgressWrap').style.display = 'none';
+}
+
+function startLiveTimer() {
+    if (liveTimerInterval) clearInterval(liveTimerInterval);
+    liveTimerInterval = setInterval(() => {
+        const timerEl = document.getElementById('shiftLiveTimer');
+        if (activeShiftId) {
+            const shift = shifts.find(s => s.id === activeShiftId);
+            if (shift) {
+                const totalSec = Math.floor((Date.now() - new Date(shift.startTime).getTime()) / 1000);
+                timerEl.innerText = `(${pad(Math.floor(totalSec / 3600))}:${pad(Math.floor((totalSec % 3600) / 60))}:${pad(totalSec % 60)})`;
+                return;
+            }
+        }
+        timerEl.innerText = '';
+    }, 1000);
+}
+
 window.onload = () => {
     renderCategory('nasiona', 'cat-nasiona');
     renderCategory('produkty', 'cat-produkty');
@@ -1017,6 +1146,7 @@ window.onload = () => {
     document.getElementById('clientSelect').addEventListener('change', calculate);
     initChart();
     calculate();
+    startLiveTimer();
     setupAppAfterLogin();
 };
 </script>
