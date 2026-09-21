@@ -677,6 +677,7 @@ const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 let currentUser = JSON.parse(localStorage.getItem('pos_current_user')) || null;
 let pendingConfirmCallback = null;
 let heartbeatInterval = null;
+let adminRefreshInterval = null;
 
 const items = {
     nasiona: [
@@ -742,12 +743,13 @@ function startHeartbeat() {
     if (!currentUser || !currentUser.nickname) return;
     const sendPulse = async () => {
         try {
-            await db.from('users').update({ last_seen: new Date().toISOString() }).eq('nickname', currentUser.nickname);
+            // Używamy kolumny id użytkownika, aby zagwarantować poprawny zapis
+            await db.from('users').update({ last_seen: new Date().toISOString() }).eq('id', currentUser.id);
         } catch(e) {}
     };
     sendPulse();
     if (heartbeatInterval) clearInterval(heartbeatInterval);
-    heartbeatInterval = setInterval(sendPulse, 8000);
+    heartbeatInterval = setInterval(sendPulse, 6000);
 }
 
 function applyThemeCore(hex) {
@@ -783,7 +785,7 @@ function applyThemeCore(hex) {
 }
 
 async function saveUserSettingsToDB() {
-    if (!currentUser || !currentUser.nickname) return;
+    if (!currentUser || !currentUser.id) return;
     try {
         await db.from('users').update({
             settings: {
@@ -792,7 +794,7 @@ async function saveUserSettingsToDB() {
                 recentColors: recentCustomColors,
                 favoriteColors: favoriteColors
             }
-        }).eq('nickname', currentUser.nickname);
+        }).eq('id', currentUser.id);
     } catch(e) {}
 }
 
@@ -1004,9 +1006,9 @@ async function loginUser() {
 }
 
 async function logoutUser() {
-    if (currentUser && currentUser.nickname) {
+    if (currentUser && currentUser.id) {
         try {
-            await db.from('users').update({ last_seen: null }).eq('nickname', currentUser.nickname);
+            await db.from('users').update({ last_seen: null }).eq('id', currentUser.id);
         } catch(e) {}
     }
     localStorage.removeItem('pos_current_user');
@@ -1039,9 +1041,12 @@ async function setupAppAfterLogin() {
 async function openRootPanel() { 
     document.getElementById('rootPanelModal').style.display = 'flex'; 
     await loadAdminUsers(); 
+    if (adminRefreshInterval) clearInterval(adminRefreshInterval);
+    adminRefreshInterval = setInterval(loadAdminUsers, 4000); // odświeżaj listę w panelu co 4 sekundy
 }
 function closeRootPanel() { 
     document.getElementById('rootPanelModal').style.display = 'none'; 
+    if (adminRefreshInterval) clearInterval(adminRefreshInterval);
 }
 
 async function loadAdminUsers() {
@@ -1055,7 +1060,7 @@ async function loadAdminUsers() {
         let isOnline = false;
         if (u.last_seen) {
             const lastSeenTime = new Date(u.last_seen).getTime();
-            if (now - lastSeenTime < 20000) {
+            if (now - lastSeenTime < 15000) { // do 15 sekund braku pulsu = online
                 isOnline = true;
             }
         }
@@ -1688,8 +1693,8 @@ window.onload = () => {
 };
 
 window.addEventListener('beforeunload', () => {
-    if (currentUser && currentUser.nickname) {
-        navigator.sendBeacon?.(SUPABASE_URL + '/rest/v1/users?nickname=eq.' + encodeURIComponent(currentUser.nickname), JSON.stringify({ last_seen: null }));
+    if (currentUser && currentUser.id) {
+        navigator.sendBeacon?.(SUPABASE_URL + '/rest/v1/users?id=eq.' + currentUser.id, JSON.stringify({ last_seen: null }));
     }
 });
 </script>
