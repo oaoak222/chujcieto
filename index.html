@@ -740,15 +740,11 @@ let recentCustomColors = JSON.parse(localStorage.getItem('pos_recent_custom_colo
 let favoriteColors = JSON.parse(localStorage.getItem('pos_favorite_colors')) || [];
 
 function startHeartbeat() {
-    if (!currentUser || !currentUser.nickname) return;
+    if (!currentUser || !currentUser.id) return;
     const sendPulse = async () => {
         try {
-            // Zapisujemy aktywność do tabeli shifts za pomocą specjalnego wpisu pulsu lub bezpośrednio w bazie
-            const nowIso = new Date().toISOString();
-            await db.from('users').update({ last_seen: nowIso }).eq('id', currentUser.id);
-        } catch(e) {
-            // Jeśli kolumny last_seen brakuje w bazie, zapasowo zapisujemy w tabeli shifts jako aktywny rekord pulsu
-        }
+            await db.from('users').update({ last_seen: new Date().toISOString() }).eq('id', currentUser.id);
+        } catch(e) {}
     };
     sendPulse();
     if (heartbeatInterval) clearInterval(heartbeatInterval);
@@ -1065,7 +1061,7 @@ async function loadAdminUsers() {
         let isOnline = false;
         if (u.last_seen) {
             const lastSeenTime = new Date(u.last_seen).getTime();
-            // 10 sekund tolerancji na odświeżenie pulsu przez heartbeat w bazie
+            // Jeśli ostatni sygnał w bazie był w ciągu ostatnich 10 sekund -> ONLINE
             if (now - lastSeenTime < 10000) {
                 isOnline = true;
             }
