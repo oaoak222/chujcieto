@@ -128,7 +128,6 @@
     .btn-theme-toggle { background: var(--surface); backdrop-filter: blur(10px); border: 1px solid var(--surface-border); color: var(--primary); border-radius: 8px; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 18px; box-shadow: 0 4px 18px rgba(0, 0, 0, 0.6); transition: all 0.2s ease-in-out; }
     .btn-theme-toggle:hover { border-color: var(--primary); background: var(--surface-hover); box-shadow: 0 0 16px var(--primary-glow); transform: scale(1.05); }
 
-    /* Oryginalne proporcje i węższe tabele po prawej stronie */
     .container { 
         display: grid; 
         grid-template-columns: minmax(280px, 1.15fr) minmax(280px, 1.15fr) 340px 330px; 
@@ -325,6 +324,10 @@
     .t-meta { font-size: 11px; color: #d9a9c0; margin-bottom: 6px; }
     .t-item { display: flex; justify-content: space-between; font-size: 12px; color: #fdf0f6; margin-bottom: 3px; }
 
+    .online-dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; margin-right: 6px; }
+    .online-dot.online { background: var(--neon-green); box-shadow: 0 0 8px var(--neon-green); }
+    .online-dot.offline { background: var(--neon-red); box-shadow: 0 0 8px var(--neon-red); }
+
     @keyframes pulseRadar { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.4); opacity: 0.6; box-shadow: 0 0 14px var(--primary); } 100% { transform: scale(1); opacity: 1; } }
 
     @media (max-width: 1350px) {
@@ -383,14 +386,12 @@
 </div>
 
 <div class="container">
-    <!-- Kolumna 1 -->
     <div class="column">
         <div class="box" id="cat-nasiona"><h3 class="box-title">🌱 Nasiona Weedu</h3></div>
         <div class="box" id="cat-produkty"><h3 class="box-title">📦 Produkty & Akcesoria</h3></div>
         <div class="box" id="cat-nawozy"><h3 class="box-title">🧪 Nawozy</h3></div>
     </div>
 
-    <!-- Kolumna 2 -->
     <div class="column">
         <div class="box" id="cat-jedzenie"><h3 class="box-title">🍪 Jedzenie & Picie</h3></div>
         <div class="box" id="cat-jointy"><h3 class="box-title">🚬 Jointy</h3></div>
@@ -407,7 +408,6 @@
         </div>
     </div>
 
-    <!-- Kolumna 3 (Węższa) -->
     <div class="column">
         <div class="box">
             <span class="label">🏢 Firma / klient</span>
@@ -486,7 +486,6 @@
         </div>
     </div>
 
-    <!-- Kolumna 4 (Historia - Węższa) -->
     <div class="history-panel">
         <div class="history-header">
             <div class="history-header-top">
@@ -552,6 +551,7 @@
                 <thead style="background: rgba(0,0,0,0.5);">
                     <tr>
                         <th style="padding: 8px;">Nick</th>
+                        <th>Status</th>
                         <th>Ranga</th>
                         <th style="text-align:right; padding-right: 8px;">Akcje</th>
                     </tr>
@@ -676,6 +676,7 @@ const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let currentUser = JSON.parse(localStorage.getItem('pos_current_user')) || null;
 let pendingConfirmCallback = null;
+let heartbeatInterval = null;
 
 const items = {
     nasiona: [
@@ -736,6 +737,18 @@ let savedScale = localStorage.getItem('pos_ui_scale') || '1';
 let savedTheme = localStorage.getItem('pos_theme') || '#ff2a9d';
 let recentCustomColors = JSON.parse(localStorage.getItem('pos_recent_custom_colors')) || [];
 let favoriteColors = JSON.parse(localStorage.getItem('pos_favorite_colors')) || [];
+
+function startHeartbeat() {
+    if (!currentUser || !currentUser.nickname) return;
+    const sendPulse = async () => {
+        try {
+            await db.from('users').update({ last_seen: new Date().toISOString() }).eq('nickname', currentUser.nickname);
+        } catch(e) {}
+    };
+    sendPulse();
+    if (heartbeatInterval) clearInterval(heartbeatInterval);
+    heartbeatInterval = setInterval(sendPulse, 8000);
+}
 
 function applyThemeCore(hex) {
     if (!hex) return;
@@ -962,7 +975,7 @@ async function loginUser() {
         let { data: user, error } = await db.from('users').select('*').ilike('nickname', nick).maybeSingle();
         if (error) { showToast('❌ BŁĄD BAZY', error.message); return; }
         if (!user) {
-            const { data: newUser, error: errCreate } = await db.from('users').insert([{ nickname: nick, role: 'member' }]).select().single();
+            const { data: newUser, error: errCreate } = await db.from('users').insert([{ nickname: nick, role: 'member', last_seen: new Date().toISOString() }]).select().single();
             if (errCreate) { showToast('❌ BŁĄD TWORZENIA', errCreate.message); return; }
             user = newUser;
         }
@@ -986,10 +999,19 @@ async function loginUser() {
         document.getElementById('loginOverlay').style.display = 'none';
         showToast('👋 WITAJ', `Zalogowano jako ${user.nickname} (${user.role.toUpperCase()})`);
         setupAppAfterLogin();
+        startHeartbeat();
     } catch (e) { showToast('❌ BŁĄD', e.message || 'Błąd połączenia z bazą'); }
 }
 
-function logoutUser() { localStorage.removeItem('pos_current_user'); location.reload(); }
+async function logoutUser() {
+    if (currentUser && currentUser.nickname) {
+        try {
+            await db.from('users').update({ last_seen: null }).eq('nickname', currentUser.nickname);
+        } catch(e) {}
+    }
+    localStorage.removeItem('pos_current_user');
+    location.reload();
+}
 
 async function setupAppAfterLogin() {
     if (!currentUser) { document.getElementById('loginOverlay').style.display = 'flex'; return; }
@@ -1010,6 +1032,7 @@ async function setupAppAfterLogin() {
     }
 
     updateDynamicHeaderLayout();
+    startHeartbeat();
     await syncShiftsFromDB();
 }
 
@@ -1026,10 +1049,24 @@ async function loadAdminUsers() {
     if(error) return;
     const tbody = document.querySelector('#adminUsersTable tbody');
     tbody.innerHTML = '';
+    
+    const now = new Date().getTime();
     users.forEach(u => {
+        let isOnline = false;
+        if (u.last_seen) {
+            const lastSeenTime = new Date(u.last_seen).getTime();
+            if (now - lastSeenTime < 20000) {
+                isOnline = true;
+            }
+        }
+
         const tr = document.createElement('tr');
         tr.innerHTML = `
             <td style="padding: 8px; font-weight:700;">${u.nickname}</td>
+            <td>
+                <span class="online-dot ${isOnline ? 'online' : 'offline'}" title="${isOnline ? 'Online' : 'Offline'}"></span>
+                <span style="font-size:11px; color:${isOnline ? 'var(--neon-green)' : 'var(--neon-red)'};">${isOnline ? 'ONLINE' : 'OFFLINE'}</span>
+            </td>
             <td>
                 <select onchange="adminChangeRole('${u.id}', this.value)" style="padding:2px 4px; font-size:11px; margin-bottom:0; width:90px;">
                     <option value="member" ${u.role === 'member' ? 'selected' : ''}>MEMBER</option>
@@ -1391,7 +1428,7 @@ function renderCategory(catKey, containerId) {
             <span class="item-name">${item.name}</span>
             <span class="item-price" onclick="stepItem('${item.id}', 1)">$${item.price.toLocaleString()}</span>
             <div class="stepper-control">
-                <input type="number" min="0" value="0" class="item-input" id="${item.id}" onfocus="this.select()" oninput="calculate()">
+                <input type="number" min="0" value="0" class="item-input" id="${item.id}" onfocus="this.select()" onblur="if(this.value==='')this.value='0'; calculate();" oninput="calculate()">
                 <div class="stepper-btn-group">
                     <button class="btn-step" onclick="stepItem('${item.id}', 1)">▲</button>
                     <button class="btn-step" onclick="stepItem('${item.id}', -1)">▼</button>
@@ -1421,8 +1458,9 @@ function calculate() {
     for (const key in items) {
         items[key].forEach(item => {
             const input = document.getElementById(item.id);
-            let qty = parseInt(input.value);
-            if (isNaN(qty) || qty < 0) qty = 0;
+            if (!input) return;
+            let val = input.value === '' ? 0 : parseInt(input.value);
+            let qty = isNaN(val) || val < 0 ? 0 : val;
             totalBase += qty * item.price; 
             totalItems += qty; 
         }); 
@@ -1434,7 +1472,7 @@ function calculate() {
     document.getElementById('itemsCountBadge').innerText = `Pozycji: ${totalItems} szt.`;
     document.getElementById('val-zysk').innerText = `$${formatMoney(finalTotal)}`;
 }
-function resetInputs() { for (const key in items) items[key].forEach(i => document.getElementById(i.id).value = 0); calculate(); }
+function resetInputs() { for (const key in items) items[key].forEach(i => { const el = document.getElementById(i.id); if(el) el.value = 0; }); calculate(); }
 function updateShiftStatusUI() {
     const statusText = document.getElementById('shiftStatusText');
     const dot = document.getElementById('shiftDot');
@@ -1648,6 +1686,12 @@ window.onload = () => {
     setupOutsideModalClick();
     setupAppAfterLogin();
 };
+
+window.addEventListener('beforeunload', () => {
+    if (currentUser && currentUser.nickname) {
+        navigator.sendBeacon?.(SUPABASE_URL + '/rest/v1/users?nickname=eq.' + encodeURIComponent(currentUser.nickname), JSON.stringify({ last_seen: null }));
+    }
+});
 </script>
 </body>
 </html>
