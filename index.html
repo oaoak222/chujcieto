@@ -328,58 +328,27 @@
     .online-dot.online { background: var(--neon-green); box-shadow: 0 0 8px var(--neon-green); }
     .online-dot.offline { background: var(--neon-red); box-shadow: 0 0 8px var(--neon-red); }
 
-    /* Pasek nawigacji mobilnej (widoczny tylko na telefonie) */
-    .mobile-tabs { display: none; }
+    .audit-log-item { background: rgba(26, 18, 22, 0.7); border: 1px solid var(--surface-border); border-radius: 6px; padding: 8px 10px; margin-bottom: 6px; font-size: 11.5px; }
+    .audit-log-time { color: #d9a9c0; font-size: 10.5px; }
+    .audit-log-text { color: #fff; font-weight: 600; margin-top: 2px; }
 
     @keyframes pulseRadar { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.4); opacity: 0.6; box-shadow: 0 0 14px var(--primary); } 100% { transform: scale(1); opacity: 1; } }
 
-    /* RESPONSYWNOŚĆ DLA TELEFONÓW (< 768px) – BEZ ZMIAN NA KOMPUTERZE */
+    /* PEŁNA RESPONSYWNOŚĆ DLA TELEFONÓW (< 768px): wszystko pod sobą w kolumnie */
     @media (max-width: 768px) {
-        .container { display: flex; flex-direction: column; }
-        
-        /* Pasek zakładek na telefonie */
-        .mobile-tabs {
-            display: flex;
-            gap: 6px;
-            margin-bottom: 12px;
-            flex-shrink: 0;
+        .container { 
+            display: flex !important; 
+            flex-direction: column !important; 
+            gap: 12px !important;
         }
-        .m-tab {
-            flex: 1;
-            background: var(--surface);
-            border: 1px solid var(--surface-border);
-            color: var(--text-muted);
-            padding: 8px;
-            text-align: center;
-            font-family: 'Rajdhani', sans-serif;
-            font-weight: 700;
-            font-size: 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            text-transform: uppercase;
+        .column { 
+            max-height: none !important; 
+            overflow: visible !important; 
+            height: auto !important; 
         }
-        .m-tab.active {
-            background: var(--primary);
-            color: #1a020d;
-            border-color: var(--primary);
-            box-shadow: 0 0 10px var(--primary-glow);
-        }
-
-        /* Ukrywanie/pokazywanie kolumn na telefonie za pomocą zakładek */
-        .container > .column,
-        .container > .history-panel {
-            display: none !important;
-        }
-        .container > .column.mobile-active,
-        .container > .history-panel.mobile-active {
-            display: flex !important;
-        }
-        .column {
-            max-height: none !important;
-        }
-        .history-panel {
-            max-height: none !important;
-            height: 70vh !important;
+        .history-panel { 
+            max-height: none !important; 
+            height: auto !important; 
         }
     }
 </style>
@@ -430,23 +399,14 @@
     </div>
 </div>
 
-<!-- Zakładki nawigacyjne widoczne tylko na telefonie -->
-<div class="mobile-tabs" id="mobileTabsBar">
-    <div class="m-tab active" onclick="switchMobileTab(0)">1. Produkty</div>
-    <div class="m-tab" onclick="switchMobileTab(1)">2. Akcje & Suma</div>
-    <div class="m-tab" onclick="switchMobileTab(2)">3. Historia</div>
-</div>
-
 <div class="container">
-    <!-- Kolumna 1: Produkty cz. 1 -->
-    <div class="column mobile-active" id="mCol0">
+    <div class="column">
         <div class="box" id="cat-nasiona"><h3 class="box-title">🌱 Nasiona Weedu</h3></div>
         <div class="box" id="cat-produkty"><h3 class="box-title">📦 Produkty & Akcesoria</h3></div>
         <div class="box" id="cat-nawozy"><h3 class="box-title">🧪 Nawozy</h3></div>
     </div>
 
-    <!-- Kolumna 2: Produkty cz. 2 i Wykres -->
-    <div class="column" id="mCol0_b">
+    <div class="column">
         <div class="box" id="cat-jedzenie"><h3 class="box-title">🍪 Jedzenie & Picie</h3></div>
         <div class="box" id="cat-jointy"><h3 class="box-title">🚬 Jointy</h3></div>
         <div class="box chart-box">
@@ -462,8 +422,7 @@
         </div>
     </div>
 
-    <!-- Kolumna 3: Akcje, Klienci, Suma, Sprzedane -->
-    <div class="column" id="mCol1">
+    <div class="column">
         <div class="box">
             <span class="label">🏢 Firma / klient</span>
             <select id="clientSelect">
@@ -541,8 +500,7 @@
         </div>
     </div>
 
-    <!-- Kolumna 4: Historia -->
-    <div class="history-panel" id="mCol2">
+    <div class="history-panel">
         <div class="history-header">
             <div class="history-header-top">
                 <span class="history-header-title">📜 HISTORIA</span>
@@ -589,31 +547,42 @@
 </div>
 
 <div class="screen-modal-overlay" id="rootPanelModal">
-    <div class="screen-modal" style="width: 580px; max-width: 95%;">
+    <div class="screen-modal" style="width: 620px; max-width: 95%;">
         <button class="screen-modal-close" onclick="closeRootPanel()">✕</button>
         <div class="screen-modal-title">👑 PANEL ROOT — ZARZĄDZANIE</div>
         
-        <div style="display:flex; gap: 8px; margin-bottom: 15px;">
-            <input type="text" id="newUserName" class="login-input" style="margin-bottom:0;" placeholder="Nick nowego gracza...">
-            <select id="newUserRole" style="margin-bottom:0; width: 120px;">
-                <option value="member">MEMBER</option>
-                <option value="root">ROOT</option>
-            </select>
-            <button class="btn-login" style="width: auto; padding: 10px 15px;" onclick="adminAddUser()">DODAJ</button>
+        <div class="btn-tab-group" style="margin-bottom: 12px;">
+            <button class="btn-tab active" id="adminTabUsers" onclick="switchAdminTab('users')">👥 Użytkownicy & Statusy</button>
+            <button class="btn-tab" id="adminTabAudit" onclick="switchAdminTab('audit')">📝 Logi Audytu</button>
         </div>
 
-        <div style="max-height: 380px; overflow-y: auto; border: 1px solid var(--surface-border); border-radius: 6px;">
-            <table class="discount-table" id="adminUsersTable" style="margin-bottom: 0;">
-                <thead style="background: rgba(0,0,0,0.5);">
-                    <tr>
-                        <th style="padding: 8px;">Nick</th>
-                        <th>Status</th>
-                        <th>Ranga</th>
-                        <th style="text-align:right; padding-right: 8px;">Akcje</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
+        <div id="adminSectionUsers">
+            <div style="display:flex; gap: 8px; margin-bottom: 12px;">
+                <input type="text" id="newUserName" class="login-input" style="margin-bottom:0;" placeholder="Nick nowego gracza...">
+                <select id="newUserRole" style="margin-bottom:0; width: 120px;">
+                    <option value="member">MEMBER</option>
+                    <option value="root">ROOT</option>
+                </select>
+                <button class="btn-login" style="width: auto; padding: 10px 15px;" onclick="adminAddUser()">DODAJ</button>
+            </div>
+
+            <div style="max-height: 320px; overflow-y: auto; border: 1px solid var(--surface-border); border-radius: 6px;">
+                <table class="discount-table" id="adminUsersTable" style="margin-bottom: 0;">
+                    <thead style="background: rgba(0,0,0,0.5);">
+                        <tr>
+                            <th style="padding: 8px;">Nick</th>
+                            <th>Status</th>
+                            <th>Ranga</th>
+                            <th style="text-align:right; padding-right: 8px;">Akcje</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="adminSectionAudit" style="display: none;">
+            <div style="max-height: 370px; overflow-y: auto; text-align: left; padding-right: 4px;" id="auditLogContainer"></div>
         </div>
     </div>
 </div>
@@ -795,31 +764,6 @@ let savedTheme = localStorage.getItem('pos_theme') || '#ff2a9d';
 let recentCustomColors = JSON.parse(localStorage.getItem('pos_recent_custom_colors')) || [];
 let favoriteColors = JSON.parse(localStorage.getItem('pos_favorite_colors')) || [];
 
-function switchMobileTab(index) {
-    const tabs = document.querySelectorAll('.m-tab');
-    tabs.forEach((t, i) => t.classList.toggle('active', i === index));
-
-    const col0 = document.getElementById('mCol0');
-    const col0b = document.getElementById('mCol0_b');
-    const col1 = document.getElementById('mCol1');
-    const col2 = document.getElementById('mCol2');
-
-    // Reset wyświetlania dla telefonu
-    col0.classList.remove('mobile-active');
-    col0b.classList.remove('mobile-active');
-    col1.classList.remove('mobile-active');
-    col2.classList.remove('mobile-active');
-
-    if (index === 0) {
-        col0.classList.add('mobile-active');
-        col0b.classList.add('mobile-active');
-    } else if (index === 1) {
-        col1.classList.add('mobile-active');
-    } else if (index === 2) {
-        col2.classList.add('mobile-active');
-    }
-}
-
 function startHeartbeat() {
     if (!currentUser || !currentUser.id) return;
     const sendPulse = async () => {
@@ -830,6 +774,47 @@ function startHeartbeat() {
     sendPulse();
     if (heartbeatInterval) clearInterval(heartbeatInterval);
     heartbeatInterval = setInterval(sendPulse, 4000);
+}
+
+function logAuditAction(actionDesc) {
+    if (!currentUser || currentUser.role !== 'root') return;
+    try {
+        const auditLogs = JSON.parse(localStorage.getItem('pos_audit_logs')) || [];
+        auditLogs.unshift({
+            time: new Date().toISOString(),
+            author: currentUser.nickname,
+            action: actionDesc
+        });
+        if (auditLogs.length > 50) auditLogs.pop();
+        localStorage.setItem('pos_audit_logs', JSON.stringify(auditLogs));
+    } catch(e) {}
+}
+
+function switchAdminTab(tab) {
+    document.getElementById('adminTabUsers').className = `btn-tab ${tab === 'users' ? 'active' : ''}`;
+    document.getElementById('adminTabAudit').className = `btn-tab ${tab === 'audit' ? 'active' : ''}`;
+    document.getElementById('adminSectionUsers').style.display = tab === 'users' ? 'block' : 'none';
+    document.getElementById('adminSectionAudit').style.display = tab === 'audit' ? 'block' : 'none';
+    if (tab === 'audit') renderAuditLogs();
+}
+
+function renderAuditLogs() {
+    const container = document.getElementById('auditLogContainer');
+    container.innerHTML = '';
+    const logs = JSON.parse(localStorage.getItem('pos_audit_logs')) || [];
+    if (logs.length === 0) {
+        container.innerHTML = `<div style="text-align:center; padding:15px; color:#d9a9c0; font-size:12px;">Brak zarejestrowanych akcji w logach audytu.</div>`;
+        return;
+    }
+    logs.forEach(l => {
+        const div = document.createElement('div');
+        div.className = 'audit-log-item';
+        div.innerHTML = `
+            <div class="audit-log-time">⏱️ ${formatDateTimeSeconds(l.time)} — <b>[${l.author}]</b></div>
+            <div class="audit-log-text">${l.action}</div>
+        `;
+        container.appendChild(div);
+    });
 }
 
 function applyThemeCore(hex) {
@@ -1122,6 +1107,7 @@ async function setupAppAfterLogin() {
 
 async function openRootPanel() { 
     document.getElementById('rootPanelModal').style.display = 'flex'; 
+    switchAdminTab('users');
     await loadAdminUsers(); 
     if (adminRefreshInterval) clearInterval(adminRefreshInterval);
     adminRefreshInterval = setInterval(loadAdminUsers, 3000);
@@ -1155,7 +1141,7 @@ async function loadAdminUsers() {
                 <span style="font-size:11px; color:${isOnline ? 'var(--neon-green)' : 'var(--neon-red)'};">${isOnline ? 'ONLINE' : 'OFFLINE'}</span>
             </td>
             <td>
-                <select onchange="adminChangeRole('${u.id}', this.value)" style="padding:2px 4px; font-size:11px; margin-bottom:0; width:90px;">
+                <select onchange="adminChangeRole('${u.id}', '${u.nickname}', this.value)" style="padding:2px 4px; font-size:11px; margin-bottom:0; width:90px;">
                     <option value="member" ${u.role === 'member' ? 'selected' : ''}>MEMBER</option>
                     <option value="root" ${u.role === 'root' ? 'selected' : ''}>ROOT</option>
                 </select>
@@ -1169,8 +1155,9 @@ async function loadAdminUsers() {
     });
 }
 
-async function adminChangeRole(userId, newRole) {
+async function adminChangeRole(userId, userNick, newRole) {
     await db.from('users').update({ role: newRole }).eq('id', userId);
+    logAuditAction(`Zmieniono rangę gracza **${userNick}** na **${newRole.toUpperCase()}**`);
     showToast('👑 ROLA ZMIENIONA', `Zaktualizowano rangę na ${newRole.toUpperCase()}`);
 }
 
@@ -1180,13 +1167,20 @@ async function adminAddUser() {
     if(!nick) return;
     const { error } = await db.from('users').insert([{ nickname: nick, role: role }]);
     if(error) { showToast('❌ BŁĄD', 'Nie udało się dodać (może nick już istnieje?)'); } 
-    else { showToast('✅ DODANO', `Gracz ${nick} pomyślnie utworzony`); document.getElementById('newUserName').value = ''; await loadAdminUsers(); loadWorkerFilterOptions(); }
+    else {
+        logAuditAction(`Dodano nowego użytkownika: **${nick}** (${role.toUpperCase()})`);
+        showToast('✅ DODANO', `Gracz ${nick} pomyślnie utworzony`);
+        document.getElementById('newUserName').value = '';
+        await loadAdminUsers();
+        loadWorkerFilterOptions();
+    }
 }
 
 function adminDeleteUser(id, nick) {
     if(nick === currentUser.nickname) { showToast('⚠️ UWAGA', 'Nie możesz usunąć samego siebie z panelu!'); return; }
     openConfirmModal("USUŃ GRACZA", `Czy na pewno chcesz usunąć gracza ${nick}? Wyczyszczone zostaną również wszystkie jego zmiany.`, async () => {
         await db.from('users').delete().eq('id', id);
+        logAuditAction(`Usunięto użytkownika: **${nick}**`);
         showToast('🗑️ USUNIĘTO', `Gracz ${nick} został usunięty.`);
         await loadAdminUsers(); loadWorkerFilterOptions(); syncShiftsFromDB();
     });
@@ -1348,6 +1342,7 @@ async function undo() {
 function deleteShift(shiftId) {
     openConfirmModal("USUŃ ZMIANĘ", "Czy na pewno chcesz usunąć tę zmianę z bazy danych?", async () => {
         await db.from('shifts').delete().eq('id', shiftId);
+        logAuditAction(`Usunięto zmianę o ID: ${shiftId}`);
         await syncShiftsFromDB();
         showToast('🗑️ USUNIĘTO', 'Wpis został usunięty');
     });
@@ -1357,6 +1352,7 @@ function promptClearAll() {
     if (currentUser.role !== 'root') { showToast('⛔ ODMOWA', 'Tylko ROOT może wyczyścić całą historię'); return; }
     openConfirmModal("WYCZYŚĆ WSZYSTKO", "Czy na pewno chcesz usunąć WSZYSTKIE wpisy z bazy danych? Tej akcji nie da się cofnąć.", async () => {
         await db.from('shifts').delete().neq('id', '0');
+        logAuditAction(`⚠️ WYCZYSZCZONO CAŁĄ BAZĘ DANYCH PRZEZ ROOT`);
         await syncShiftsFromDB();
         showToast('🗑️ WYCZYSZCZONO', 'Wszystkie zmiany zostały usunięte');
     });
