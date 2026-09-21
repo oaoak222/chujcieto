@@ -740,16 +740,15 @@ let recentCustomColors = JSON.parse(localStorage.getItem('pos_recent_custom_colo
 let favoriteColors = JSON.parse(localStorage.getItem('pos_favorite_colors')) || [];
 
 function startHeartbeat() {
-    if (!currentUser || !currentUser.nickname) return;
+    if (!currentUser || !currentUser.id) return;
     const sendPulse = async () => {
         try {
-            // Używamy kolumny id użytkownika, aby zagwarantować poprawny zapis
             await db.from('users').update({ last_seen: new Date().toISOString() }).eq('id', currentUser.id);
         } catch(e) {}
     };
     sendPulse();
     if (heartbeatInterval) clearInterval(heartbeatInterval);
-    heartbeatInterval = setInterval(sendPulse, 6000);
+    heartbeatInterval = setInterval(sendPulse, 4000);
 }
 
 function applyThemeCore(hex) {
@@ -980,6 +979,8 @@ async function loginUser() {
             const { data: newUser, error: errCreate } = await db.from('users').insert([{ nickname: nick, role: 'member', last_seen: new Date().toISOString() }]).select().single();
             if (errCreate) { showToast('❌ BŁĄD TWORZENIA', errCreate.message); return; }
             user = newUser;
+        } else {
+            await db.from('users').update({ last_seen: new Date().toISOString() }).eq('id', user.id);
         }
 
         currentUser = user;
@@ -1042,7 +1043,7 @@ async function openRootPanel() {
     document.getElementById('rootPanelModal').style.display = 'flex'; 
     await loadAdminUsers(); 
     if (adminRefreshInterval) clearInterval(adminRefreshInterval);
-    adminRefreshInterval = setInterval(loadAdminUsers, 4000); // odświeżaj listę w panelu co 4 sekundy
+    adminRefreshInterval = setInterval(loadAdminUsers, 3000);
 }
 function closeRootPanel() { 
     document.getElementById('rootPanelModal').style.display = 'none'; 
@@ -1060,7 +1061,7 @@ async function loadAdminUsers() {
         let isOnline = false;
         if (u.last_seen) {
             const lastSeenTime = new Date(u.last_seen).getTime();
-            if (now - lastSeenTime < 15000) { // do 15 sekund braku pulsu = online
+            if (now - lastSeenTime < 10000) { // jeśli sygnał był w ciągu ostatnich 10 sekund
                 isOnline = true;
             }
         }
