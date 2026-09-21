@@ -328,14 +328,59 @@
     .online-dot.online { background: var(--neon-green); box-shadow: 0 0 8px var(--neon-green); }
     .online-dot.offline { background: var(--neon-red); box-shadow: 0 0 8px var(--neon-red); }
 
+    /* Pasek nawigacji mobilnej (widoczny tylko na telefonie) */
+    .mobile-tabs { display: none; }
+
     @keyframes pulseRadar { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.4); opacity: 0.6; box-shadow: 0 0 14px var(--primary); } 100% { transform: scale(1); opacity: 1; } }
 
-    @media (max-width: 1350px) {
-        .container { grid-template-columns: repeat(2, minmax(300px, 1fr)); }
-    }
-
+    /* RESPONSYWNOŚĆ DLA TELEFONÓW (< 768px) – BEZ ZMIAN NA KOMPUTERZE */
     @media (max-width: 768px) {
         .container { display: flex; flex-direction: column; }
+        
+        /* Pasek zakładek na telefonie */
+        .mobile-tabs {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 12px;
+            flex-shrink: 0;
+        }
+        .m-tab {
+            flex: 1;
+            background: var(--surface);
+            border: 1px solid var(--surface-border);
+            color: var(--text-muted);
+            padding: 8px;
+            text-align: center;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            font-size: 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+        .m-tab.active {
+            background: var(--primary);
+            color: #1a020d;
+            border-color: var(--primary);
+            box-shadow: 0 0 10px var(--primary-glow);
+        }
+
+        /* Ukrywanie/pokazywanie kolumn na telefonie za pomocą zakładek */
+        .container > .column,
+        .container > .history-panel {
+            display: none !important;
+        }
+        .container > .column.mobile-active,
+        .container > .history-panel.mobile-active {
+            display: flex !important;
+        }
+        .column {
+            max-height: none !important;
+        }
+        .history-panel {
+            max-height: none !important;
+            height: 70vh !important;
+        }
     }
 </style>
 </head>
@@ -385,14 +430,23 @@
     </div>
 </div>
 
+<!-- Zakładki nawigacyjne widoczne tylko na telefonie -->
+<div class="mobile-tabs" id="mobileTabsBar">
+    <div class="m-tab active" onclick="switchMobileTab(0)">1. Produkty</div>
+    <div class="m-tab" onclick="switchMobileTab(1)">2. Akcje & Suma</div>
+    <div class="m-tab" onclick="switchMobileTab(2)">3. Historia</div>
+</div>
+
 <div class="container">
-    <div class="column">
+    <!-- Kolumna 1: Produkty cz. 1 -->
+    <div class="column mobile-active" id="mCol0">
         <div class="box" id="cat-nasiona"><h3 class="box-title">🌱 Nasiona Weedu</h3></div>
         <div class="box" id="cat-produkty"><h3 class="box-title">📦 Produkty & Akcesoria</h3></div>
         <div class="box" id="cat-nawozy"><h3 class="box-title">🧪 Nawozy</h3></div>
     </div>
 
-    <div class="column">
+    <!-- Kolumna 2: Produkty cz. 2 i Wykres -->
+    <div class="column" id="mCol0_b">
         <div class="box" id="cat-jedzenie"><h3 class="box-title">🍪 Jedzenie & Picie</h3></div>
         <div class="box" id="cat-jointy"><h3 class="box-title">🚬 Jointy</h3></div>
         <div class="box chart-box">
@@ -408,7 +462,8 @@
         </div>
     </div>
 
-    <div class="column">
+    <!-- Kolumna 3: Akcje, Klienci, Suma, Sprzedane -->
+    <div class="column" id="mCol1">
         <div class="box">
             <span class="label">🏢 Firma / klient</span>
             <select id="clientSelect">
@@ -486,7 +541,8 @@
         </div>
     </div>
 
-    <div class="history-panel">
+    <!-- Kolumna 4: Historia -->
+    <div class="history-panel" id="mCol2">
         <div class="history-header">
             <div class="history-header-top">
                 <span class="history-header-title">📜 HISTORIA</span>
@@ -738,6 +794,31 @@ let savedScale = localStorage.getItem('pos_ui_scale') || '1';
 let savedTheme = localStorage.getItem('pos_theme') || '#ff2a9d';
 let recentCustomColors = JSON.parse(localStorage.getItem('pos_recent_custom_colors')) || [];
 let favoriteColors = JSON.parse(localStorage.getItem('pos_favorite_colors')) || [];
+
+function switchMobileTab(index) {
+    const tabs = document.querySelectorAll('.m-tab');
+    tabs.forEach((t, i) => t.classList.toggle('active', i === index));
+
+    const col0 = document.getElementById('mCol0');
+    const col0b = document.getElementById('mCol0_b');
+    const col1 = document.getElementById('mCol1');
+    const col2 = document.getElementById('mCol2');
+
+    // Reset wyświetlania dla telefonu
+    col0.classList.remove('mobile-active');
+    col0b.classList.remove('mobile-active');
+    col1.classList.remove('mobile-active');
+    col2.classList.remove('mobile-active');
+
+    if (index === 0) {
+        col0.classList.add('mobile-active');
+        col0b.classList.add('mobile-active');
+    } else if (index === 1) {
+        col1.classList.add('mobile-active');
+    } else if (index === 2) {
+        col2.classList.add('mobile-active');
+    }
+}
 
 function startHeartbeat() {
     if (!currentUser || !currentUser.id) return;
@@ -1061,7 +1142,6 @@ async function loadAdminUsers() {
         let isOnline = false;
         if (u.last_seen) {
             const lastSeenTime = new Date(u.last_seen).getTime();
-            // Jeśli ostatni sygnał w bazie był w ciągu ostatnich 10 sekund -> ONLINE
             if (now - lastSeenTime < 10000) {
                 isOnline = true;
             }
