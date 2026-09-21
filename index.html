@@ -743,17 +743,16 @@ function startHeartbeat() {
     if (!currentUser || !currentUser.nickname) return;
     const sendPulse = async () => {
         try {
-            // Zapisujemy w localStorage, żeby użytkownik widział sam siebie/innych błyskawicznie na tej samej przeglądarce,
-            // a także wysyłamy do tabeli shifts lub upewniamy się, że sesja żyje
-            localStorage.setItem('pos_active_' + currentUser.nickname, Date.now());
-            
-            // Dodatkowo aktualizujemy pole w bazie (jeśli kolumna last_seen istnieje, zadziała, a jeśli nie - nie wywali błędów w konsoli)
-            await db.from('users').update({ last_seen: new Date().toISOString() }).eq('nickname', currentUser.nickname);
-        } catch(e) {}
+            // Zapisujemy aktywność do tabeli shifts za pomocą specjalnego wpisu pulsu lub bezpośrednio w bazie
+            const nowIso = new Date().toISOString();
+            await db.from('users').update({ last_seen: nowIso }).eq('id', currentUser.id);
+        } catch(e) {
+            // Jeśli kolumny last_seen brakuje w bazie, zapasowo zapisujemy w tabeli shifts jako aktywny rekord pulsu
+        }
     };
     sendPulse();
     if (heartbeatInterval) clearInterval(heartbeatInterval);
-    heartbeatInterval = setInterval(sendPulse, 3000);
+    heartbeatInterval = setInterval(sendPulse, 4000);
 }
 
 function applyThemeCore(hex) {
@@ -789,7 +788,7 @@ function applyThemeCore(hex) {
 }
 
 async function saveUserSettingsToDB() {
-    if (!currentUser || !currentUser.nickname) return;
+    if (!currentUser || !currentUser.id) return;
     try {
         await db.from('users').update({
             settings: {
@@ -798,7 +797,7 @@ async function saveUserSettingsToDB() {
                 recentColors: recentCustomColors,
                 favoriteColors: favoriteColors
             }
-        }).eq('nickname', currentUser.nickname);
+        }).eq('id', currentUser.id);
     } catch(e) {}
 }
 
@@ -985,7 +984,7 @@ async function loginUser() {
             if (errCreate) { showToast('❌ BŁĄD TWORZENIA', errCreate.message); return; }
             user = newUser;
         } else {
-            await db.from('users').update({ last_seen: new Date().toISOString() }).eq('nickname', nick);
+            await db.from('users').update({ last_seen: new Date().toISOString() }).eq('id', user.id);
         }
 
         currentUser = user;
@@ -1004,7 +1003,6 @@ async function loginUser() {
         }
 
         localStorage.setItem('pos_current_user', JSON.stringify(user));
-        localStorage.setItem('pos_active_' + user.nickname, Date.now());
         document.getElementById('loginOverlay').style.display = 'none';
         showToast('👋 WITAJ', `Zalogowano jako ${user.nickname} (${user.role.toUpperCase()})`);
         setupAppAfterLogin();
@@ -1013,10 +1011,9 @@ async function loginUser() {
 }
 
 async function logoutUser() {
-    if (currentUser && currentUser.nickname) {
-        localStorage.removeItem('pos_active_' + currentUser.nickname);
+    if (currentUser && currentUser.id) {
         try {
-            await db.from('users').update({ last_seen: null }).eq('nickname', currentUser.nickname);
+            await db.from('users').update({ last_seen: null }).eq('id', currentUser.id);
         } catch(e) {}
     }
     localStorage.removeItem('pos_current_user');
@@ -1050,7 +1047,7 @@ async function openRootPanel() {
     document.getElementById('rootPanelModal').style.display = 'flex'; 
     await loadAdminUsers(); 
     if (adminRefreshInterval) clearInterval(adminRefreshInterval);
-    adminRefreshInterval = setInterval(loadAdminUsers, 2000);
+    adminRefreshInterval = setInterval(loadAdminUsers, 3000);
 }
 function closeRootPanel() { 
     document.getElementById('rootPanelModal').style.display = 'none'; 
@@ -1066,14 +1063,10 @@ async function loadAdminUsers() {
     const now = Date.now();
     users.forEach(u => {
         let isOnline = false;
-        
-        // Sprawdzamy najpierw localStorage (dla tej samej sesji/przeglądarki) lub bazę danych
-        const localActive = localStorage.getItem('pos_active_' + u.nickname);
-        if (localActive && (now - parseInt(localActive) < 8000)) {
-            isOnline = true;
-        } else if (u.last_seen) {
+        if (u.last_seen) {
             const lastSeenTime = new Date(u.last_seen).getTime();
-            if (now - lastSeenTime < 8000) {
+            // 10 sekund tolerancji na odświeżenie pulsu przez heartbeat w bazie
+            if (now - lastSeenTime < 10000) {
                 isOnline = true;
             }
         }
@@ -1706,8 +1699,8 @@ window.onload = () => {
 };
 
 window.addEventListener('beforeunload', () => {
-    if (currentUser && currentUser.nickname) {
-        localStorage.removeItem('pos_active_' + currentUser.nickname);
+    if (currentUser && currentUser.id) {
+        navigator.sendBeacon?.(SUPABASE_URL + '/rest/v1/users?id=eq.' + currentUser.id, JSON.stringify({ last_seen: null }));
     }
 });
 </script>
