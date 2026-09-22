@@ -43,7 +43,29 @@
         --scale: 1;
     }
 
-    * { box-sizing: border-box; }
+    * { 
+        box-sizing: border-box; 
+        scrollbar-width: thin;
+        scrollbar-color: var(--primary-dark) #0e070c;
+    }
+
+    *::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+    *::-webkit-scrollbar-track {
+        background: #0e070c;
+        border-radius: 4px;
+    }
+    *::-webkit-scrollbar-thumb {
+        background: var(--primary-dark);
+        border-radius: 4px;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    *::-webkit-scrollbar-thumb:hover {
+        background: var(--primary);
+        box-shadow: 0 0 8px var(--primary-glow);
+    }
 
     .theme-transition, .theme-transition * {
         transition: background-color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease, color 0.4s ease, text-shadow 0.4s ease !important;
@@ -148,8 +170,6 @@
         max-height: 100%;
         min-width: 0; 
     }
-    .column::-webkit-scrollbar { width: 5px; }
-    .column::-webkit-scrollbar-thumb { background: var(--primary-dark); border-radius: 6px; }
 
     .box { background: var(--surface); backdrop-filter: blur(10px); border: 1px solid var(--surface-border); border-radius: 10px; padding: 11px 13px; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45); position: relative; overflow: hidden; transition: border-color 0.2s, box-shadow 0.2s; flex-shrink: 0; }
     .box.hidden-box { display: none !important; }
@@ -242,8 +262,6 @@
     .btn-tab.active { background: var(--primary); color: #fff; border-color: var(--primary); }
 
     .history-content { flex-grow: 1; overflow-y: auto; padding: 9px; min-width: 0; }
-    .history-content::-webkit-scrollbar { width: 5px; }
-    .history-content::-webkit-scrollbar-thumb { background: var(--primary-dark); border-radius: 6px; }
 
     .shift-record { background: rgba(26, 18, 22, 0.6); border: 1px solid var(--primary-a35); border-radius: 6px; padding: 7px 9px; margin-bottom: 6px; font-size: 11.5px; position: relative; transition: all 0.2s; animation: slideInRecord 0.3s ease-out; }
     @keyframes slideInRecord { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
@@ -318,8 +336,6 @@
     input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 6px; cursor: pointer; background: var(--surface-border); border-radius: 3px; }
 
     .shift-details-content { max-height: 60vh; overflow-y: auto; text-align: left; padding-right: 5px; margin-top: 5px; }
-    .shift-details-content::-webkit-scrollbar { width: 5px; }
-    .shift-details-content::-webkit-scrollbar-thumb { background: var(--primary-dark); border-radius: 6px; }
     .transaction-card { background: var(--primary-a04); border: 1px solid var(--primary-a20); border-radius: 6px; padding: 10px; margin-bottom: 10px; }
     .t-header { display: flex; justify-content: space-between; align-items: flex-start; color: var(--primary); font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 15.5px; border-bottom: 1px dashed var(--primary-a20); padding-bottom: 4px; margin-bottom: 6px; }
     .t-meta { font-size: 12.5px; color: #d9a9c0; margin-bottom: 6px; }
@@ -332,6 +348,125 @@
     .audit-log-item { background: rgba(26, 18, 22, 0.7); border: 1px solid var(--surface-border); border-radius: 6px; padding: 8px 10px; margin-bottom: 6px; font-size: 11.5px; }
     .audit-log-time { color: #d9a9c0; font-size: 10.5px; }
     .audit-log-text { color: #fff; font-weight: 600; margin-top: 2px; }
+
+    .table-inline-input {
+        background: #170d13;
+        border: 1px solid var(--surface-border);
+        color: #fff;
+        padding: 4px 6px;
+        border-radius: 4px;
+        font-family: 'Rajdhani', sans-serif;
+        font-weight: 700;
+        font-size: 12.5px;
+        outline: none;
+        transition: 0.15s;
+    }
+    .table-inline-input:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 6px var(--primary-glow);
+    }
+
+    .table-stepper-control {
+        display: inline-flex;
+        align-items: center;
+        background: #140c10;
+        border: 1px solid var(--primary-a30);
+        border-radius: 5px;
+        overflow: hidden;
+    }
+    .table-stepper-input {
+        width: 60px;
+        height: 25px;
+        background: transparent !important;
+        border: none;
+        text-align: center;
+        font-weight: 700;
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 13px;
+        color: #fff;
+        outline: none;
+        -moz-appearance: textfield !important;
+        appearance: none !important;
+        padding: 0;
+    }
+    .table-stepper-input::-webkit-outer-spin-button,
+    .table-stepper-input::-webkit-inner-spin-button {
+        -webkit-appearance: none !important;
+        display: none !important;
+        margin: 0 !important;
+    }
+    .table-stepper-btn-group {
+        display: flex;
+        flex-direction: column;
+        border-left: 1px solid var(--primary-a20);
+    }
+    .table-btn-step {
+        width: 18px;
+        height: 12.5px;
+        background: rgba(255,255,255,0.02);
+        border: none;
+        color: #aaa;
+        font-size: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        padding: 0;
+    }
+    .table-btn-step:hover {
+        background: rgba(255,255,255,0.08);
+        color: #fff;
+    }
+
+    .btn-emoji-trigger {
+        background: #1e0d15;
+        border: 1px solid var(--surface-border);
+        border-radius: 5px;
+        color: #fff;
+        font-size: 15px;
+        padding: 2px 7px;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        transition: 0.15s;
+    }
+    .btn-emoji-trigger:hover {
+        background: var(--surface-hover);
+        border-color: var(--primary);
+        box-shadow: 0 0 8px var(--primary-glow);
+        transform: scale(1.08);
+    }
+
+    .emoji-grid-picker {
+        display: grid;
+        grid-template-columns: repeat(8, 1fr);
+        gap: 6px;
+        max-height: 240px;
+        overflow-y: auto;
+        padding: 8px;
+        background: #0f080c;
+        border: 1px solid var(--surface-border);
+        border-radius: 6px;
+        margin-bottom: 12px;
+    }
+    .emoji-pick-btn {
+        background: rgba(255,255,255,0.04);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 5px;
+        font-size: 20px;
+        padding: 6px 0;
+        cursor: pointer;
+        transition: 0.15s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .emoji-pick-btn:hover {
+        background: var(--surface-hover);
+        border-color: var(--primary);
+        transform: scale(1.15);
+    }
 
     @keyframes pulseRadar { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.4); opacity: 0.6; box-shadow: 0 0 14px var(--primary); } 100% { transform: scale(1); opacity: 1; } }
 
@@ -423,16 +558,7 @@
     <div class="column">
         <div class="box">
             <span class="label">🏢 Firma / klient</span>
-            <select id="clientSelect">
-                <option value="Brak">👤 Brak</option>
-                <option value="Piekarnia Bochen">🥖 Piekarnia Bochen</option>
-                <option value="Tropical Drinks">🍹 Tropical Drinks</option>
-                <option value="Burger Shot">🍔 Burger Shot</option>
-                <option value="Armor Armor">🛡️ Armor Armor</option>
-                <option value="LSC">🔧 LSC</option>
-                <option value="VESUVIO">🍕 VESUVIO</option>
-                <option value="UWU CAFE">🐱 UWU CAFE</option>
-            </select>
+            <select id="clientSelect"></select>
             <span class="label">💼 Rola</span>
             <div class="role-buttons">
                 <button class="btn btn-pracownik" onclick="setRole('pracownik')" id="btn-pracownik">Pracownik</button>
@@ -483,17 +609,9 @@
 
         <div class="box">
             <h3 class="box-title" style="margin-bottom: 4px;">📊 Tabela zniżek</h3>
-            <table class="discount-table">
+            <table class="discount-table" id="discountTableDisplay">
                 <thead><tr><th>Firma</th><th>Pracownik</th><th>Zarząd</th></tr></thead>
-                <tbody>
-                    <tr><td>🥖 Piekarnia Bochen</td><td>-20%</td><td>-30%</td></tr>
-                    <tr><td>🍹 Tropical Drinks</td><td>-15%</td><td>-25%</td></tr>
-                    <tr><td>🍔 Burger Shot</td><td>-15%</td><td>-20%</td></tr>
-                    <tr><td>🛡️ Armor Armor</td><td>-15%</td><td>-25%</td></tr>
-                    <tr><td>🔧 LSC</td><td>-20%</td><td>-25%</td></tr>
-                    <tr><td>🍕 VESUVIO</td><td>-20%</td><td>-35%</td></tr>
-                    <tr><td>🐱 UWU CAFE</td><td>-10%</td><td>-20%</td></tr>
-                </tbody>
+                <tbody></tbody>
             </table>
             <button class="btn-calc-discount" onclick="openCalcStep1()">💸 Odlicz 10%</button>
         </div>
@@ -546,13 +664,15 @@
 </div>
 
 <div class="screen-modal-overlay" id="rootPanelModal">
-    <div class="screen-modal" style="width: 620px; max-width: 95%;">
+    <div class="screen-modal" style="width: 760px; max-width: 96%;">
         <button class="screen-modal-close" onclick="closeRootPanel()">✕</button>
         <div class="screen-modal-title">👑 PANEL ROOT — ZARZĄDZANIE</div>
         
-        <div class="btn-tab-group" style="margin-bottom: 12px;">
-            <button class="btn-tab active" id="adminTabUsers" onclick="switchAdminTab('users')">👥 Użytkownicy & Statusy</button>
-            <button class="btn-tab" id="adminTabAudit" onclick="switchAdminTab('audit')">📝 Logi Audytu</button>
+        <div class="btn-tab-group" style="margin-bottom: 12px; flex-wrap: wrap;">
+            <button class="btn-tab active" id="adminTabUsers" onclick="switchAdminTab('users')">👥 Gracze</button>
+            <button class="btn-tab" id="adminTabCatalog" onclick="switchAdminTab('catalog')">📦 Asortyment & Zniżki</button>
+            <button class="btn-tab" id="adminTabLeaderboard" onclick="switchAdminTab('leaderboard')">🏆 Ranking (Leaderboard)</button>
+            <button class="btn-tab" id="adminTabAudit" onclick="switchAdminTab('audit')">📝 Audyt</button>
         </div>
 
         <div id="adminSectionUsers">
@@ -580,8 +700,89 @@
             </div>
         </div>
 
+        <div id="adminSectionCatalog" style="display: none; max-height: 380px; overflow-y: auto; text-align: left; padding-right: 4px;">
+            <div style="font-family:'Rajdhani'; font-weight:700; color:var(--primary); font-size:13px; margin-bottom:6px;">DODAJ NOWY TOWAR</div>
+            <div style="display:grid; grid-template-columns: 1fr 140px 140px auto; gap:6px; margin-bottom:12px;">
+                <input type="text" id="admNewItemName" class="login-input" style="margin-bottom:0; padding:6px; font-size:12px; text-align:left;" placeholder="Nazwa towaru...">
+                <input type="number" id="admNewItemPrice" class="login-input" style="margin-bottom:0; padding:6px; font-size:12px;" placeholder="Cena ($)...">
+                <select id="admNewItemCat" style="margin-bottom:0; padding:6px; font-size:12px;">
+                    <option value="nasiona">🌱 Nasiona</option>
+                    <option value="produkty">📦 Produkty</option>
+                    <option value="nawozy">🧪 Nawozy</option>
+                    <option value="jedzenie">🍪 Jedzenie</option>
+                    <option value="jointy">🚬 Jointy</option>
+                </select>
+                <button class="btn-login" style="padding:6px 12px; font-size:12px;" onclick="adminAddNewItem()">+ DODAJ</button>
+            </div>
+
+            <div style="font-family:'Rajdhani'; font-weight:700; color:var(--primary); font-size:13px; margin-bottom:6px;">LISTA TOWARÓW (EDYCJA NAZWY I CENY)</div>
+            <div style="border: 1px solid var(--surface-border); border-radius: 6px; margin-bottom: 14px; max-height: 180px; overflow-y: auto;">
+                <table class="discount-table" id="adminCatalogTable" style="margin-bottom: 0;">
+                    <thead style="background: rgba(0,0,0,0.5);">
+                        <tr><th style="padding:6px;">Kategoria</th><th>Nazwa</th><th style="text-align:left; width: 140px;">Cena ($)</th><th style="text-align:right; padding-right:6px;">Akcje</th></tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+            <div style="font-family:'Rajdhani'; font-weight:700; color:var(--primary); font-size:13px; margin-bottom:6px;">ZARZĄDZANIE ZNIŻKAMI FIRM (DODAWANIE I EDYCJA)</div>
+            <div style="display:grid; grid-template-columns: auto 1.5fr 1fr 1fr auto; gap:6px; margin-bottom:8px; align-items:center;">
+                <button class="btn-emoji-trigger" id="admNewPartnerEmojiBtn" onclick="openEmojiPicker(null, true)" title="Zmień emotkę">🏢</button>
+                <input type="text" id="admNewPartnerName" class="login-input" style="margin-bottom:0; padding:6px; font-size:12px; text-align:left;" placeholder="Nazwa firmy...">
+                <input type="number" id="admNewPartnerWorkerDisc" class="login-input" style="margin-bottom:0; padding:6px; font-size:12px;" placeholder="Pracownik % (np. 15)">
+                <input type="number" id="admNewPartnerZarzadDisc" class="login-input" style="margin-bottom:0; padding:6px; font-size:12px;" placeholder="Zarząd % (np. 25)">
+                <button class="btn-login" style="padding:6px 12px; font-size:12px;" onclick="adminAddOrUpdatePartner()">ZAPISZ</button>
+            </div>
+            <div style="border: 1px solid var(--surface-border); border-radius: 6px; max-height: 140px; overflow-y: auto;">
+                <table class="discount-table" id="adminPartnersTable" style="margin-bottom: 0;">
+                    <thead style="background: rgba(0,0,0,0.5);">
+                        <tr><th style="padding:6px;">Firma (Emotka & Nazwa)</th><th style="text-align:left; width:130px;">Pracownik %</th><th style="text-align:left; width:130px;">Zarząd %</th><th style="text-align:right; padding-right:6px;">Akcja</th></tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="adminSectionLeaderboard" style="display: none; max-height: 380px; overflow-y: auto; text-align: left; padding-right: 4px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <div style="font-family:'Rajdhani'; font-weight:700; color:var(--primary); font-size:13px;">ZESTAWIENIE EFEKTYWNOŚCI PRACOWNIKÓW</div>
+                <div class="btn-tab-group">
+                    <button class="btn-tab active" id="ldrFilterAll" onclick="setLeaderboardPeriod('all')">Wszystko</button>
+                    <button class="btn-tab" id="ldrFilterMonth" onclick="setLeaderboardPeriod('month')">Ten miesiąc</button>
+                    <button class="btn-tab" id="ldrFilterWeek" onclick="setLeaderboardPeriod('week')">Ostatnie 7D</button>
+                </div>
+            </div>
+            <div style="border: 1px solid var(--surface-border); border-radius: 6px;">
+                <table class="discount-table" id="adminLeaderboardTable" style="margin-bottom: 0;">
+                    <thead style="background: rgba(0,0,0,0.5);">
+                        <tr>
+                            <th style="padding: 6px;">#</th>
+                            <th>Pracownik</th>
+                            <th style="text-align:right;">Łączny Utarg</th>
+                            <th style="text-align:right;">Czas pracy</th>
+                            <th style="text-align:right;">Zmiany</th>
+                            <th style="text-align:right; padding-right: 6px;">Śr. $/h</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+
         <div id="adminSectionAudit" style="display: none;">
             <div style="max-height: 370px; overflow-y: auto; text-align: left; padding-right: 4px;" id="auditLogContainer"></div>
+        </div>
+    </div>
+</div>
+
+<div class="screen-modal-overlay" id="emojiPickerModal">
+    <div class="screen-modal" style="width: 380px;">
+        <button class="screen-modal-close" onclick="closeEmojiPicker()">✕</button>
+        <div class="screen-modal-title">WYBIERZ EMOTKĘ DLA FIRMY</div>
+        <div class="emoji-grid-picker" id="emojiListContainer"></div>
+        <div style="display: flex; gap: 6px;">
+            <input type="text" id="customEmojiInput" class="table-inline-input" style="flex: 1; text-align: center; font-size: 16px;" placeholder="Wpisz własną emotkę...">
+            <button class="btn-login" style="width: auto; padding: 6px 14px;" onclick="applyCustomEmojiFromInput()">USTAW</button>
         </div>
     </div>
 </div>
@@ -703,7 +904,7 @@ let pendingConfirmCallback = null;
 let heartbeatInterval = null;
 let adminRefreshInterval = null;
 
-const items = {
+const defaultItems = {
     nasiona: [
         { id: 'n1', name: 'Nasiono Blue Dream', price: 5000 },
         { id: 'n2', name: 'Nasiono Purple Haze', price: 3500 },
@@ -738,7 +939,7 @@ const items = {
     ]
 };
 
-const discounts = {
+const defaultDiscounts = {
     "Piekarnia Bochen": { pracownik: 0.20, zarzad: 0.30 },
     "Tropical Drinks": { pracownik: 0.15, zarzad: 0.25 },
     "Burger Shot": { pracownik: 0.15, zarzad: 0.20 },
@@ -749,12 +950,36 @@ const discounts = {
     "Brak": { pracownik: 0, zarzad: 0 }
 };
 
+const defaultEmojis = {
+    "Piekarnia Bochen": "🥖",
+    "Tropical Drinks": "🍹",
+    "Burger Shot": "🍔",
+    "Armor Armor": "🛡️",
+    "LSC": "🔧",
+    "VESUVIO": "🍕",
+    "UWU CAFE": "🐱"
+};
+
+const popularRPCompanyEmojis = [
+    "🥖", "🍞", "🍔", "🍕", "🍹", "☕", "🐱", "🛡️", "🔧", "🚗", "🏎️", "🏢", "💊", "💉", "🌿", "🚬",
+    "🍣", "🌮", "🍦", "🍩", "🍷", "🍺", "🍸", "💎", "🎰", "🎧", "🎬", "🔫", "🔥", "⚡", "⭐", "👑"
+];
+
+let items = JSON.parse(localStorage.getItem('pos_catalog_items')) || defaultItems;
+let discounts = JSON.parse(localStorage.getItem('pos_discounts')) || defaultDiscounts;
+let companyEmojis = JSON.parse(localStorage.getItem('pos_company_emojis')) || defaultEmojis;
+
+let pendingEmojiTarget = null;
+let pendingIsNewPartner = false;
+let newPartnerSelectedEmoji = "🏢";
+
 let currentRole = 'pracownik';
 let shifts = [];
 let activeShiftId = null;
 let liveTimerInterval = null;
 let currentHistoryFilter = 'all';
 let currentChartMode = '24h';
+let currentLeaderboardPeriod = 'all';
 let earningsChart = null;
 let targetGoal = parseFloat(localStorage.getItem('pos_target_goal')) || 0;
 let savedScale = localStorage.getItem('pos_ui_scale') || '1';
@@ -762,6 +987,150 @@ let savedScale = localStorage.getItem('pos_ui_scale') || '1';
 let savedTheme = localStorage.getItem('pos_theme') || '#ff2a9d';
 let recentCustomColors = JSON.parse(localStorage.getItem('pos_recent_custom_colors')) || [];
 let favoriteColors = JSON.parse(localStorage.getItem('pos_favorite_colors')) || [];
+
+function getCompanyEmoji(name) {
+    if (companyEmojis[name]) return companyEmojis[name];
+    if (defaultEmojis[name]) return defaultEmojis[name];
+    return '🏢';
+}
+
+function openEmojiPicker(companyName, isNew = false) {
+    pendingEmojiTarget = companyName;
+    pendingIsNewPartner = isNew;
+    const container = document.getElementById('emojiListContainer');
+    container.innerHTML = '';
+    popularRPCompanyEmojis.forEach(em => {
+        const btn = document.createElement('button');
+        btn.className = 'emoji-pick-btn';
+        btn.innerText = em;
+        btn.onclick = () => selectEmoji(em);
+        container.appendChild(btn);
+    });
+    document.getElementById('customEmojiInput').value = '';
+    document.getElementById('emojiPickerModal').style.display = 'flex';
+}
+
+function closeEmojiPicker() {
+    document.getElementById('emojiPickerModal').style.display = 'none';
+    pendingEmojiTarget = null;
+    pendingIsNewPartner = false;
+}
+
+function selectEmoji(em) {
+    if (pendingIsNewPartner) {
+        newPartnerSelectedEmoji = em;
+        const btn = document.getElementById('admNewPartnerEmojiBtn');
+        if (btn) btn.innerText = em;
+    } else if (pendingEmojiTarget) {
+        companyEmojis[pendingEmojiTarget] = em;
+        saveEmojisConfigToDB();
+        renderAdminCatalogPanel();
+        refreshDiscountsDOM();
+        showToast('🎨 EMOTKA', `Zmieniono emotkę dla ${pendingEmojiTarget}`);
+    }
+    closeEmojiPicker();
+}
+
+function applyCustomEmojiFromInput() {
+    const val = document.getElementById('customEmojiInput').value.trim();
+    if (val) selectEmoji(val);
+}
+
+async function loadDynamicConfigFromDB() {
+    try {
+        const { data, error } = await db.from('system_config').select('*');
+        if (!error && data) {
+            data.forEach(cfg => {
+                if (cfg.key === 'catalog_items' && cfg.value) {
+                    items = cfg.value;
+                    localStorage.setItem('pos_catalog_items', JSON.stringify(items));
+                }
+                if (cfg.key === 'partner_discounts' && cfg.value) {
+                    discounts = cfg.value;
+                    localStorage.setItem('pos_discounts', JSON.stringify(discounts));
+                }
+                if (cfg.key === 'company_emojis' && cfg.value) {
+                    companyEmojis = cfg.value;
+                    localStorage.setItem('pos_company_emojis', JSON.stringify(companyEmojis));
+                }
+            });
+        }
+    } catch(e) {}
+    refreshCatalogDOM();
+    refreshDiscountsDOM();
+    calculate();
+}
+
+async function saveCatalogConfigToDB() {
+    localStorage.setItem('pos_catalog_items', JSON.stringify(items));
+    try {
+        await db.from('system_config').upsert([{ key: 'catalog_items', value: items }]);
+    } catch(e) {}
+    refreshCatalogDOM();
+    calculate();
+}
+
+async function saveDiscountsConfigToDB() {
+    localStorage.setItem('pos_discounts', JSON.stringify(discounts));
+    try {
+        await db.from('system_config').upsert([{ key: 'partner_discounts', value: discounts }]);
+    } catch(e) {}
+    refreshDiscountsDOM();
+    calculate();
+}
+
+async function saveEmojisConfigToDB() {
+    localStorage.setItem('pos_company_emojis', JSON.stringify(companyEmojis));
+    try {
+        await db.from('system_config').upsert([{ key: 'company_emojis', value: companyEmojis }]);
+    } catch(e) {}
+}
+
+function refreshCatalogDOM() {
+    const categories = [
+        { key: 'nasiona', id: 'cat-nasiona' },
+        { key: 'produkty', id: 'cat-produkty' },
+        { key: 'nawozy', id: 'cat-nawozy' },
+        { key: 'jedzenie', id: 'cat-jedzenie' },
+        { key: 'jointy', id: 'cat-jointy' }
+    ];
+    categories.forEach(cat => {
+        const box = document.getElementById(cat.id);
+        if (!box) return;
+        const titleEl = box.querySelector('.box-title');
+        box.innerHTML = '';
+        if (titleEl) box.appendChild(titleEl);
+        if (items[cat.key]) renderCategory(cat.key, cat.id);
+    });
+}
+
+function refreshDiscountsDOM() {
+    const select = document.getElementById('clientSelect');
+    const tableBody = document.querySelector('#discountTableDisplay tbody');
+    if (select) {
+        const curr = select.value || 'Brak';
+        select.innerHTML = '<option value="Brak">👤 Brak</option>';
+        Object.keys(discounts).forEach(name => {
+            if (name !== 'Brak') {
+                const em = getCompanyEmoji(name);
+                select.innerHTML += `<option value="${name}">${em} ${name}</option>`;
+            }
+        });
+        select.value = discounts[curr] ? curr : 'Brak';
+    }
+    if (tableBody) {
+        tableBody.innerHTML = '';
+        Object.keys(discounts).forEach(name => {
+            if (name === 'Brak') return;
+            const wDisc = Math.round((discounts[name].pracownik || 0) * 100);
+            const zDisc = Math.round((discounts[name].zarzad || 0) * 100);
+            const em = getCompanyEmoji(name);
+            const tr = document.createElement('tr');
+            tr.innerHTML = `<td>${em} ${name}</td><td>-${wDisc}%</td><td>-${zDisc}%</td>`;
+            tableBody.appendChild(tr);
+        });
+    }
+}
 
 function startHeartbeat() {
     if (!currentUser || !currentUser.id) return;
@@ -791,10 +1160,270 @@ function logAuditAction(actionDesc) {
 
 function switchAdminTab(tab) {
     document.getElementById('adminTabUsers').className = `btn-tab ${tab === 'users' ? 'active' : ''}`;
+    document.getElementById('adminTabCatalog').className = `btn-tab ${tab === 'catalog' ? 'active' : ''}`;
+    document.getElementById('adminTabLeaderboard').className = `btn-tab ${tab === 'leaderboard' ? 'active' : ''}`;
     document.getElementById('adminTabAudit').className = `btn-tab ${tab === 'audit' ? 'active' : ''}`;
+    
     document.getElementById('adminSectionUsers').style.display = tab === 'users' ? 'block' : 'none';
+    document.getElementById('adminSectionCatalog').style.display = tab === 'catalog' ? 'block' : 'none';
+    document.getElementById('adminSectionLeaderboard').style.display = tab === 'leaderboard' ? 'block' : 'none';
     document.getElementById('adminSectionAudit').style.display = tab === 'audit' ? 'block' : 'none';
+    
+    if (tab === 'catalog') renderAdminCatalogPanel();
+    if (tab === 'leaderboard') renderAdminLeaderboard();
     if (tab === 'audit') renderAuditLogs();
+}
+
+function renderAdminCatalogPanel() {
+    const catTbody = document.querySelector('#adminCatalogTable tbody');
+    catTbody.innerHTML = '';
+    Object.keys(items).forEach(catKey => {
+        items[catKey].forEach((it, idx) => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td style="padding:6px; font-weight:700; text-transform:uppercase; color:var(--primary);">${catKey}</td>
+                <td><input type="text" value="${it.name}" class="table-inline-input" style="width:100%; min-width:140px;" onchange="adminUpdateItemName('${catKey}', ${idx}, this.value)"></td>
+                <td>
+                    <div class="table-stepper-control">
+                        <input type="number" min="0" value="${it.price}" class="table-stepper-input" id="adm-price-${catKey}-${idx}" onchange="adminUpdateItemPrice('${catKey}', ${idx}, this.value)">
+                        <div class="table-stepper-btn-group">
+                            <button class="table-btn-step" onclick="adminStepItemPrice('${catKey}', ${idx}, 500)">▲</button>
+                            <button class="table-btn-step" onclick="adminStepItemPrice('${catKey}', ${idx}, -500)">▼</button>
+                        </div>
+                    </div>
+                </td>
+                <td style="text-align:right; padding-right:6px;"><button class="btn-shift-action btn-delete-shift" onclick="adminDeleteItem('${catKey}', ${idx})">✕ Usuń</button></td>
+            `;
+            catTbody.appendChild(tr);
+        });
+    });
+
+    const partTbody = document.querySelector('#adminPartnersTable tbody');
+    partTbody.innerHTML = '';
+    Object.keys(discounts).forEach(name => {
+        if (name === 'Brak') return;
+        const wVal = Math.round((discounts[name].pracownik || 0) * 100);
+        const zVal = Math.round((discounts[name].zarzad || 0) * 100);
+        const em = getCompanyEmoji(name);
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td style="padding:6px; display:flex; align-items:center; gap:6px;">
+                <button class="btn-emoji-trigger" onclick="openEmojiPicker('${name}')" title="Kliknij, aby zmienić emotkę">${em}</button>
+                <input type="text" value="${name}" class="table-inline-input" style="flex:1; min-width:130px;" onchange="adminUpdatePartnerName('${name}', this.value)">
+            </td>
+            <td>
+                <div class="table-stepper-control">
+                    <input type="number" min="0" max="100" value="${wVal}" class="table-stepper-input" id="adm-disc-p-${name}" onchange="adminUpdatePartnerDisc('${name}', 'pracownik', this.value)">
+                    <div class="table-stepper-btn-group">
+                        <button class="table-btn-step" onclick="adminStepPartnerDisc('${name}', 'pracownik', 5)">▲</button>
+                        <button class="table-btn-step" onclick="adminStepPartnerDisc('${name}', 'pracownik', -5)">▼</button>
+                    </div>
+                </div> %
+            </td>
+            <td>
+                <div class="table-stepper-control">
+                    <input type="number" min="0" max="100" value="${zVal}" class="table-stepper-input" id="adm-disc-z-${name}" onchange="adminUpdatePartnerDisc('${name}', 'zarzad', this.value)">
+                    <div class="table-stepper-btn-group">
+                        <button class="table-btn-step" onclick="adminStepPartnerDisc('${name}', 'zarzad', 5)">▲</button>
+                        <button class="table-btn-step" onclick="adminStepPartnerDisc('${name}', 'zarzad', -5)">▼</button>
+                    </div>
+                </div> %
+            </td>
+            <td style="text-align:right; padding-right:6px;"><button class="btn-shift-action btn-delete-shift" onclick="adminDeletePartner('${name}')">✕ Usuń</button></td>
+        `;
+        partTbody.appendChild(tr);
+    });
+}
+
+function adminStepPartnerDisc(name, roleType, delta) {
+    if (!discounts[name]) return;
+    const curr = Math.round((discounts[name][roleType] || 0) * 100);
+    const next = Math.max(0, Math.min(100, curr + delta));
+    const inputId = roleType === 'pracownik' ? `adm-disc-p-${name}` : `adm-disc-z-${name}`;
+    const input = document.getElementById(inputId);
+    if (input) input.value = next;
+    adminUpdatePartnerDisc(name, roleType, next);
+}
+
+async function adminAddNewItem() {
+    const name = document.getElementById('admNewItemName').value.trim();
+    const price = parseFloat(document.getElementById('admNewItemPrice').value) || 0;
+    const cat = document.getElementById('admNewItemCat').value;
+    if (!name || price <= 0) { showToast('⚠️ BŁĄD', 'Wprowadź prawidłową nazwę i cenę!'); return; }
+    
+    const newId = 'cust_' + Date.now();
+    if (!items[cat]) items[cat] = [];
+    items[cat].push({ id: newId, name: name, price: price });
+    
+    await saveCatalogConfigToDB();
+    logAuditAction(`Dodano nowy towar: **${name}** ($${formatMoney(price)}) [${cat.toUpperCase()}]`);
+    showToast('✅ ZAPISANO', `Dodano towar ${name}`);
+    document.getElementById('admNewItemName').value = '';
+    document.getElementById('admNewItemPrice').value = '';
+    renderAdminCatalogPanel();
+}
+
+async function adminUpdateItemName(catKey, index, newName) {
+    const trimmed = newName.trim();
+    if (!trimmed || !items[catKey] || !items[catKey][index]) return;
+    const oldName = items[catKey][index].name;
+    if (oldName === trimmed) return;
+    items[catKey][index].name = trimmed;
+    await saveCatalogConfigToDB();
+    logAuditAction(`Zmieniono nazwę towaru: **${oldName}** -> **${trimmed}**`);
+    showToast('✏️ NAZWA', `Zmieniono nazwę towaru na ${trimmed}`);
+}
+
+async function adminUpdateItemPrice(catKey, index, newPrice) {
+    const p = parseFloat(newPrice) || 0;
+    if (p <= 0 || !items[catKey] || !items[catKey][index]) return;
+    const oldPrice = items[catKey][index].price;
+    items[catKey][index].price = p;
+    await saveCatalogConfigToDB();
+    logAuditAction(`Zmieniono cenę **${items[catKey][index].name}**: $${formatMoney(oldPrice)} -> $${formatMoney(p)}`);
+    showToast('💰 CENA', `Zaktualizowano cenę`);
+}
+
+function adminStepItemPrice(catKey, index, delta) {
+    if (!items[catKey] || !items[catKey][index]) return;
+    const currentPrice = parseFloat(items[catKey][index].price) || 0;
+    const newPrice = Math.max(0, currentPrice + delta);
+    const input = document.getElementById(`adm-price-${catKey}-${index}`);
+    if (input) input.value = newPrice;
+    adminUpdateItemPrice(catKey, index, newPrice);
+}
+
+async function adminDeleteItem(catKey, index) {
+    if (!items[catKey] || !items[catKey][index]) return;
+    const itName = items[catKey][index].name;
+    openConfirmModal("USUŃ PRODUKT", `Czy na pewno chcesz trwale usunąć produkt ${itName}?`, async () => {
+        items[catKey].splice(index, 1);
+        await saveCatalogConfigToDB();
+        logAuditAction(`Usunięto towar z katalogu: **${itName}**`);
+        showToast('🗑️ USUNIĘTO', `Usunięto produkt`);
+        renderAdminCatalogPanel();
+    });
+}
+
+async function adminAddOrUpdatePartner() {
+    const name = document.getElementById('admNewPartnerName').value.trim();
+    const wVal = parseFloat(document.getElementById('admNewPartnerWorkerDisc').value) || 0;
+    const zVal = parseFloat(document.getElementById('admNewPartnerZarzadDisc').value) || 0;
+    if (!name) { showToast('⚠️ BŁĄD', 'Wpisz nazwę firmy!'); return; }
+    
+    discounts[name] = { pracownik: wVal / 100, zarzad: zVal / 100 };
+    companyEmojis[name] = newPartnerSelectedEmoji || "🏢";
+    await saveDiscountsConfigToDB();
+    await saveEmojisConfigToDB();
+    logAuditAction(`Zapisano zniżki dla firmy **${name}**: Pracownik -${wVal}%, Zarząd -${zVal}%`);
+    showToast('🏢 FIRMA', `Zapisano firmę ${name}`);
+    document.getElementById('admNewPartnerName').value = '';
+    document.getElementById('admNewPartnerWorkerDisc').value = '';
+    document.getElementById('admNewPartnerZarzadDisc').value = '';
+    newPartnerSelectedEmoji = "🏢";
+    const btn = document.getElementById('admNewPartnerEmojiBtn');
+    if (btn) btn.innerText = "🏢";
+    renderAdminCatalogPanel();
+}
+
+async function adminUpdatePartnerName(oldName, newName) {
+    const trimmed = newName.trim();
+    if (!trimmed || oldName === trimmed || !discounts[oldName]) return;
+    discounts[trimmed] = discounts[oldName];
+    delete discounts[oldName];
+    if (companyEmojis[oldName]) {
+        companyEmojis[trimmed] = companyEmojis[oldName];
+        delete companyEmojis[oldName];
+        await saveEmojisConfigToDB();
+    }
+    await saveDiscountsConfigToDB();
+    logAuditAction(`Zmieniono nazwę firmy partnerskiej: **${oldName}** -> **${trimmed}**`);
+    showToast('✏️ FIRMA', `Zmieniono nazwę na ${trimmed}`);
+    renderAdminCatalogPanel();
+}
+
+async function adminUpdatePartnerDisc(name, roleType, newVal) {
+    const val = parseFloat(newVal);
+    if (isNaN(val) || val < 0 || !discounts[name]) return;
+    discounts[name][roleType] = val / 100;
+    await saveDiscountsConfigToDB();
+    logAuditAction(`Zmieniono rabat dla firmy **${name}** (${roleType}): -${val}%`);
+    showToast('💸 RABAT', `Zaktualizowano rabat dla ${name}`);
+}
+
+async function adminDeletePartner(name) {
+    openConfirmModal("USUŃ ZNIŻKĘ", `Czy na pewno usunąć firmę ${name} z tabeli rabatów?`, async () => {
+        delete discounts[name];
+        delete companyEmojis[name];
+        await saveDiscountsConfigToDB();
+        await saveEmojisConfigToDB();
+        logAuditAction(`Usunięto firmę partnerską: **${name}**`);
+        showToast('🗑️ USUNIĘTO', `Usunięto firmę ${name}`);
+        renderAdminCatalogPanel();
+    });
+}
+
+function setLeaderboardPeriod(period) {
+    currentLeaderboardPeriod = period;
+    document.getElementById('ldrFilterAll').className = `btn-tab ${period === 'all' ? 'active' : ''}`;
+    document.getElementById('ldrFilterMonth').className = `btn-tab ${period === 'month' ? 'active' : ''}`;
+    document.getElementById('ldrFilterWeek').className = `btn-tab ${period === 'week' ? 'active' : ''}`;
+    renderAdminLeaderboard();
+}
+
+function renderAdminLeaderboard() {
+    const tbody = document.querySelector('#adminLeaderboardTable tbody');
+    tbody.innerHTML = '';
+    
+    const now = Date.now();
+    const statsByUser = {};
+
+    shifts.forEach(s => {
+        const u = s.user || 'Nieznany';
+        const startMs = new Date(s.startTime).getTime();
+        
+        if (currentLeaderboardPeriod === 'week' && (now - startMs > 7 * 86400000)) return;
+        if (currentLeaderboardPeriod === 'month' && (now - startMs > 30 * 86400000)) return;
+        
+        if (!statsByUser[u]) {
+            statsByUser[u] = { user: u, earnings: 0, timeMs: 0, shiftsCount: 0 };
+        }
+        
+        statsByUser[u].earnings += (parseFloat(s.earnings) || 0);
+        statsByUser[u].shiftsCount += 1;
+        if (s.endTime) {
+            statsByUser[u].timeMs += (new Date(s.endTime).getTime() - startMs);
+        }
+    });
+
+    const rankList = Object.values(statsByUser).sort((a, b) => b.earnings - a.earnings);
+    if (rankList.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:15px; color:#d9a9c0;">Brak danych w wybranym okresie.</td></tr>`;
+        return;
+    }
+
+    rankList.forEach((stat, idx) => {
+        const totalHrs = stat.timeMs / 3600000;
+        const totalMins = Math.floor(stat.timeMs / 60000);
+        const timeStr = `${Math.floor(totalMins / 60)}h ${totalMins % 60}m`;
+        const avgPerHour = totalHrs > 0 ? Math.round(stat.earnings / totalHrs) : stat.earnings;
+
+        let badge = `#${idx + 1}`;
+        if (idx === 0) badge = '🥇 #1';
+        if (idx === 1) badge = '🥈 #2';
+        if (idx === 2) badge = '🥉 #3';
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td style="padding:6px; font-weight:700; color:var(--primary);">${badge}</td>
+            <td style="font-weight:700; color:#fff;">${stat.user}</td>
+            <td style="text-align:right; font-weight:700; color:var(--primary); font-family:'Rajdhani'; font-size:13px;">$${formatMoney(stat.earnings)}</td>
+            <td style="text-align:right;">${timeStr}</td>
+            <td style="text-align:right;">${stat.shiftsCount}</td>
+            <td style="text-align:right; padding-right:6px; color:var(--neon-green); font-family:'Rajdhani'; font-weight:700;">$${formatMoney(avgPerHour)}/h</td>
+        `;
+        tbody.appendChild(tr);
+    });
 }
 
 function renderAuditLogs() {
@@ -1002,6 +1631,7 @@ function setupOutsideModalClick() {
         { id: 'shiftDetailsModal', closeFn: closeShiftDetails },
         { id: 'customConfirmModal', closeFn: closeConfirmModal },
         { id: 'rootPanelModal', closeFn: closeRootPanel },
+        { id: 'emojiPickerModal', closeFn: closeEmojiPicker },
         { id: 'userInspectModal', closeFn: closeUserInspect }
     ];
 
@@ -1115,6 +1745,7 @@ async function setupAppAfterLogin() {
 
     updateDynamicHeaderLayout();
     startHeartbeat();
+    await loadDynamicConfigFromDB();
     await syncShiftsFromDB();
 }
 
@@ -1317,6 +1948,7 @@ async function sell() {
     for (const key in items) {
         items[key].forEach(item => {
             const input = document.getElementById(item.id);
+            if (!input) return;
             let qty = parseInt(input.value);
             if (isNaN(qty) || qty < 0) qty = 0;
             
@@ -1328,7 +1960,8 @@ async function sell() {
     }
     if (soldItems.length === 0) return;
 
-    const client = document.getElementById('clientSelect').value;
+    const clientEl = document.getElementById('clientSelect');
+    const client = clientEl ? clientEl.value : 'Brak';
     const discountPercent = (discounts[client] && discounts[client][currentRole] !== undefined) ? discounts[client][currentRole] : 0;
     const zysk = totalBase - (totalBase * discountPercent);
     if (zysk <= 0) return;
@@ -1463,7 +2096,9 @@ function openShiftDetails(shiftId) {
                 let itemsHtml = '';
                 sale.items.forEach(it => { itemsHtml += `<div class="t-item"><span><span class="t-item-name">${it.qty}x ${it.name}</span> ($${formatMoney(it.price)}/szt)</span><span class="t-item-total" style="font-family:'Rajdhani'; font-weight:700; font-size:15px; color:#fff;">$${formatMoney(it.total)}</span></div>`; });
                 const discountTxt = sale.discountPercent > 0 ? `Rabat: ${sale.discountPercent*100}%` : `Brak rabatu`;
-                const clientTxt = sale.client !== 'Brak' ? sale.client : `Klient detaliczny`;
+                const em = sale.client !== 'Brak' ? getCompanyEmoji(sale.client) : '';
+                const prefix = em ? `${em} ` : '';
+                const clientTxt = sale.client !== 'Brak' ? `${prefix}${sale.client}` : `Klient detaliczny`;
                 card.innerHTML = `<div class="t-header"><span>⏱️ ${formatDateTimeSeconds(sale.timestamp)}</span><div style="text-align:right;"><div style="color:var(--primary); font-family:'Rajdhani'; font-weight:700; font-size:16px;">ZYSK: $${formatMoney(sale.earnings)}</div><div style="font-size:12px; color:#d9a9c0; font-weight:700; font-family:'Rajdhani';">-10%: $${formatMoney(sale.earnings * 0.90)}</div></div></div><div class="t-meta">👤 Rola: ${sale.role.toUpperCase()} | 🏢 ${clientTxt} | 💸 ${discountTxt}</div><div>${itemsHtml}</div>`;
                 content.appendChild(card);
             });
@@ -1534,6 +2169,7 @@ function importDataBackup(event) {
 
 function renderCategory(catKey, containerId) {
     const container = document.getElementById(containerId);
+    if (!container || !items[catKey]) return;
     items[catKey].forEach(item => {
         const div = document.createElement('div');
         div.className = 'item-row'; div.id = `row-${item.id}`;
@@ -1554,6 +2190,7 @@ function renderCategory(catKey, containerId) {
 
 function stepItem(id, step) {
     const input = document.getElementById(id);
+    if (!input) return;
     let currentVal = parseInt(input.value);
     if (isNaN(currentVal)) currentVal = 0;
     input.value = Math.max(0, currentVal + step);
@@ -1571,13 +2208,15 @@ function calculate() {
     for (const key in items) {
         items[key].forEach(item => {
             const input = document.getElementById(item.id);
+            if (!input) return;
             let qty = parseInt(input.value);
             if (isNaN(qty) || qty < 0) qty = 0;
             totalBase += qty * item.price; 
             totalItems += qty; 
         }); 
     }
-    const client = document.getElementById('clientSelect').value;
+    const clientEl = document.getElementById('clientSelect');
+    const client = clientEl ? clientEl.value : 'Brak';
     const discountPercent = (discounts[client] && discounts[client][currentRole] !== undefined) ? discounts[client][currentRole] : 0;
     const finalTotal = totalBase - (totalBase * discountPercent);
     document.getElementById('totalSumText').innerText = `SUMA: $${formatMoney(finalTotal)}`;
@@ -1585,7 +2224,7 @@ function calculate() {
     document.getElementById('itemsCountBadge').innerText = `Pozycji: ${totalItems} szt.`;
     document.getElementById('val-zysk').innerText = `$${formatMoney(finalTotal)}`;
 }
-function resetInputs() { for (const key in items) items[key].forEach(i => document.getElementById(i.id).value = 0); calculate(); }
+function resetInputs() { for (const key in items) items[key].forEach(i => { const el = document.getElementById(i.id); if (el) el.value = 0; }); calculate(); }
 function updateShiftStatusUI() {
     const statusText = document.getElementById('shiftStatusText');
     const dot = document.getElementById('shiftDot');
@@ -1776,6 +2415,7 @@ document.addEventListener('keydown', (e) => {
         closeGoalModal();
         closeCalcModal();
         closeRootPanel();
+        closeEmojiPicker();
         closeUserInspect();
     }
 });
@@ -1786,11 +2426,8 @@ window.onload = () => {
     changeUIScale(savedScale);
     document.getElementById('uiScaleSlider').value = savedScale;
     
-    renderCategory('nasiona', 'cat-nasiona');
-    renderCategory('produkty', 'cat-produkty');
-    renderCategory('nawozy', 'cat-nawozy');
-    renderCategory('jedzenie', 'cat-jedzenie');
-    renderCategory('jointy', 'cat-jointy');
+    refreshCatalogDOM();
+    refreshDiscountsDOM();
     document.getElementById('clientSelect').addEventListener('change', calculate);
     
     initChart();
