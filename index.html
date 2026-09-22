@@ -208,6 +208,7 @@
     .btn-clear-cart { background: rgba(255, 77, 77, 0.15); color: #ff6b6b; border: 1px solid rgba(255, 77, 77, 0.3); border-radius: 4px; padding: 2px 7px; font-size: 10.5px; font-family: 'Rajdhani', sans-serif; font-weight: 700; cursor: pointer; transition: 0.15s; }
     .btn-clear-cart:hover { background: #dc2626; color: #fff; }
     .suma-val { font-family: 'Rajdhani', sans-serif; color: var(--primary); font-size: 25px; font-weight: 700; letter-spacing: 1px; text-shadow: 0 0 8px var(--primary-glow); }
+    .suma-sub-discount { font-family: 'Rajdhani', sans-serif; font-size: 11.5px; font-weight: 700; color: #d9a9c0; margin-top: 2px; }
     .discount-info { text-align: center; color: var(--text-muted); font-size: 11px; margin-top: 4px; font-weight: 500; }
 
     .stats-row { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px; color: #e2b8cc; }
@@ -320,9 +321,9 @@
     .shift-details-content::-webkit-scrollbar { width: 5px; }
     .shift-details-content::-webkit-scrollbar-thumb { background: var(--primary-dark); border-radius: 6px; }
     .transaction-card { background: var(--primary-a04); border: 1px solid var(--primary-a20); border-radius: 6px; padding: 10px; margin-bottom: 10px; }
-    .t-header { display: flex; justify-content: space-between; align-items: center; color: var(--primary); font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 14px; border-bottom: 1px dashed var(--primary-a20); padding-bottom: 4px; margin-bottom: 6px; }
-    .t-meta { font-size: 11px; color: #d9a9c0; margin-bottom: 6px; }
-    .t-item { display: flex; justify-content: space-between; font-size: 12px; color: #fdf0f6; margin-bottom: 3px; }
+    .t-header { display: flex; justify-content: space-between; align-items: flex-start; color: var(--primary); font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 15.5px; border-bottom: 1px dashed var(--primary-a20); padding-bottom: 4px; margin-bottom: 6px; }
+    .t-meta { font-size: 12.5px; color: #d9a9c0; margin-bottom: 6px; }
+    .t-item { display: flex; justify-content: space-between; font-size: 13.5px; color: #fdf0f6; margin-bottom: 4px; }
 
     .online-dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; margin-right: 6px; }
     .online-dot.online { background: var(--neon-green); box-shadow: 0 0 8px var(--neon-green); }
@@ -402,12 +403,17 @@
         <div class="box" id="cat-jedzenie"><h3 class="box-title">🍪 Jedzenie & Picie</h3></div>
         <div class="box" id="cat-jointy"><h3 class="box-title">🚬 Jointy</h3></div>
         <div class="box chart-box">
-            <div class="chart-header-row">
+            <div class="chart-header-row" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px; margin-bottom: 8px;">
                 <h3 class="box-title" style="margin: 0;">📈 Wykres Zarobków</h3>
-                <div class="btn-tab-group">
-                    <button class="btn-tab active" id="btnChart24h" onclick="updateChartType('24h')">24H</button>
-                    <button class="btn-tab" id="btnChart31d" onclick="updateChartType('31d')">31D</button>
-                    <button class="btn-tab" id="btnChart50z" onclick="updateChartType('50z')">50 ZMIAN</button>
+                <div style="display: flex; align-items: center; gap: 6px;">
+                    <select id="chartWorkerSelect" onchange="updateChartData()" style="display: none; width: auto; margin-bottom: 0; padding: 2px 6px; font-size: 11px; height: 24px;">
+                        <option value="ALL">🌐 Wszyscy gracze</option>
+                    </select>
+                    <div class="btn-tab-group">
+                        <button class="btn-tab active" id="btnChart24h" onclick="updateChartType('24h')">24H</button>
+                        <button class="btn-tab" id="btnChart31d" onclick="updateChartType('31d')">31D</button>
+                        <button class="btn-tab" id="btnChart50z" onclick="updateChartType('50z')">50 ZMIAN</button>
+                    </div>
                 </div>
             </div>
             <div style="position: relative; height: 150px; width: 100%;"><canvas id="earningsChart"></canvas></div>
@@ -454,6 +460,7 @@
                     <button class="btn-clear-cart" onclick="resetInputs()">🧹 Wyczyść</button>
                 </div>
                 <div class="suma-val" id="totalSumText">SUMA: $0</div>
+                <div class="suma-sub-discount" id="totalSumDiscountedText">-10%: $0</div>
             </div>
         </div>
         <div class="discount-info" id="discountInfoText">Brak rabatu | Wartość: $0</div>
@@ -466,7 +473,7 @@
         <div class="box dzisiaj-box">
             <div class="dzisiaj-title">💵 DZISIAJ — PRZYCHÓD</div>
             <div class="dzisiaj-val" id="dzisiajPrzychod">$0</div>
-            <div class="dzisiaj-zysk">💰 Zysk: <span id="dzisiajZysk">$0</span></div>
+            <div class="dzisiaj-zysk">💰 Zysk: <span id="dzisiajZysk">$0</span> <span style="font-size: 10px; color:#d9a9c0; margin-left: 6px;" id="dzisiajZyskDiscounted">(-10%: $0)</span></div>
         </div>
 
         <div class="action-container action-buttons">
@@ -679,9 +686,9 @@
 </div>
 
 <div class="screen-modal-overlay" id="shiftDetailsModal">
-    <div class="screen-modal" style="width: 500px;">
+    <div class="screen-modal" style="width: 520px;">
         <button class="screen-modal-close" onclick="closeShiftDetails()">✕</button>
-        <div class="screen-modal-title" id="detailsModalTitle">KARTA ZMIANY</div>
+        <div class="screen-modal-title" id="detailsModalTitle" style="font-size: 18px;">KARTA ZMIANY</div>
         <div class="shift-details-content" id="shiftDetailsContent"></div>
     </div>
 </div>
@@ -1094,13 +1101,16 @@ async function setupAppAfterLogin() {
         }
     }
 
+    const chartWorkerSelect = document.getElementById('chartWorkerSelect');
     if (currentUser.role === 'root') {
         document.getElementById('rootWorkerFilterArea').style.display = 'block';
         document.getElementById('btnOpenRootPanel').style.display = 'block';
+        if (chartWorkerSelect) chartWorkerSelect.style.display = 'inline-block';
         loadWorkerFilterOptions();
     } else {
         document.getElementById('rootWorkerFilterArea').style.display = 'none';
         document.getElementById('btnOpenRootPanel').style.display = 'none';
+        if (chartWorkerSelect) chartWorkerSelect.style.display = 'none';
     }
 
     updateDynamicHeaderLayout();
@@ -1248,8 +1258,17 @@ function closeUserInspect() {
 async function loadWorkerFilterOptions() {
     const { data: users } = await db.from('users').select('nickname');
     const select = document.getElementById('workerSelectFilter');
+    const chartSelect = document.getElementById('chartWorkerSelect');
+    
     select.innerHTML = '<option value="ALL">🌐 Wszyscy pracownicy</option>';
-    if (users) { users.forEach(u => { select.innerHTML += `<option value="${u.nickname}">👤 ${u.nickname}</option>`; }); }
+    if (chartSelect) chartSelect.innerHTML = '<option value="ALL">🌐 Wszyscy gracze</option>';
+    
+    if (users) { 
+        users.forEach(u => { 
+            select.innerHTML += `<option value="${u.nickname}">👤 ${u.nickname}</option>`; 
+            if (chartSelect) chartSelect.innerHTML += `<option value="${u.nickname}">👤 ${u.nickname}</option>`;
+        }); 
+    }
 }
 
 async function syncShiftsFromDB() {
@@ -1420,6 +1439,7 @@ function renderHistory() {
     document.getElementById('totalWorkEarningsDiscounted').innerText = `$${formatMoney(totalMoney * 0.90)}`;
     document.getElementById('dzisiajPrzychod').innerText = `$${formatMoney(todayMoney)}`;
     document.getElementById('dzisiajZysk').innerText = `$${formatMoney(todayMoney)}`;
+    document.getElementById('dzisiajZyskDiscounted').innerText = `(-10%: $${formatMoney(todayMoney * 0.90)})`;
 }
 
 function openShiftDetails(shiftId) {
@@ -1441,10 +1461,10 @@ function openShiftDetails(shiftId) {
                 const card = document.createElement('div');
                 card.className = 'transaction-card';
                 let itemsHtml = '';
-                sale.items.forEach(it => { itemsHtml += `<div class="t-item"><span><span class="t-item-name">${it.qty}x ${it.name}</span> ($${formatMoney(it.price)}/szt)</span><span class="t-item-total">$${formatMoney(it.total)}</span></div>`; });
+                sale.items.forEach(it => { itemsHtml += `<div class="t-item"><span><span class="t-item-name">${it.qty}x ${it.name}</span> ($${formatMoney(it.price)}/szt)</span><span class="t-item-total" style="font-family:'Rajdhani'; font-weight:700; font-size:15px; color:#fff;">$${formatMoney(it.total)}</span></div>`; });
                 const discountTxt = sale.discountPercent > 0 ? `Rabat: ${sale.discountPercent*100}%` : `Brak rabatu`;
                 const clientTxt = sale.client !== 'Brak' ? sale.client : `Klient detaliczny`;
-                card.innerHTML = `<div class="t-header"><span>⏱️ ${formatDateTimeSeconds(sale.timestamp)}</span><span>ZYSK: $${formatMoney(sale.earnings)}</span></div><div class="t-meta">👤 Rola: ${sale.role.toUpperCase()} | 🏢 ${clientTxt} | 💸 ${discountTxt}</div><div>${itemsHtml}</div>`;
+                card.innerHTML = `<div class="t-header"><span>⏱️ ${formatDateTimeSeconds(sale.timestamp)}</span><div style="text-align:right;"><div style="color:var(--primary); font-family:'Rajdhani'; font-weight:700; font-size:16px;">ZYSK: $${formatMoney(sale.earnings)}</div><div style="font-size:12px; color:#d9a9c0; font-weight:700; font-family:'Rajdhani';">-10%: $${formatMoney(sale.earnings * 0.90)}</div></div></div><div class="t-meta">👤 Rola: ${sale.role.toUpperCase()} | 🏢 ${clientTxt} | 💸 ${discountTxt}</div><div>${itemsHtml}</div>`;
                 content.appendChild(card);
             });
         }
@@ -1561,6 +1581,7 @@ function calculate() {
     const discountPercent = (discounts[client] && discounts[client][currentRole] !== undefined) ? discounts[client][currentRole] : 0;
     const finalTotal = totalBase - (totalBase * discountPercent);
     document.getElementById('totalSumText').innerText = `SUMA: $${formatMoney(finalTotal)}`;
+    document.getElementById('totalSumDiscountedText').innerText = `-10%: $${formatMoney(finalTotal * 0.90)}`;
     document.getElementById('itemsCountBadge').innerText = `Pozycji: ${totalItems} szt.`;
     document.getElementById('val-zysk').innerText = `$${formatMoney(finalTotal)}`;
 }
@@ -1656,9 +1677,9 @@ function updateChartData() {
     const now = new Date();
     let labels = [], data = [];
 
-    const workerFilter = document.getElementById('workerSelectFilter') ? document.getElementById('workerSelectFilter').value : 'ALL';
+    const chartFilter = document.getElementById('chartWorkerSelect') ? document.getElementById('chartWorkerSelect').value : 'ALL';
     const relevantShifts = shifts.filter(s => {
-        if (currentUser && currentUser.role === 'root' && workerFilter !== 'ALL') { return s.user === workerFilter; }
+        if (currentUser && currentUser.role === 'root' && chartFilter !== 'ALL') { return s.user === chartFilter; }
         return true;
     });
 
