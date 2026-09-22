@@ -40,7 +40,6 @@
         --neon-green: #00ff66;
         --neon-red: #f43f5e;
         
-        /* Domyślna zmienna skali */
         --scale: 1;
     }
 
@@ -335,7 +334,6 @@
 
     @keyframes pulseRadar { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.4); opacity: 0.6; box-shadow: 0 0 14px var(--primary); } 100% { transform: scale(1); opacity: 1; } }
 
-    /* Skalowanie interfejsu (tylko kafelki w kolumnach) */
     .column > * {
         zoom: var(--scale, 1);
     }
