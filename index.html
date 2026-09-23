@@ -1087,6 +1087,14 @@ async function saveEmojisConfigToDB() {
 }
 
 function refreshCatalogDOM() {
+    const cartValues = {};
+    for (const key in items) {
+        items[key].forEach(it => {
+            const el = document.getElementById(it.id);
+            if (el && parseInt(el.value) > 0) cartValues[it.id] = el.value;
+        });
+    }
+
     const categories = [
         { key: 'nasiona', id: 'cat-nasiona' },
         { key: 'produkty', id: 'cat-produkty' },
@@ -1102,6 +1110,11 @@ function refreshCatalogDOM() {
         if (titleEl) box.appendChild(titleEl);
         if (items[cat.key]) renderCategory(cat.key, cat.id);
     });
+
+    for (const id in cartValues) {
+        const input = document.getElementById(id);
+        if (input) input.value = cartValues[id];
+    }
 }
 
 function refreshDiscountsDOM() {
@@ -1747,6 +1760,16 @@ async function setupAppAfterLogin() {
     startHeartbeat();
     await loadDynamicConfigFromDB();
     await syncShiftsFromDB();
+
+    // Nasłuchiwanie na żywo (WebSockets)
+    db.channel('system_config_channel')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'system_config' }, payload => {
+          loadDynamicConfigFromDB();
+      })
+      .subscribe();
+
+    // Dodatkowy timer odpytujący co 5 sekund jako zabezpieczenie
+    setInterval(loadDynamicConfigFromDB, 5000);
 }
 
 async function openRootPanel() { 
